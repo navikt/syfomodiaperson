@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { defaultSoknad } from "@/mocks/sykepengesoknad/soknaderMock";
@@ -12,7 +12,7 @@ const renderSoknadStatustekst = (soknad: SykepengesoknadDTO) => {
 describe("SoknadStatustekst", () => {
   it("Return correct statustekst when soknad is only sent to Nav, regardless of whether missing values are null or undefined", () => {
     const sendtTilNavDato = new Date("2022-01-01");
-    const readableDate = tilLesbarDatoMedArstall(sendtTilNavDato);
+    const readableDate = formatDateWithYear(sendtTilNavDato);
     const soknad: SykepengesoknadDTO = {
       ...defaultSoknad,
       sendtTilNAVDato: new Date("2022-01-01"),
@@ -27,7 +27,7 @@ describe("SoknadStatustekst", () => {
 
   it("Return correct statustekst when soknad is only sent to arbeidsgiver", () => {
     const sendtTilArbeidsgiverDato = new Date("2022-01-01");
-    const readableDate = tilLesbarDatoMedArstall(sendtTilArbeidsgiverDato);
+    const readableDate = formatDateWithYear(sendtTilArbeidsgiverDato);
     const soknad: SykepengesoknadDTO = {
       ...defaultSoknad,
       sendtTilNAVDato: undefined,
@@ -52,7 +52,7 @@ describe("SoknadStatustekst", () => {
 
   it("Return correct statustekst when soknad is sent to both Nav and arbeidsgiver", () => {
     const sendtTilNAVDato = new Date("2022-01-01");
-    const readableNAVDate = tilLesbarDatoMedArstall(sendtTilNAVDato);
+    const readableNAVDate = formatDateWithYear(sendtTilNAVDato);
     const sendtTilArbeidsgiverDato = new Date("2023-02-02");
     const soknad: SykepengesoknadDTO = {
       ...defaultSoknad,

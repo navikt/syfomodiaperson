@@ -1,5 +1,5 @@
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { formatDateRangeWithYear } from "@/utils/datoUtils";
 import { BodyLong, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -29,7 +29,7 @@ export function SykmeldingPeriode({ periode, antallDager = 1 }: Props) {
         {texts.title}
       </Heading>
       <BodyLong size="small" className="whitespace-pre-line">
-        <strong>{tilLesbarPeriodeMedArstall(periode.fom, periode.tom)}</strong>{" "}
+        <strong>{formatDateRangeWithYear(periode.fom, periode.tom)}</strong>{" "}
         &bull; {antallDager}&nbsp;{dayText}
       </BodyLong>
       {periode.grad && (

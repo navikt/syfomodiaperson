@@ -4,7 +4,7 @@ import { isArbeidstakerMotebehov } from "@/utils/motebehovUtils";
 import { Accordion, BodyShort, Box } from "@navikt/ds-react";
 import DialogmoteHistorikkHeader from "@/sider/dialogmoter/components/motehistorikk/DialogmoteHistorikkHeader";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import {
   MotebehovArbeidsgiverKvittering,
   MotebehovKvitteringInnholdArbeidstaker,
@@ -28,7 +28,7 @@ function MotebehovHistorikkEvent({
   const isArbeidstaker = isArbeidstakerMotebehov(motebehov);
   const headerText = `Møtebehov fra ${
     isArbeidstaker ? "den sykmeldte" : "nærmeste leder"
-  } ${tilLesbarDatoMedArstall(motebehov.opprettetDato)}`;
+  } ${formatDateWithYear(motebehov.opprettetDato)}`;
   const isBehandlet =
     motebehov.behandletTidspunkt && motebehov.behandletVeilederIdent;
   const virksomhet = virksomhetsnavn || motebehov?.virksomhetsnummer;
@@ -54,7 +54,7 @@ function MotebehovHistorikkEvent({
         {isBehandlet && (
           <BodyShort className="mt-2">{`Møtebehovet ble vurdert av ${
             motebehov.behandletVeilederIdent
-          } den ${tilLesbarDatoMedArstall(
+          } den ${formatDateWithYear(
             motebehov.behandletTidspunkt,
           )}.`}</BodyShort>
         )}

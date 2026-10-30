@@ -29,7 +29,7 @@ import {
   addDays,
   addWeeks,
   daysFromToday,
-  tilLesbarDatoMedArUtenManedNavn,
+  formatNumericDate,
 } from "@/utils/datoUtils";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { defaultVedtak } from "@/mocks/isfrisktilarbeid/mockIsfrisktilarbeid";
@@ -390,10 +390,10 @@ describe("PersonkortHeader", () => {
     expect(screen.getByText("Søknad behandlet tom:")).to.exist;
 
     const expectedMaksdato = dayjs(maksdato).format("DD.MM.YYYY");
-    const expectedUtbetaltTom = tilLesbarDatoMedArUtenManedNavn(
+    const expectedUtbetaltTom = formatNumericDate(
       maksdatoMock.maxDate.utbetalt_tom,
     );
-    const expectedSoknadBehandletTom = tilLesbarDatoMedArUtenManedNavn(
+    const expectedSoknadBehandletTom = formatNumericDate(
       maksdatoMock.maxDate.tom,
     );
 
@@ -496,7 +496,7 @@ describe("PersonkortHeader", () => {
 
     renderPersonkortHeader();
 
-    const expected = tilLesbarDatoMedArUtenManedNavn(utbetaltTomDate);
+    const expected = formatNumericDate(utbetaltTomDate);
     expect(screen.getByText(expected)).to.exist;
   });
 

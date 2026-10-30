@@ -15,7 +15,10 @@ import {
 import { beforeEach, describe, expect, it } from "vitest";
 import { navEnhet } from "./testData";
 import { MalformProvider } from "@/context/malform/MalformContext";
-import { dagerMellomDatoer, daysFromToday } from "@/utils/datoUtils";
+import {
+  getAbsoluteCalendarDaysBetween,
+  daysFromToday,
+} from "@/utils/datoUtils";
 import DialogmoteInnkallingContainer from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingContainer";
 import { renderWithRouter } from "../testRouterUtils";
 
@@ -43,7 +46,8 @@ const createOppfolgingstilfelle = (end: Date): OppfolgingstilfelleDTO => {
     arbeidstakerAtTilfelleEnd: true,
     end,
     start: daysFromToday(-10),
-    antallSykedager: dagerMellomDatoer(daysFromToday(-10), end) + 1,
+    antallSykedager:
+      getAbsoluteCalendarDaysBetween(daysFromToday(-10), end) + 1,
     varighetUker: 1,
   };
 };

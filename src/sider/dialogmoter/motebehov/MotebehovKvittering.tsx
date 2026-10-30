@@ -5,7 +5,7 @@ import {
   motebehovUbehandlet,
   sorterMotebehovDataEtterDatoDesc,
 } from "@/utils/motebehovUtils";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import {
   MotebehovSkjemaType,
   MotebehovVeilederDTO,
@@ -79,7 +79,7 @@ const composePersonSvarText = (
 ) => {
   const svarResultat = getSvarTekst(skjemaType, harMotebehov);
   const opprettetDato = svarOpprettetDato
-    ? " - " + tilLesbarDatoMedArUtenManedNavn(svarOpprettetDato)
+    ? " - " + formatNumericDate(svarOpprettetDato)
     : undefined;
 
   return (

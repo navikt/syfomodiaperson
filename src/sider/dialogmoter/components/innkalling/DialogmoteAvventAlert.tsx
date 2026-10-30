@@ -1,5 +1,5 @@
 import { Alert, BodyShort, Label } from "@navikt/ds-react";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import { AvventDTO } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 
 interface Props {
@@ -15,7 +15,7 @@ export function DialogmoteAvventAlert({ avvent }: Props) {
     <Alert variant="warning" size="small" className="mb-4">
       <Label size="small">
         {avvent.frist
-          ? `${texts.avventerTil} ${tilDatoMedManedNavn(
+          ? `${texts.avventerTil} ${formatDateWithMonthName(
               new Date(avvent.frist),
             )}`
           : "Avventer"}

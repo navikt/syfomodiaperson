@@ -19,8 +19,8 @@ import {
 import {
   addDays,
   addWeeks,
-  tilLesbarDatoMedArUtenManedNavn,
-  toDatePrettyPrint,
+  formatNumericDate,
+  formatShortDateOrUndefined,
 } from "@/utils/datoUtils";
 import {
   SenOppfolgingKandidatResponseDTO,
@@ -102,12 +102,12 @@ describe("Sen oppfolging", () => {
     expect(screen.getByText("Den sykmeldte har ikke svart")).to.exist;
     expect(screen.getByText(/Den sykmeldte fikk varsel/)).to.exist;
     expect(
-      screen.getByText(tilLesbarDatoMedArUtenManedNavn(varselDato), {
+      screen.getByText(formatNumericDate(varselDato), {
         exact: false,
       }),
     );
     expect(
-      screen.getByText(tilLesbarDatoMedArUtenManedNavn(varselSvarFrist), {
+      screen.getByText(formatNumericDate(varselSvarFrist), {
         exact: false,
       }),
     );
@@ -183,7 +183,7 @@ describe("Sen oppfolging", () => {
       .exist;
     expect(
       screen.getByText(
-        `Vurdert av ${VEILEDER_DEFAULT.fulltNavn()} ${toDatePrettyPrint(
+        `Vurdert av ${VEILEDER_DEFAULT.fulltNavn()} ${formatShortDateOrUndefined(
           vurdertDato,
         )}`,
       ),

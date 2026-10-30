@@ -1,7 +1,7 @@
 import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { Paragraph } from "@/components/Paragraph";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import { VisBrev } from "@/components/VisBrev";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import {
@@ -51,7 +51,7 @@ function HistorikkItem({ vurdering }: VurderingHistorikkItemProps) {
   const { vurderingType, begrunnelse, createdAt, veilederident, varsel } =
     vurdering;
   const { data: veilederinfo } = useVeilederInfoQuery(veilederident);
-  const header = `${typeTexts[vurderingType]} - ${tilDatoMedManedNavn(
+  const header = `${typeTexts[vurderingType]} - ${formatDateWithMonthName(
     createdAt,
   )}`;
   return (
@@ -61,7 +61,7 @@ function HistorikkItem({ vurdering }: VurderingHistorikkItemProps) {
         {varsel?.svarfrist && (
           <Paragraph
             label={texts.svarfristLabel}
-            body={tilDatoMedManedNavn(varsel.svarfrist)}
+            body={formatDateWithMonthName(varsel.svarfrist)}
           />
         )}
         {begrunnelse && (

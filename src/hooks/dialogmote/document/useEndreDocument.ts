@@ -4,7 +4,7 @@ import {
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
 import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
+import { formatDateTimeWithComma } from "@/utils/datoUtils";
 import {
   getCommonTexts,
   getEndreTexts,
@@ -66,7 +66,7 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
         createParagraph(
           dialogmoteEndringTexts.endretTidspunkt.replace(
             "{tidspunkt}",
-            tilDatoMedManedNavnOgKlokkeslettWithComma(tid),
+            formatDateTimeWithComma(tid),
           ),
         ),
       );

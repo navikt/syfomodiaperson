@@ -18,7 +18,7 @@ import {
   PersonOppgave,
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
-import { daysFromToday, restdatoTilLesbarDato } from "@/utils/datoUtils";
+import { daysFromToday, formatReadableDate } from "@/utils/datoUtils";
 import { generateUUID } from "@/utils/utils";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { generateOppfolgingstilfelle } from "../../testDataUtils";
@@ -65,8 +65,8 @@ describe("OppfolgingsplanerOversikt", () => {
 
       renderOppfolgingsplanerOversikt();
 
-      const olderDate = restdatoTilLesbarDato(olderOppfolgingsplan.opprettet);
-      const newerDate = restdatoTilLesbarDato(newerOppfolgingsplan.opprettet);
+      const olderDate = formatReadableDate(olderOppfolgingsplan.opprettet);
+      const newerDate = formatReadableDate(newerOppfolgingsplan.opprettet);
 
       const oppfolgingsplanerLPS = screen.getAllByTestId("oppfolgingsplan-lps");
 
@@ -91,8 +91,8 @@ describe("OppfolgingsplanerOversikt", () => {
 
       renderOppfolgingsplanerOversikt();
 
-      const olderDate = restdatoTilLesbarDato(olderOppfolgingsplan.opprettet);
-      const newerDate = restdatoTilLesbarDato(newerOppfolgingsplan.opprettet);
+      const olderDate = formatReadableDate(olderOppfolgingsplan.opprettet);
+      const newerDate = formatReadableDate(newerOppfolgingsplan.opprettet);
 
       const oppfolgingsplanerLPS = screen.getAllByTestId("oppfolgingsplan-lps");
 

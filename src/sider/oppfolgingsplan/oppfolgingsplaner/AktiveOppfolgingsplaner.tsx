@@ -1,6 +1,6 @@
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 
-import { erIdag } from "@/utils/datoUtils";
+import { isToday } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { OppfolgingsplanLPSMedPersonoppgave } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import OppfolgingsplanerOversiktLPS from "@/sider/oppfolgingsplan/lps/OppfolgingsplanerOversiktLPS";
@@ -35,7 +35,7 @@ export default function AktiveOppfolgingsplaner({
         }
         return !oppfolgingsplanLPS.personoppgave.behandletTidspunkt;
       }
-      return erIdag(oppfolgingsplanLPS.opprettet);
+      return isToday(oppfolgingsplanLPS.opprettet);
     })
     .sort((a, b) => {
       return new Date(b.opprettet).getTime() - new Date(a.opprettet).getTime();

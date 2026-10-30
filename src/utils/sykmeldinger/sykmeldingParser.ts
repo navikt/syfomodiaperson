@@ -7,7 +7,7 @@ import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { toDate, toDateWithoutNullCheck } from "../datoUtils";
+import { toDate, toDateOrInvalid } from "../datoUtils";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 import { SykmeldingsperiodeDTO } from "@/data/sykmelding/types/SykmeldingsperiodeDTO";
 import { SporsmalDTO } from "@/data/sykmelding/types/SporsmalDTO";
@@ -135,12 +135,12 @@ const mapPerioder = (sykmelding: SykmeldingNewFormatDTO) => {
       return {
         avventende: periode.innspillTilArbeidsgiver,
         behandlingsdager: periode.behandlingsdager,
-        fom: toDateWithoutNullCheck(periode.fom),
+        fom: toDateOrInvalid(periode.fom),
         grad: mapGrad(periode),
         reisetilskudd:
           periode.type === PeriodetypeDTO.REISETILSKUDD ||
           (periode.gradert && periode.gradert.reisetilskudd),
-        tom: toDateWithoutNullCheck(periode.tom),
+        tom: toDateOrInvalid(periode.tom),
       };
     })
   );

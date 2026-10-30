@@ -1,4 +1,4 @@
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 import { BodyShort } from "@navikt/ds-react";
 
 import { SenOppfolgingVurderingResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
@@ -16,7 +16,7 @@ export default function VurdertAv({ vurdering }: Props) {
     <BodyShort size="small">
       {`Vurdert av ${
         veileder?.fulltNavn() ?? veilederIdent
-      } ${toDatePrettyPrint(vurdering.createdAt)}`}
+      } ${formatShortDateOrUndefined(vurdering.createdAt)}`}
     </BodyShort>
   );
 }

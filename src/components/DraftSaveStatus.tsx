@@ -3,7 +3,7 @@ import { SaveFile } from "../../img/ImageComponents";
 import {
   addDays,
   showTimeIncludingSeconds,
-  tilLesbarDatoUtenArstall,
+  formatDateWithoutYear,
 } from "@/utils/datoUtils";
 
 interface Props {
@@ -27,7 +27,7 @@ export function DraftSaveStatus({ isSaveError, savedTime }: Props) {
       {!isSaveError && savedTime && (
         <div className="mb-2 font-ax-bold flex gap-2">
           <img src={SaveFile} alt="saved" />
-          <span>{`${texts.saved} ${tilLesbarDatoUtenArstall(
+          <span>{`${texts.saved} ${formatDateWithoutYear(
             addDays(savedTime, 7),
           )} ${showTimeIncludingSeconds(savedTime)}`}</span>
         </div>

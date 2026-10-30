@@ -1,17 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { toDateWithoutNullCheck } from "@/utils/datoUtils";
+import { toDateOrInvalid } from "@/utils/datoUtils";
 import { render, screen } from "@testing-library/react";
 import { PeriodeListe } from "@/sider/sykmeldinger/sykmeldinger/SykmeldingLinkPanel";
 
 const arbeidsgiver = "Arne Arbeidsgiver";
 const periodeFlereDager: SykmeldingPeriodeDTO = {
-  fom: toDateWithoutNullCheck("2021-06-01"),
-  tom: toDateWithoutNullCheck("2021-06-10"),
+  fom: toDateOrInvalid("2021-06-01"),
+  tom: toDateOrInvalid("2021-06-10"),
 };
 const periodeEnDag: SykmeldingPeriodeDTO = {
-  fom: toDateWithoutNullCheck("2021-06-01"),
-  tom: toDateWithoutNullCheck("2021-06-01"),
+  fom: toDateOrInvalid("2021-06-01"),
+  tom: toDateOrInvalid("2021-06-01"),
 };
 
 describe("SykmeldingPeriodeInfo", () => {

@@ -19,7 +19,7 @@ import {
 import { queryClientWithMockData } from "../testQueryClient";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
-import { addDays, addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { addDays, addWeeks, formatDateWithMonthName } from "@/utils/datoUtils";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { oppfolgingsplanerLPSMock } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
@@ -168,7 +168,7 @@ describe("UtdragFraSykefravaeret", () => {
     expect(planLink.parentElement?.className).toContain("grid-cols-subgrid");
     expect(
       screen.getByText(
-        `Innsendt ${tilDatoMedManedNavn(
+        `Innsendt ${formatDateWithMonthName(
           dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate(),
         )}.`,
       ),
@@ -192,7 +192,7 @@ describe("UtdragFraSykefravaeret", () => {
     expect(screen.queryByRole("link", { name: "Åpne planen" })).to.not.exist;
     expect(
       screen.queryByText(
-        `Innsendt ${tilDatoMedManedNavn(
+        `Innsendt ${formatDateWithMonthName(
           dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate(),
         )}.`,
       ),

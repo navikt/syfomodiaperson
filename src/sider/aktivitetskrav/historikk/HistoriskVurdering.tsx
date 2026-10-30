@@ -6,7 +6,7 @@ import {
   AktivitetskravVurderingDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import { capitalizeWord } from "@/utils/stringUtils";
 import { Accordion } from "@navikt/ds-react";
 import { useState } from "react";
@@ -56,7 +56,7 @@ export function HistoriskVurdering({ vurdering }: Props) {
     vurdering;
   const [isOpen, setIsOpen] = useState(false);
   const { data: veilederinfo } = useVeilederInfoQuery(createdBy);
-  const header = `${headerPrefix(status)} - ${tilDatoMedManedNavn(createdAt)}`;
+  const header = `${headerPrefix(status)} - ${formatDateWithMonthName(createdAt)}`;
   const beskrivelseTitle =
     status === AktivitetskravStatus.AVVENT ? "Beskrivelse" : "Begrunnelse";
   const arsakerText = () =>

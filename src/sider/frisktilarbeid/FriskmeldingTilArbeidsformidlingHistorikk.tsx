@@ -3,7 +3,7 @@ import { isActiveExistingVedtak } from "@/data/frisktilarbeid/frisktilarbeidType
 
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery.ts";
 import { VisBrev } from "@/components/VisBrev.tsx";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils.ts";
+import { formatDateWithMonthName } from "@/utils/datoUtils.ts";
 
 const texts = {
   header: "Historikk",
@@ -42,15 +42,15 @@ export function FriskmeldingTilArbeidsformidlingHistorikk() {
               {isActiveExistingVedtak(vedtak)
                 ? texts.aktivtVedtak
                 : texts.tidligereVedtak}{" "}
-              - {tilDatoMedManedNavn(vedtak.createdAt)}
+              - {formatDateWithMonthName(vedtak.createdAt)}
             </Accordion.Header>
             <Accordion.Content>
               <BodyShort size="small" weight="semibold">
                 {texts.periode}
               </BodyShort>
               <BodyShort size="small" className="mb-4">
-                {tilDatoMedManedNavn(vedtak.fom)} -{" "}
-                {tilDatoMedManedNavn(vedtak.tom)}
+                {formatDateWithMonthName(vedtak.fom)} -{" "}
+                {formatDateWithMonthName(vedtak.tom)}
               </BodyShort>
               <BodyShort size="small" weight="semibold">
                 {texts.begrunnelse}

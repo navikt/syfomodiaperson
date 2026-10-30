@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { Paragraph } from "@/components/Paragraph";
@@ -31,7 +31,7 @@ function HistorikkElement({ tidligereKandidat }: HistorikkElementProps) {
     return null;
   }
 
-  const header = `Sykmeldte svarte ${tilDatoMedManedNavn(svar.createdAt)}`;
+  const header = `Sykmeldte svarte ${formatDateWithMonthName(svar.createdAt)}`;
 
   const handleAccordionClick = () => {
     setIsOpen(!isOpen);

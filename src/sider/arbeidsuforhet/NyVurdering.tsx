@@ -6,7 +6,7 @@ import {
   VurderingResponseDTO,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import {
   Notification,
   useNotification,
@@ -25,12 +25,12 @@ const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
   }
 
   if (lastVurdering.type === VurderingType.FORHANDSVARSEL) {
-    return `Forrige forhåndsvarsel på 8-4 ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
+    return `Forrige forhåndsvarsel på 8-4 ble sendt ut ${formatNumericDate(
       lastVurdering?.createdAt,
     )}`;
   } else {
     const lastVurderingType = typeTexts[lastVurdering.type].toLowerCase();
-    return `Siste vurdering var ${lastVurderingType} og ble gjort ${tilLesbarDatoMedArUtenManedNavn(
+    return `Siste vurdering var ${lastVurderingType} og ble gjort ${formatNumericDate(
       lastVurdering?.createdAt,
     )}`;
   }

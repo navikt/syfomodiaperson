@@ -1,5 +1,5 @@
 import { BodyLong, BodyShort, Box, Heading, HStack } from "@navikt/ds-react";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { ClockIcon } from "@navikt/aksel-icons";
 import { ArbeidsuforhetButtons } from "@/sider/arbeidsuforhet/ArbeidsuforhetButtons";
 import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
@@ -36,7 +36,7 @@ export default function ForhandsvarselBeforeDeadline({
         </Heading>
         <Box className="flex ml-auto mr-2 gap-1">
           <BodyShort weight="semibold">{texts.frist}</BodyShort>
-          <BodyShort>{tilLesbarDatoMedArUtenManedNavn(frist)}</BodyShort>
+          <BodyShort>{formatNumericDate(frist)}</BodyShort>
         </Box>
         <ClockIcon title="klokkeikon" fontSize="2em" />
       </HStack>

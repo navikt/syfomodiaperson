@@ -3,7 +3,7 @@ import {
   unntakArsakTexts,
   UnntakDTO,
 } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 
 import {
   DocumentComponentDto,
@@ -21,7 +21,7 @@ const texts = {
 };
 
 export function unntakLenkeText(unntakCreatedAt: Date) {
-  const unntakDatoTekst = tilDatoMedManedNavn(unntakCreatedAt);
+  const unntakDatoTekst = formatDateWithMonthName(unntakCreatedAt);
   return `${texts.unntakLenke} ${unntakDatoTekst}`;
 }
 

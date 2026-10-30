@@ -10,7 +10,7 @@ import {
   SorteringsKriteriumVerdi,
   sorterSykmeldinger,
 } from "@/utils/sorterSykmeldingerUtils";
-import { manederMellomDatoer } from "@/utils/datoUtils";
+import { getNonNegativeWholeMonthsBetween } from "@/utils/datoUtils";
 
 const texts = {
   tidligereSykmeldinger: "Tidligere sykmeldinger",
@@ -35,11 +35,17 @@ const sorteringsKriterier: SorteringKriterium[] = [
 
 const isAktivSykmelding = (sykmld: SykmeldingOldFormat) =>
   sykmld.status === SykmeldingStatus.NY &&
-  manederMellomDatoer(sykmld.bekreftelse.utstedelsesdato, new Date()) < 3;
+  getNonNegativeWholeMonthsBetween(
+    sykmld.bekreftelse.utstedelsesdato,
+    new Date(),
+  ) < 3;
 
 const isTidligereSykmelding = (sykmld: SykmeldingOldFormat) =>
   sykmld.status !== SykmeldingStatus.NY ||
-  manederMellomDatoer(sykmld.bekreftelse.utstedelsesdato, new Date()) >= 3;
+  getNonNegativeWholeMonthsBetween(
+    sykmld.bekreftelse.utstedelsesdato,
+    new Date(),
+  ) >= 3;
 
 interface Props {
   sykmeldinger: SykmeldingOldFormat[];

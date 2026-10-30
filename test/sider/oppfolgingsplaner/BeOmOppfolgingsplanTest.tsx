@@ -35,7 +35,7 @@ import userEvent from "@testing-library/user-event";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks";
 import { EregOrganisasjonResponseDTO } from "@/data/virksomhet/types/EregOrganisasjonResponseDTO";
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils.ts";
+import { formatNumericDate } from "@/utils/datoUtils.ts";
 
 let queryClient: QueryClient;
 
@@ -163,7 +163,7 @@ describe("BeOmOppfolgingsplan", () => {
 
     expect(
       screen.getByText(
-        `${VEILEDER_DEFAULT.ident} ba om oppfølgingsplan fra ${VIRKSOMHET_PONTYPANDY.virksomhetsnavn} den ${tilLesbarDatoMedArUtenManedNavn(existingForesporsel.createdAt)}`,
+        `${VEILEDER_DEFAULT.ident} ba om oppfølgingsplan fra ${VIRKSOMHET_PONTYPANDY.virksomhetsnavn} den ${formatNumericDate(existingForesporsel.createdAt)}`,
       ),
     ).to.exist;
     expect(screen.getByText("Be om oppfølgingsplan")).to.exist;

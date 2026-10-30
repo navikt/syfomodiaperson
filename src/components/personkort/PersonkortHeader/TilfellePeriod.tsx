@@ -2,7 +2,7 @@ import {
   useEndOfLatestOppfolgingstilfelle,
   useStartOfLatestOppfolgingstilfelle,
 } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 
 import { BodyShort } from "@navikt/ds-react";
 
@@ -13,9 +13,9 @@ const texts = {
 export function TilfellePeriod() {
   const startDate = useStartOfLatestOppfolgingstilfelle();
   const endDate = useEndOfLatestOppfolgingstilfelle();
-  const periode = `${tilLesbarDatoMedArUtenManedNavn(
+  const periode = `${formatNumericDate(
     startDate,
-  )} - ${tilLesbarDatoMedArUtenManedNavn(endDate)}`;
+  )} - ${formatNumericDate(endDate)}`;
   return (
     !!startDate &&
     !!endDate && (

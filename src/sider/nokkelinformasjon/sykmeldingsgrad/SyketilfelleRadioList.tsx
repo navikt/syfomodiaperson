@@ -1,6 +1,6 @@
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
+import { formatNumericDateRange } from "@/utils/datoUtils";
 import { BodyShort, Radio, RadioGroup, Tooltip } from "@navikt/ds-react";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { MedisinskrinImage } from "../../../../img/ImageComponents";
@@ -21,10 +21,7 @@ export default function SyketilfelleRadioList({ setSelectedTilfelle }: Props) {
   const tenLatestTilfeller = tilfellerDescendingStart?.slice(0, 10);
 
   function tilfelleText(tilfelle: OppfolgingstilfelleDTO) {
-    return `${tilLesbarPeriodeMedArUtenManednavn(
-      tilfelle.start,
-      tilfelle.end,
-    )}`;
+    return `${formatNumericDateRange(tilfelle.start, tilfelle.end)}`;
   }
 
   return (

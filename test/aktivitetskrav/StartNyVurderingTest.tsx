@@ -20,7 +20,7 @@ import { clickButton, getButton } from "../testUtils";
 import {
   addWeeks,
   daysFromToday,
-  tilLesbarPeriodeMedArUtenManednavn,
+  formatNumericDateRange,
 } from "@/utils/datoUtils";
 import {
   AktivitetskravDTO,
@@ -112,10 +112,7 @@ describe("StartNyVurdering", () => {
   it("renders header, tilfelle-text and button to start ny vurdering", () => {
     renderStartNyVurdering();
 
-    const periodeText = tilLesbarPeriodeMedArUtenManednavn(
-      tilfelleStart,
-      tilfelleEnd,
-    );
+    const periodeText = formatNumericDateRange(tilfelleStart, tilfelleEnd);
     expect(
       screen.getByRole("heading", {
         name: "Start ny aktivitetskrav-vurdering",
@@ -205,10 +202,7 @@ describe("StartNyVurdering", () => {
     it("renders active tilfelle-text", () => {
       renderStartNyVurdering(aktivitetskravUnntakTidligereTilfelle);
 
-      const periodeText = tilLesbarPeriodeMedArUtenManednavn(
-        tilfelleStart,
-        tilfelleEnd,
-      );
+      const periodeText = formatNumericDateRange(tilfelleStart, tilfelleEnd);
       expect(screen.getByText(`Gjelder tilfelle ${periodeText}`)).to.exist;
     });
 

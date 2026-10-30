@@ -11,7 +11,7 @@ import { AvslagForm } from "@/sider/arbeidsuforhet/avslag/AvslagForm";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
 import { getAvslagVurderingDocument } from "../documents";
-import { addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
+import { addWeeks, formatShortDateOrUndefined } from "@/utils/datoUtils";
 import { renderArbeidsuforhetSide } from "../arbeidsuforhetTestUtils";
 import { createForhandsvarsel } from "../arbeidsuforhetTestData";
 import dayjs from "dayjs";
@@ -104,7 +104,10 @@ describe("AvslagForm", () => {
       const dateInput = getTextInput(dateLabel);
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      await changeTextInput(dateInput, toDatePrettyPrint(fristDate) as string);
+      await changeTextInput(
+        dateInput,
+        formatShortDateOrUndefined(fristDate) as string,
+      );
       await changeTextInput(begrunnelseInput, begrunnelse);
       await clickButton("Send");
 
@@ -137,7 +140,10 @@ describe("AvslagForm", () => {
       const dateInput = getTextInput(dateLabel);
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      await changeTextInput(dateInput, toDatePrettyPrint(fristDate) as string);
+      await changeTextInput(
+        dateInput,
+        formatShortDateOrUndefined(fristDate) as string,
+      );
       await changeTextInput(begrunnelseInput, begrunnelse);
 
       await clickButton("Forhåndsvisning");

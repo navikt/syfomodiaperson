@@ -3,9 +3,9 @@ import {
   AktivitetskravVurderingDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import {
-  isExpiredForhandsvarsel,
-  tilDatoMedManedNavn,
-  tilLesbarDatoMedArUtenManedNavn,
+  isExpired,
+  formatDateWithMonthName,
+  formatNumericDate,
 } from "@/utils/datoUtils";
 import { ReactElement } from "react";
 import { avventVurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
@@ -27,11 +27,11 @@ export function AktivitetskravVurderingAlert({
   vurdering,
 }: Props): ReactElement | null {
   const { status, beskrivelse, arsaker, frist, createdAt } = vurdering;
-  const vurderingDato = tilLesbarDatoMedArUtenManedNavn(createdAt);
+  const vurderingDato = formatNumericDate(createdAt);
 
   switch (status) {
     case AktivitetskravStatus.FORHANDSVARSEL: {
-      return isExpiredForhandsvarsel(vurdering.varsel?.svarfrist) ? (
+      return isExpired(vurdering.varsel?.svarfrist) ? (
         <Alert variant="warning" className="mb-4">
           <Label size="small">{texts.forhandsvarselWarningLabel}</Label>
           <BodyShort size="small">{`Det ble sendt ut et forhåndsvarsel ${vurderingDato}.`}</BodyShort>
@@ -48,7 +48,9 @@ export function AktivitetskravVurderingAlert({
       return (
         <Alert variant="warning" className="mb-4" contentMaxWidth={false}>
           <Label size="small">
-            {frist ? `Avventer til ${tilDatoMedManedNavn(frist)}` : "Avventer"}
+            {frist
+              ? `Avventer til ${formatDateWithMonthName(frist)}`
+              : "Avventer"}
           </Label>
           <BodyLong size="small">{beskrivelse}</BodyLong>
           <ul>

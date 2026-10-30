@@ -22,7 +22,7 @@ import userEvent from "@testing-library/user-event";
 import Oppfolgingsoppgave from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { changeTextInput } from "../testUtils";
 import dayjs from "dayjs";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { stubOppfolgingsoppgaveApi } from "../stubs/stubIshuskelapp";
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 
@@ -93,13 +93,11 @@ describe("Oppfolgingsoppgave", () => {
       renderOppfolgingsoppgave();
 
       expect(
-        await screen.findByText(
-          `Opprettet: ${tilLesbarDatoMedArUtenManedNavn(new Date())}`,
-        ),
+        await screen.findByText(`Opprettet: ${formatNumericDate(new Date())}`),
       ).to.exist;
       expect(
         await screen.findByText(
-          `Sist oppdatert: ${tilLesbarDatoMedArUtenManedNavn(new Date())}`,
+          `Sist oppdatert: ${formatNumericDate(new Date())}`,
         ),
       ).to.exist;
       expect(
