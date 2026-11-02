@@ -57,7 +57,7 @@ import {
   historikkOppfolgingsoppgaveFjernetMock,
 } from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { addDays, addWeeks, tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { addDays, addWeeks, formatDateWithYear } from "@/utils/datoUtils";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { motebehovMock } from "@/mocks/syfomotebehov/motebehovMock";
 import { oppfolgingsplanForesporselQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
@@ -788,7 +788,7 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+            `${expandableToggleText} ${formatDateWithYear(
               addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 1),
             )} Z990000 endret oppfølgingsoppgave \\(Vurder annen ytelse\\)`,
           ),
@@ -797,7 +797,7 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+            `${expandableToggleText} ${formatDateWithYear(
               DATO_INNENFOR_OPPFOLGINGSTILFELLE,
             )} Z990000 opprettet oppfølgingsoppgave \\(Vurder annen ytelse\\)`,
           ),
@@ -819,7 +819,7 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            `${tilLesbarDatoMedArstall(
+            `${formatDateWithYear(
               addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -1),
             )} Z990000 fjernet oppfølgingsoppgaven \\(Ta kontakt med arbeidsgiver\\)`,
           ),
@@ -828,7 +828,7 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+            `${expandableToggleText} ${formatDateWithYear(
               addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -2),
             )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`,
           ),
@@ -837,7 +837,7 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+            `${expandableToggleText} ${formatDateWithYear(
               addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -3),
             )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`,
           ),
@@ -846,7 +846,7 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+            `${expandableToggleText} ${formatDateWithYear(
               addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -4),
             )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`,
           ),
@@ -855,7 +855,7 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+            `${expandableToggleText} ${formatDateWithYear(
               addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -5),
             )} Z990000 opprettet oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`,
           ),
@@ -970,7 +970,7 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            `${tilLesbarDatoMedArstall(
+            `${formatDateWithYear(
               addDays(currentOppfolgingstilfelle.start, 5),
             )} Z990000 tildelte sykmeldt tilbake til geografisk kontortilhørighet`,
           ),
@@ -979,7 +979,7 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            `${tilLesbarDatoMedArstall(
+            `${formatDateWithYear(
               addDays(currentOppfolgingstilfelle.start, 3),
             )} Z990000 tildelte sykmeldt til NAV Grünerløkka \\(0315\\)`,
           ),
@@ -988,7 +988,7 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            `${tilLesbarDatoMedArstall(
+            `${formatDateWithYear(
               addDays(currentOppfolgingstilfelle.start, 10),
             )} Systemet tildelte sykmeldt tilbake til geografisk kontortilhørighet`,
           ),

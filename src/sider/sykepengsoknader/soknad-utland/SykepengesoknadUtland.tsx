@@ -6,7 +6,7 @@ import {
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { BodyShort, Box, Heading, Link } from "@navikt/ds-react";
 import TilbakeTilSoknader from "../soknad-felles/TilbakeTilSoknader";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import { utenlandsoppholdPath } from "@/AppRouter.tsx";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks.ts";
@@ -59,7 +59,7 @@ export default function SykepengesoknadUtland({ soknad }: Props): ReactElement {
             {texts.dato}
           </Heading>
           <BodyShort size="small">
-            {tilLesbarDatoMedArstall(soknad.sendtTilNAVDato)}
+            {formatDateWithYear(soknad.sendtTilNAVDato)}
           </BodyShort>
         </div>
       </div>

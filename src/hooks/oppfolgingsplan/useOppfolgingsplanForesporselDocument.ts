@@ -4,7 +4,7 @@ import {
   createHeaderH1,
   createParagraph,
 } from "@/utils/documentComponentUtils";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 
 export type ForesporselDocumentValues = {
   narmesteLeder: string;
@@ -45,7 +45,7 @@ export function useOppfolgingsplanForesporselDocument() {
 
 const oppfolgingsplanForesporselTexts = {
   title: "Nav ber om oppfølgingsplan fra arbeidsgiver",
-  dato: `Dato sendt: ${tilLesbarDatoMedArstall(new Date())}`,
+  dato: `Dato sendt: ${formatDateWithYear(new Date())}`,
   mottaker: (narmesteLeder: string, virksomhetNavn: string) =>
     `Mottaker: ${narmesteLeder}, ${virksomhetNavn}`,
   body: {

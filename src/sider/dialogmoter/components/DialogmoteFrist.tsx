@@ -1,4 +1,4 @@
-import { addWeeks, tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { addWeeks, formatNumericDate } from "@/utils/datoUtils";
 
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
@@ -18,7 +18,7 @@ export default function DialogmoteFrist() {
     isKandidat && hasActiveOppfolgingstilfelle && latestOppfolgingstilfelle;
 
   return showFrist ? (
-    <BodyShort>{`Frist for dialogmøte 2: ${tilLesbarDatoMedArUtenManedNavn(
+    <BodyShort>{`Frist for dialogmøte 2: ${formatNumericDate(
       getFrist(latestOppfolgingstilfelle.start),
     )}`}</BodyShort>
   ) : null;

@@ -5,7 +5,7 @@ import {
 import { Accordion } from "@navikt/ds-react";
 import DocumentComponentVisning from "@/components/document/DocumentComponentVisning";
 
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 
 const texts = {
   avlystMote: "Avlysning av møte",
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function AvlystMoteHistorikkEvent({ mote }: Props) {
-  const moteDatoTekst = tilDatoMedManedNavn(mote.tid);
+  const moteDatoTekst = formatDateWithMonthName(mote.tid);
   const document =
     mote.arbeidstaker.varselList.find(
       (varsel) => varsel.varselType === MotedeltakerVarselType.AVLYST,

@@ -14,7 +14,7 @@ import {
   UnntakVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { beforeEach, describe, expect, it } from "vitest";
-import { daysFromToday, tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { daysFromToday, formatDateWithMonthName } from "@/utils/datoUtils";
 import { getButton } from "../testUtils";
 import userEvent from "@testing-library/user-event";
 import {
@@ -138,20 +138,20 @@ describe("AktivitetskravHistorikk", () => {
 
     const vurderingButtons = getAccordionButtons();
     expect(vurderingButtons[0].textContent).to.contain(
-      `Forhåndsvarsel - ${tilDatoMedManedNavn(today)}`,
+      `Forhåndsvarsel - ${formatDateWithMonthName(today)}`,
     );
     expect(vurderingButtons[1].textContent).to.contain(
-      `Oppfylt - ${tilDatoMedManedNavn(today)}`,
+      `Oppfylt - ${formatDateWithMonthName(today)}`,
     );
     expect(vurderingButtons[2].textContent).to.contain(
-      `Unntak - ${tilDatoMedManedNavn(dayInThePast)}`,
+      `Unntak - ${formatDateWithMonthName(dayInThePast)}`,
     );
   });
   it("klikk på overskrift viser årsak med tittel, beskrivelse med tittel og veileder-navn", async () => {
     renderAktivitetskravHistorikk([oppfyltVurdering]);
 
     const vurderingButton = getButton(
-      `Oppfylt - ${tilDatoMedManedNavn(today)}`,
+      `Oppfylt - ${formatDateWithMonthName(today)}`,
     );
     await userEvent.click(vurderingButton);
 
@@ -166,7 +166,7 @@ describe("AktivitetskravHistorikk", () => {
     renderAktivitetskravHistorikk([oppfyltVurderingWithoutBeskrivelse]);
 
     const vurderingButton = getButton(
-      `Oppfylt - ${tilDatoMedManedNavn(today)}`,
+      `Oppfylt - ${formatDateWithMonthName(today)}`,
     );
     await userEvent.click(vurderingButton);
 
@@ -181,7 +181,7 @@ describe("AktivitetskravHistorikk", () => {
     renderAktivitetskravHistorikk([ikkeOppfyltVurdering]);
 
     const vurderingButton = getButton(
-      `Ikke oppfylt - ${tilDatoMedManedNavn(today)}`,
+      `Ikke oppfylt - ${formatDateWithMonthName(today)}`,
     );
     await userEvent.click(vurderingButton);
 
@@ -195,13 +195,15 @@ describe("AktivitetskravHistorikk", () => {
   it("viser riktig overskrift for INNSTILLING_OM_STANS-vurdering", () => {
     renderAktivitetskravHistorikk([stansVurdering]);
 
-    expect(getButton(`Innstilling om stans - ${tilDatoMedManedNavn(today)}`)).to
-      .exist;
+    expect(
+      getButton(`Innstilling om stans - ${formatDateWithMonthName(today)}`),
+    ).to.exist;
   });
   it("viser riktig overskrift for IKKE_OPPFYLT-vurdering", () => {
     renderAktivitetskravHistorikk([ikkeOppfyltVurdering]);
 
-    expect(getButton(`Ikke oppfylt - ${tilDatoMedManedNavn(today)}`)).to.exist;
+    expect(getButton(`Ikke oppfylt - ${formatDateWithMonthName(today)}`)).to
+      .exist;
   });
   it("viser årsaker og beskrivelse for AVVENT-vurdering", async () => {
     const avventVurdering = createAktivitetskravVurdering(
@@ -215,7 +217,7 @@ describe("AktivitetskravHistorikk", () => {
     renderAktivitetskravHistorikk([avventVurdering]);
 
     const vurderingButton = getButton(
-      `Avventer - ${tilDatoMedManedNavn(today)}`,
+      `Avventer - ${formatDateWithMonthName(today)}`,
     );
     await userEvent.click(vurderingButton);
 
@@ -234,7 +236,7 @@ describe("AktivitetskravHistorikk", () => {
     renderAktivitetskravHistorikk([forhandsvarselVurdering]);
 
     const vurderingAccordion = getButton(
-      `Forhåndsvarsel - ${tilDatoMedManedNavn(today)}`,
+      `Forhåndsvarsel - ${formatDateWithMonthName(today)}`,
     );
     await userEvent.click(vurderingAccordion);
     const button = screen.getByRole("button", { name: "Se hele brevet" });

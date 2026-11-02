@@ -8,7 +8,7 @@ import {
   ExclamationmarkTriangleIcon,
   PaperclipIcon,
 } from "@navikt/aksel-icons";
-import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import { formatDateTime } from "@/utils/datoUtils";
 import { VisMelding } from "@/sider/behandlerdialog/meldinger/samtale/VisMelding";
 import PdfVedleggLink from "@/sider/behandlerdialog/meldinger/PdfVedleggLink";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
@@ -89,7 +89,7 @@ export default function MeldingInnholdPanel({ melding, avvist }: Props) {
       )}
       <div className="flex flex-row justify-start items-center gap-[1em]">
         <Detail className="self-center">
-          {tilDatoMedManedNavnOgKlokkeslett(melding.tidspunkt)}
+          {formatDateTime(melding.tidspunkt)}
         </Detail>
         <Detail className="self-center">
           {meldingTypeTexts[melding.type]}

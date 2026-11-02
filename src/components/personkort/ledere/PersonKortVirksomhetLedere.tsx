@@ -1,4 +1,4 @@
-import { restdatoTildato } from "@/utils/datoUtils";
+import { formatShortDate } from "@/utils/datoUtils";
 import { PersonKortVirksomhetHeader } from "./PersonKortVirksomhetHeader";
 import EpostButton from "../EpostButton";
 import {
@@ -143,7 +143,7 @@ export function PersonKortVirksomhetLedere({
                   <Table.DataCell align={"left"} textSize={"small"}>
                     <PersonKortVirksomhetLederColumn
                       colSize={2}
-                      text={restdatoTildato(leder.aktivFom)}
+                      text={formatShortDate(leder.aktivFom)}
                       isActive={isActive}
                     />
                   </Table.DataCell>

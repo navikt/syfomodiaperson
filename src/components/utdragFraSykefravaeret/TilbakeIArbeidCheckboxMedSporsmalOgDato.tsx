@@ -1,4 +1,4 @@
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import { BodyShort, Checkbox } from "@navikt/ds-react";
 
 interface Props {
@@ -20,7 +20,7 @@ export function TilbakeIArbeidCheckboxMedSporsmalOgDato({
       <BodyShort size="small" weight="semibold">
         {sporsmal}
       </BodyShort>
-      <BodyShort size="small">{tilLesbarDatoMedArstall(returDato)}</BodyShort>
+      <BodyShort size="small">{formatDateWithYear(returDato)}</BodyShort>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
+import { formatDateWithWeekdayAndMonthName } from "@/utils/datoUtils";
 
 import { BodyShort, Checkbox } from "@navikt/ds-react";
 
@@ -28,7 +28,7 @@ export function Yrkesskade({ dato }: Props) {
             {tekster.skadedato}
           </BodyShort>
           <BodyShort size="small">
-            {tilDatoMedUkedagOgManedNavn(dato)}
+            {formatDateWithWeekdayAndMonthName(dato)}
           </BodyShort>
         </>
       )}

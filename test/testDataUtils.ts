@@ -13,7 +13,10 @@ import {
   VurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { generateUUID } from "@/utils/utils";
-import { dagerMellomDatoer, daysFromToday } from "@/utils/datoUtils";
+import {
+  getAbsoluteCalendarDaysBetween,
+  daysFromToday,
+} from "@/utils/datoUtils";
 
 export const generateOppfolgingstilfelle = (
   start: Date,
@@ -24,7 +27,7 @@ export const generateOppfolgingstilfelle = (
     arbeidstakerAtTilfelleEnd: true,
     end: end,
     start: start,
-    antallSykedager: dagerMellomDatoer(start, end) + 1,
+    antallSykedager: getAbsoluteCalendarDaysBetween(start, end) + 1,
     varighetUker: 1,
   };
 };

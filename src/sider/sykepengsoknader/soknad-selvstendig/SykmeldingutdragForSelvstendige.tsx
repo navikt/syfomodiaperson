@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import {
   SykmeldingopplysningForsikring,
   SykmeldingopplysningFravaersperioder,
@@ -74,7 +74,7 @@ export default function SykmeldingUtdragForSelvstendige({
         <SykmeldingPerioder perioder={sykmelding.mulighetForArbeid.perioder} />
         <SykmeldingNokkelOpplysning tittel={texts.datoSykmelding}>
           <BodyShort size="small">
-            {tilLesbarDatoMedArstall(sykmelding.bekreftelse.utstedelsesdato)}
+            {formatDateWithYear(sykmelding.bekreftelse.utstedelsesdato)}
           </BodyShort>
         </SykmeldingNokkelOpplysning>
         <SykmeldingNokkelOpplysning tittel={texts.passer}>

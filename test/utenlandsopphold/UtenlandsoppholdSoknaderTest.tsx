@@ -11,10 +11,7 @@ import {
   soknadMedVedtakMock,
   soknadUtenVedtakMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
-import {
-  tilLesbarDatoMedArUtenManedNavn,
-  tilLesbarPeriodeMedArUtenManednavn,
-} from "@/utils/datoUtils";
+import { formatNumericDate, formatNumericDateRange } from "@/utils/datoUtils";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import { stubSoknaderQuery } from "../stubs/stubIsutenlandsopphold";
@@ -60,16 +57,16 @@ describe("UtenlandsoppholdSoknader", () => {
     const rowHeaders = await screen.findAllByRole("rowheader");
 
     expect(rowHeaders[0].textContent).to.equal(
-      tilLesbarDatoMedArUtenManedNavn(soknadUtenVedtakMock.innsendtTidspunkt),
+      formatNumericDate(soknadUtenVedtakMock.innsendtTidspunkt),
     );
     expect(rowHeaders[1].textContent).to.equal(
-      tilLesbarDatoMedArUtenManedNavn(soknadIkkeAktuellMock.innsendtTidspunkt),
+      formatNumericDate(soknadIkkeAktuellMock.innsendtTidspunkt),
     );
     expect(rowHeaders[2].textContent).to.equal(
-      tilLesbarDatoMedArUtenManedNavn(soknadMedVedtakMock.innsendtTidspunkt),
+      formatNumericDate(soknadMedVedtakMock.innsendtTidspunkt),
     );
     expect(rowHeaders[3].textContent).to.equal(
-      tilLesbarDatoMedArUtenManedNavn(gammelSoknadMock.innsendtTidspunkt),
+      formatNumericDate(gammelSoknadMock.innsendtTidspunkt),
     );
   });
 
@@ -80,7 +77,7 @@ describe("UtenlandsoppholdSoknader", () => {
 
     expect(
       await screen.findByText(
-        tilLesbarPeriodeMedArUtenManednavn(
+        formatNumericDateRange(
           soknadUtenVedtakMock.soktePerioder[0].fom,
           soknadUtenVedtakMock.soktePerioder[0].tom,
         ),
@@ -88,7 +85,7 @@ describe("UtenlandsoppholdSoknader", () => {
     ).to.exist;
     expect(
       screen.getByText(
-        tilLesbarPeriodeMedArUtenManednavn(
+        formatNumericDateRange(
           soknadUtenVedtakMock.soktePerioder[1].fom,
           soknadUtenVedtakMock.soktePerioder[1].tom,
         ),
@@ -132,7 +129,7 @@ describe("UtenlandsoppholdSoknader", () => {
 
     expect(
       await screen.findByText(
-        `Behandlet ${tilLesbarDatoMedArUtenManedNavn(
+        `Behandlet ${formatNumericDate(
           new Date(soknadMedVedtakMock.behandling!.behandletTidspunkt),
         )} av ${soknadMedVedtakMock.behandling!.behandletAv}`,
       ),
@@ -178,7 +175,7 @@ describe("UtenlandsoppholdSoknader", () => {
 
     expect(
       await screen.findByText(
-        `Behandlet ${tilLesbarDatoMedArUtenManedNavn(
+        `Behandlet ${formatNumericDate(
           new Date(soknadIkkeAktuellMock.behandling!.behandletTidspunkt),
         )} av ${soknadIkkeAktuellMock.behandling!.behandletAv}`,
       ),

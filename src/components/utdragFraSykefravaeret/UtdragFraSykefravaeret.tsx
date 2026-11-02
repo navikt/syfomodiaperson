@@ -3,7 +3,7 @@ import { BodyShort, Box, Heading, Link } from "@navikt/ds-react";
 import Sykmeldinger from "./Sykmeldinger";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { formatDateRangeWithYear } from "@/utils/datoUtils";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil";
 import { Events, trackEvent } from "@/utils/umami";
 
@@ -13,7 +13,7 @@ const texts = {
 };
 
 function tilfelleText(start: Date, end: Date, varighet: number) {
-  return `Gjelder sykefraværet: ${tilLesbarPeriodeMedArstall(
+  return `Gjelder sykefraværet: ${formatDateRangeWithYear(
     start,
     end,
   )} (${varighet} uker).`;

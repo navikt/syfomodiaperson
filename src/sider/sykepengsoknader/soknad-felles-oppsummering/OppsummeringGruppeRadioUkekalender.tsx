@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
 import OppsummeringSporsmalstekst from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalstekst";
 import { Checkbox } from "@navikt/ds-react";
@@ -12,7 +12,7 @@ export function OppsummeringGruppeRadioUkekalender({
 }: SporsmalDTO): ReactElement {
   const oppsummertSvar =
     svar[0] && svar[0].verdi !== "Ikke til behandling"
-      ? toDatePrettyPrint(svar[0].verdi)
+      ? formatShortDateOrUndefined(svar[0].verdi)
       : "Ikke til behandling";
   return (
     <OppsummeringSporsmalscontainer>

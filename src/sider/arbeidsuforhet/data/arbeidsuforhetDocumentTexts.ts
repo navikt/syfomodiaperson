@@ -1,4 +1,4 @@
-import { tilDatoMedManedNavn } from "../../../utils/datoUtils";
+import { formatDateWithMonthName } from "../../../utils/datoUtils";
 
 type ForhandsvarselArbeidsuforhetTextsOptions = {
   frist: Date;
@@ -9,7 +9,7 @@ export const getForhandsvarselArbeidsuforhetTexts = ({
 }: ForhandsvarselArbeidsuforhetTextsOptions) => ({
   varselInfo: {
     header: "Nav vurderer å avslå sykepengene dine",
-    introWithFristDate: `Nav vurderer å avslå sykepengene dine fra og med ${tilDatoMedManedNavn(
+    introWithFristDate: `Nav vurderer å avslå sykepengene dine fra og med ${formatDateWithMonthName(
       frist,
     )}.`,
   },
@@ -19,11 +19,11 @@ export const getForhandsvarselArbeidsuforhetTexts = ({
   },
   duKanUttaleDeg: {
     header: "Du kan uttale deg",
-    tilbakemeldingWithFristDate: `Vi sender deg dette brevet for at du skal ha mulighet til å uttale deg før vi avgjør saken din. Du må sende inn opplysninger eller kontakte oss innen ${tilDatoMedManedNavn(
+    tilbakemeldingWithFristDate: `Vi sender deg dette brevet for at du skal ha mulighet til å uttale deg før vi avgjør saken din. Du må sende inn opplysninger eller kontakte oss innen ${formatDateWithMonthName(
       frist,
     )}.`,
     etterFrist: "Etter denne datoen vil Nav vurdere å avslå sykepengene dine.",
-    friskmeldt: `Dersom du blir friskmeldt før ${tilDatoMedManedNavn(
+    friskmeldt: `Dersom du blir friskmeldt før ${formatDateWithMonthName(
       frist,
     )} kan du se bort fra dette brevet.`,
     kontaktOss:
@@ -44,7 +44,7 @@ export const arbeidsuforhetTexts = {
   tilSykmeldt: {
     header: "Du har rett til videre utbetaling av sykepenger",
     previousForhandsvarsel: (forhandsvarselSendtDato: Date) =>
-      `I forhåndsvarsel av ${tilDatoMedManedNavn(
+      `I forhåndsvarsel av ${formatDateWithMonthName(
         forhandsvarselSendtDato,
       )} ble du informert om at Nav vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
     forAFaSykepenger: `For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke klarer å være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt.`,

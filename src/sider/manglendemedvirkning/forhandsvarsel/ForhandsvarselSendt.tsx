@@ -2,16 +2,14 @@ import { VurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvi
 
 import ForhandsvarselBeforeDeadline from "@/sider/manglendemedvirkning/forhandsvarsel/ForhandsvarselBeforeDeadline";
 import ForhandsvarselAfterDeadline from "@/sider/manglendemedvirkning/forhandsvarsel/ForhandsvarselAfterDeadline";
-import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
+import { isExpired } from "@/utils/datoUtils";
 
 interface Props {
   forhandsvarsel: VurderingResponseDTO;
 }
 
 export default function ForhandsvarselSendt({ forhandsvarsel }: Props) {
-  const isForhandsvarselExpired = isExpiredForhandsvarsel(
-    forhandsvarsel.varsel?.svarfrist,
-  );
+  const isForhandsvarselExpired = isExpired(forhandsvarsel.varsel?.svarfrist);
 
   return isForhandsvarselExpired ? (
     <ForhandsvarselAfterDeadline forhandsvarsel={forhandsvarsel} />

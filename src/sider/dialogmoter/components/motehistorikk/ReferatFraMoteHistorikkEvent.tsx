@@ -1,5 +1,5 @@
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import DocumentComponentVisning from "@/components/document/DocumentComponentVisning";
 import { Accordion } from "@navikt/ds-react";
 import { ReferatDTO } from "@/sider/dialogmoter/types/dialogmoteReferatTypes";
@@ -19,9 +19,9 @@ export default function ReferatFraMoteHistorikkEvent({
   referat,
   isEndretReferat,
 }: Props) {
-  const moteDatoTekst = tilDatoMedManedNavn(mote.tid);
+  const moteDatoTekst = formatDateWithMonthName(mote.tid);
   const suffix = isEndretReferat
-    ? ` - Endret ${tilDatoMedManedNavn(referat.updatedAt)}`
+    ? ` - Endret ${formatDateWithMonthName(referat.updatedAt)}`
     : "";
 
   return (

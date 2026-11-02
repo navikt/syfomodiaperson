@@ -5,7 +5,7 @@ import {
 import { getSvarTekst } from "@/utils/dialogmoteUtils";
 import { SvarIcon } from "@/sider/dialogmoter/components/svar/SvarIcon";
 
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { SvarDetaljer } from "@/sider/dialogmoter/components/svar/SvarDetaljer";
 import { EkspanderbartSvarPanel } from "@/sider/dialogmoter/components/svar/EkspanderbartSvarPanel";
 
@@ -17,10 +17,7 @@ const texts = {
 
 const begrunnelseHeaderTekst = (
   svar: DialogmotedeltakerBehandlerVarselSvarDTO,
-) =>
-  `${texts.begrunnelseMottattHeader} ${tilLesbarDatoMedArUtenManedNavn(
-    svar.createdAt,
-  )}`;
+) => `${texts.begrunnelseMottattHeader} ${formatNumericDate(svar.createdAt)}`;
 
 interface Props {
   varsel: DialogmotedeltakerBehandlerVarselDTO;

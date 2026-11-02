@@ -17,7 +17,11 @@ import {
   svartNeiMotebehovArbeidsgiverUbehandletMock,
 } from "@/mocks/syfomotebehov/motebehovMock";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { addDays, addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
+import {
+  addDays,
+  addWeeks,
+  formatShortDateOrUndefined,
+} from "@/utils/datoUtils";
 import { UtropstegnImage } from "../../../img/ImageComponents";
 import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
 import BehandleMotebehovKnapp from "@/components/motebehov/BehandleMotebehovKnapp";
@@ -118,7 +122,7 @@ describe("DialogmoteOnskePanel", () => {
     ).to.exist;
     expect(
       screen.queryByText(
-        `Møtebehovet ble behandlet av Z990000 den ${toDatePrettyPrint(
+        `Møtebehovet ble behandlet av Z990000 den ${formatShortDateOrUndefined(
           datoUtenforOppfolgingstilfelle,
         )}.`,
       ),
@@ -144,7 +148,7 @@ describe("DialogmoteOnskePanel", () => {
     ).to.exist;
     expect(
       screen.getByText(
-        `Samuel Sam Jones, har svart JA - ${toDatePrettyPrint(
+        `Samuel Sam Jones, har svart JA - ${formatShortDateOrUndefined(
           datoUtenforOppfolgingstilfelle,
         )}`,
       ),
@@ -169,21 +173,21 @@ describe("DialogmoteOnskePanel", () => {
 
     expect(
       screen.getByText(
-        `Samuel Sam Jones, har svart NEI - ${toDatePrettyPrint(
+        `Samuel Sam Jones, har svart NEI - ${formatShortDateOrUndefined(
           datoInnenforOppfolgingstilfelle,
         )}`,
       ),
     ).to.exist;
     expect(
       screen.getByText(
-        `${arbeidsgiverMedVirksomhet}, har svart NEI - ${toDatePrettyPrint(
+        `${arbeidsgiverMedVirksomhet}, har svart NEI - ${formatShortDateOrUndefined(
           datoInnenforOppfolgingstilfelle,
         )}`,
       ),
     ).to.exist;
     expect(
       screen.getByText(
-        `Møtebehovet ble behandlet av Z990000 den ${toDatePrettyPrint(
+        `Møtebehovet ble behandlet av Z990000 den ${formatShortDateOrUndefined(
           behandlingsdatoInnenforOppfolgingstilfelle,
         )}.`,
       ),
@@ -202,21 +206,21 @@ describe("DialogmoteOnskePanel", () => {
 
     expect(
       screen.getByText(
-        `Samuel Sam Jones, har svart NEI - ${toDatePrettyPrint(
+        `Samuel Sam Jones, har svart NEI - ${formatShortDateOrUndefined(
           datoInnenforOppfolgingstilfelle,
         )}`,
       ),
     ).to.exist;
     expect(
       screen.getByText(
-        `${arbeidsgiverMedVirksomhet}, har svart NEI - ${toDatePrettyPrint(
+        `${arbeidsgiverMedVirksomhet}, har svart NEI - ${formatShortDateOrUndefined(
           datoInnenforOppfolgingstilfelle,
         )}`,
       ),
     ).to.exist;
     expect(
       screen.queryByText(
-        `Møtebehovet ble behandlet av Z990000 den ${toDatePrettyPrint(
+        `Møtebehovet ble behandlet av Z990000 den ${formatShortDateOrUndefined(
           datoUtenforOppfolgingstilfelle,
         )}.`,
       ),

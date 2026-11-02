@@ -15,8 +15,8 @@ import { getButton } from "../testUtils";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   daysFromToday,
-  tilDatoMedManedNavnOgKlokkeslett,
-  tilLesbarDatoMedArstall,
+  formatDateTime,
+  formatDateWithYear,
 } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -120,10 +120,10 @@ describe("DialogmoteFerdigstilteReferatPanel", () => {
     const referater = screen.getAllByRole("listitem");
     expect(referater).to.have.length(2);
     expect(referater[0].textContent).to.equal(
-      `Endret referat, sendt ${tilLesbarDatoMedArstall(today)}`,
+      `Endret referat, sendt ${formatDateWithYear(today)}`,
     );
     expect(referater[1].textContent).to.equal(
-      `Referat, sendt ${tilLesbarDatoMedArstall(yesterday)}`,
+      `Referat, sendt ${formatDateWithYear(yesterday)}`,
     );
   });
   it("viser frist for å endre referat", () => {
@@ -136,11 +136,7 @@ describe("DialogmoteFerdigstilteReferatPanel", () => {
     renderDialogmoteFerdigstilteReferatPanel([ferdigstiltDialogmote]);
 
     const expectedFrist = dayjs(yesterday).add(30, "days");
-    expect(
-      screen.getByText(
-        `${fristText} ${tilDatoMedManedNavnOgKlokkeslett(expectedFrist)}`,
-      ),
-    );
+    expect(screen.getByText(`${fristText} ${formatDateTime(expectedFrist)}`));
   });
   it("viser arbeidsgivers virksomhetsnavn", () => {
     const ferdigstiltDialogmote: DialogmoteDTO = {

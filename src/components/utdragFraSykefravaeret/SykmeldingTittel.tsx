@@ -9,7 +9,7 @@ import {
   stringMedAlleGraderingerFraSykmeldingPerioder,
   sykmeldingperioderSortertEldstTilNyest,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
-import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { formatDateRangeWithYear } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import { Tag } from "@navikt/ds-react";
 import ImportantInformationIcon from "@/components/ImportantInformationIcon";
@@ -40,7 +40,7 @@ export function SykmeldingTittel({ sykmelding }: Props) {
       sykmelding.mulighetForArbeid.perioder,
     );
 
-  const periode = `${tilLesbarPeriodeMedArstall(
+  const periode = `${formatDateRangeWithYear(
     tidligsteFom(sykmelding.mulighetForArbeid.perioder),
     senesteTom(sykmelding.mulighetForArbeid.perioder),
   )}: `;

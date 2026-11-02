@@ -6,7 +6,7 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import dayjs from "dayjs";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 
 export const isAktivtDialogmote = (dialogmote: DialogmoteDTO): boolean => {
   return (
@@ -35,9 +35,7 @@ export const getSvarTekst = (
 ) => {
   const mottattPrefiks =
     antallSvar > 1 ? "Oppdatering mottatt" : "Svar mottatt";
-  const mottattTekst = `${mottattPrefiks} ${tilLesbarDatoMedArUtenManedNavn(
-    svarTidspunkt,
-  )}`;
+  const mottattTekst = `${mottattPrefiks} ${formatNumericDate(svarTidspunkt)}`;
   switch (svarType) {
     case SvarType.KOMMER:
       return `kommer - ${mottattTekst}`;
@@ -52,7 +50,7 @@ export const getHarAapnetTekst = (
   varselType: MotedeltakerVarselType | undefined,
   lestDato: string | undefined,
 ): string => {
-  const lestDatoString = tilLesbarDatoMedArUtenManedNavn(lestDato);
+  const lestDatoString = formatNumericDate(lestDato);
   switch (varselType) {
     case MotedeltakerVarselType.INNKALT:
       return lestDato

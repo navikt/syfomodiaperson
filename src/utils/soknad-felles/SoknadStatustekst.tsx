@@ -1,4 +1,4 @@
-import { tilLesbarDatoMedArstall } from "../datoUtils";
+import { formatDateWithYear } from "../datoUtils";
 import { formaterOrgnr } from "@/utils";
 import {
   Soknadstatus,
@@ -24,9 +24,9 @@ export default function SoknadStatustekst({ soknad }: Props) {
     formaterOrgnr(soknad.arbeidsgiver.orgnummer);
   const sendtTilArbeidsgiverDato =
     soknad.sendtTilArbeidsgiverDato &&
-    tilLesbarDatoMedArstall(soknad.sendtTilArbeidsgiverDato);
+    formatDateWithYear(soknad.sendtTilArbeidsgiverDato);
   const sendtTilNavDato =
-    soknad.sendtTilNAVDato && tilLesbarDatoMedArstall(soknad.sendtTilNAVDato);
+    soknad.sendtTilNAVDato && formatDateWithYear(soknad.sendtTilNAVDato);
 
   if (soknad.status === Soknadstatus.KORRIGERT) {
     return <BodyShort size="small">{texts.korrigert}</BodyShort>;

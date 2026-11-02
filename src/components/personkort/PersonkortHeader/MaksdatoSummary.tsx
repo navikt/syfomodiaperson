@@ -1,4 +1,4 @@
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { Maksdato } from "@/data/maksdato/useMaksdatoQuery";
 import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHeader/SyketilfelleSummaryElement";
 
@@ -19,15 +19,13 @@ export function MaksdatoSummary({ maxDate, startDate }: MaksdatoSummaryProps) {
   const utbetaltTom =
     !maxDate.utbetalt_tom || isUtbetaltTomBeforeStart
       ? "Mangler"
-      : tilLesbarDatoMedArUtenManedNavn(maxDate.utbetalt_tom);
+      : formatNumericDate(maxDate.utbetalt_tom);
 
   return (
     <div className={"flex flex-row gap-3 items-center"}>
       <SyketilfelleSummaryElement
         keyword={texts.maksdato}
-        value={tilLesbarDatoMedArUtenManedNavn(
-          maxDate.forelopig_beregnet_slutt,
-        )}
+        value={formatNumericDate(maxDate.forelopig_beregnet_slutt)}
       />
       <SyketilfelleSummaryElement
         keyword={texts.utbetaltTom}
@@ -35,7 +33,7 @@ export function MaksdatoSummary({ maxDate, startDate }: MaksdatoSummaryProps) {
       />
       <SyketilfelleSummaryElement
         keyword={texts.soknadBehandletTom}
-        value={tilLesbarDatoMedArUtenManedNavn(maxDate.tom)}
+        value={formatNumericDate(maxDate.tom)}
       />
     </div>
   );

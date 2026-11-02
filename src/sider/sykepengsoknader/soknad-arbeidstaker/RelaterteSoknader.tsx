@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import {
   getTidligsteSendtDato,
   sorterEtterDato,
@@ -35,7 +35,7 @@ export function RelaterteSoknader({ soknad }: Props): ReactElement | null {
         {relaterteSoknader.sort(sorterEtterDato).map((s, index) => (
           <li key={index}>
             <Link href={`/sykefravaer/sykepengesoknader/${s.id}`}>
-              {texts.sendt} {tilLesbarDatoMedArstall(getTidligsteSendtDato(s))}
+              {texts.sendt} {formatDateWithYear(getTidligsteSendtDato(s))}
             </Link>
           </li>
         ))}

@@ -5,7 +5,7 @@ import {
 } from "@/data/pengestopp/types/FlaggPerson";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import {
   sykmeldingerToArbeidsgiver,
   uniqueArbeidsgivere,
@@ -28,7 +28,7 @@ export default function ManuellSykepengestoppItem({
 }: Props) {
   const { data: veilederinfo } = useVeilederInfoQuery(veilederIdent.value);
   const { sykmeldinger } = useGetSykmeldingerQuery();
-  const header = `${texts.statusStansLabel} - ${tilDatoMedManedNavn(
+  const header = `${texts.statusStansLabel} - ${formatDateWithMonthName(
     new Date(opprettet),
   )}`;
 

@@ -4,7 +4,7 @@ import {
   getAvlysningTexts,
   getCommonTexts,
 } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
-import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
+import { formatDateTimeWithComma } from "@/utils/datoUtils";
 import {
   createHeaderH1,
   createParagraph,
@@ -51,7 +51,7 @@ export const useAvlysningDocument = (
   const hilsenParagraph = getHilsenMedSendtDato(veilederinfo);
 
   const introText = createParagraph(
-    `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
+    `${avlysningTexts.intro1} ${formatDateTimeWithComma(
       dialogmote.tid,
     )}. ${avlysningTexts.intro2}`,
   );

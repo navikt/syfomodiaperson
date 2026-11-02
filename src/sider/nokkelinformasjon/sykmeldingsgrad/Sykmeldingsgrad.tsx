@@ -2,7 +2,7 @@ import {
   newAndActivatedSykmeldinger,
   sykmeldingerInnenforOppfolgingstilfelle,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
-import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { formatDateRangeWithYear } from "@/utils/datoUtils";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import SyketilfelleRadioList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleRadioList.tsx";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
@@ -25,7 +25,7 @@ const texts = {
 };
 
 function tilfelleVarighetText(start: Date, end: Date, varighet: number) {
-  return `Valgt tilfelle sin varighet: ${tilLesbarPeriodeMedArstall(start, end)}
+  return `Valgt tilfelle sin varighet: ${formatDateRangeWithYear(start, end)}
            (${varighet} uker)`;
 }
 

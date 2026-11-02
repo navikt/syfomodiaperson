@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import SykmeldingPerioder from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingPerioder";
 import { SykmeldingNokkelOpplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
@@ -31,7 +31,7 @@ export default function SykmeldingUtdrag({ sykmelding }: Props): ReactElement {
         </SykmeldingNokkelOpplysning>
         <SykmeldingNokkelOpplysning tittel={texts.utdrag}>
           <BodyShort size="small">
-            {tilLesbarDatoMedArstall(sykmelding.bekreftelse.utstedelsesdato)}
+            {formatDateWithYear(sykmelding.bekreftelse.utstedelsesdato)}
           </BodyShort>
         </SykmeldingNokkelOpplysning>
       </div>

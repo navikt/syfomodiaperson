@@ -19,7 +19,7 @@ import {
   MeldingDTO,
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 
 type MeldingTilBehandlerDocument = {
   documentHeader: string;
@@ -97,7 +97,7 @@ export const useMeldingTilBehandlerDocument = (): {
     const body = [
       createParagraph(`Gjelder ${navBruker.navn}, f.nr. ${personident}.`),
       createParagraph(
-        `${paminnelseTexts.intro.part1} ${tilLesbarDatoMedArUtenManedNavn(
+        `${paminnelseTexts.intro.part1} ${formatNumericDate(
           opprinneligMelding.tidspunkt,
         )} ${paminnelseTexts.intro.part2}`,
       ),

@@ -1,6 +1,6 @@
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import { formatDateTimeWithWeekday } from "@/utils/datoUtils";
 import {
   createHeaderH1,
   createHeaderH2,
@@ -86,7 +86,7 @@ export const useReferatDocument = (
       createParagraph(`F.nr. ${personident}`),
       createParagraphWithTitle(
         commonTexts.moteTidTitle,
-        tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid, malform),
+        formatDateTimeWithWeekday(dialogmote.tid, malform),
       ),
       createParagraphWithTitle(commonTexts.moteStedTitle, dialogmote.sted),
       createParagraphWithTitle(
