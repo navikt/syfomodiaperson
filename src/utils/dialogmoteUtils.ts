@@ -7,6 +7,8 @@ import {
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import dayjs from "dayjs";
 import { formatNumericDate } from "@/utils/datoUtils";
+import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
+import { genererDato } from "@/sider/dialogmoter/utils";
 
 export const isAktivtDialogmote = (dialogmote: DialogmoteDTO): boolean => {
   return (
@@ -65,3 +67,22 @@ export const getHarAapnetTekst = (
       return "";
   }
 };
+
+/**
+ * Sjekker om skjemaverdiene inneholder en endring som isdialogmote godtar.
+ * Speiler `finnEndringer` i isdialogmote: tid, sted eller videolenke må være endret,
+ * eller en ny behandler må være lagt til. Begrunnelser alene regnes ikke som endring.
+ */
+export function harEndringer(
+  dialogmote: DialogmoteDTO,
+  values: EndreSkjemaValues,
+): boolean {
+  const nyTid = genererDato(values.dato, values.klokkeslett);
+  const isTidEndret = !dayjs(nyTid).isSame(dayjs(dialogmote.tid), "minute");
+  const isStedEndret = values.sted !== dialogmote.sted;
+  const isVideoLinkEndret =
+    (values.videoLink?.trim() ?? "") !== (dialogmote.videoLink ?? "");
+  const hasNyBehandler = !!values.nyBehandler;
+
+  return isTidEndret || isStedEndret || isVideoLinkEndret || hasNyBehandler;
+}
