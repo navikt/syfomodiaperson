@@ -58,8 +58,7 @@ export const texts = {
   begrunnelseArbeidsgiverMissing:
     "Vennligst angi begrunnelse til nærmeste leder",
   begrunnelseBehandlerMissing: "Vennligst angi begrunnelse til behandler",
-  ingenEndring:
-    "Du må endre tidspunkt, sted, videolenke eller legge til behandler for å kunne sende endring av dialogmøtet.",
+  ingenEndring: "Det er ikke gjort noen endringer på dialogmøtet.",
 };
 
 function isBadRequest(error: unknown): boolean {
@@ -281,15 +280,11 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               />
             </div>
           )}
-          {errors.root?.ingenEndring && (
-            <Alert variant="error" size="small">
-              {errors.root.ingenEndring.message}
-            </Alert>
-          )}
-          {endreDialogmote.isError && (
+          {(errors.root?.ingenEndring || endreDialogmote.isError) && (
             <SkjemaInnsendingFeil
               error={endreDialogmote.error}
               defaultErrorMsgOverride={
+                errors.root?.ingenEndring ||
                 isBadRequest(endreDialogmote.error)
                   ? texts.ingenEndring
                   : undefined
