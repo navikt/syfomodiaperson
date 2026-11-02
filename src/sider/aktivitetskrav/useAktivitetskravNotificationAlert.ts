@@ -1,7 +1,7 @@
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 
 type AktivitetskravStatusSuccess =
   | AktivitetskravStatus.OPPFYLT
@@ -13,7 +13,7 @@ type AktivitetskravStatusSuccess =
 export const useAktivitetskravNotificationAlert = () => {
   const { navn: brukersNavn } = useNavBrukerData();
   const { setNotification, notification } = useNotification();
-  const today = tilLesbarDatoMedArUtenManedNavn(new Date());
+  const today = formatNumericDate(new Date());
 
   const getText = (status: AktivitetskravStatusSuccess) => {
     switch (status) {

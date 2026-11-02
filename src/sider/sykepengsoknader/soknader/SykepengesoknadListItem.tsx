@@ -6,9 +6,9 @@ import {
   tittelFromSoknadstype,
 } from "@/utils/sykepengesoknadUtils";
 import {
-  tilLesbarDatoMedArstall,
-  tilLesbarPeriodeMedArstall,
-  toDatePrettyPrint,
+  formatDateWithYear,
+  formatDateRangeWithYear,
+  formatShortDateOrUndefined,
 } from "@/utils/datoUtils";
 
 import {
@@ -30,11 +30,11 @@ const texts = {
 function SendtUlikt({ soknad }: Props) {
   return (
     <span>
-      {`Sendt til ${soknad.arbeidsgiver?.navn} ${toDatePrettyPrint(
+      {`Sendt til ${soknad.arbeidsgiver?.navn} ${formatShortDateOrUndefined(
         soknad.sendtTilArbeidsgiverDato,
       )}`}
       <br />
-      {`Sendt til Nav ${toDatePrettyPrint(soknad.sendtTilNAVDato)}`}
+      {`Sendt til Nav ${formatShortDateOrUndefined(soknad.sendtTilNAVDato)}`}
     </span>
   );
 }
@@ -64,7 +64,7 @@ function beregnUndertekst(soknad: SykepengesoknadDTO) {
     case Soknadstype.FISKERE:
     case Soknadstype.SELVSTENDIGE_OG_FRILANSERE: {
       return soknad.status === Soknadstatus.SENDT && soknad.sendtTilNAVDato
-        ? `Sendt til Nav ${tilLesbarDatoMedArstall(soknad.sendtTilNAVDato)}`
+        ? `Sendt til Nav ${formatDateWithYear(soknad.sendtTilNAVDato)}`
         : "";
     }
     default: {
@@ -77,7 +77,7 @@ function beregnUndertekst(soknad: SykepengesoknadDTO) {
               `soknad.teaser.status.${soknad.status}${getSendtTilSuffix(
                 soknad,
               )}`,
-              tilLesbarDatoMedArstall(
+              formatDateWithYear(
                 soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato,
               ),
               soknad.arbeidsgiver ? soknad.arbeidsgiver.navn : "",
@@ -95,7 +95,7 @@ function beregnUndertekst(soknad: SykepengesoknadDTO) {
 function statusText(soknad: SykepengesoknadDTO): string {
   return soknadsStatusText(
     soknad.status,
-    tilLesbarDatoMedArstall(
+    formatDateWithYear(
       soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato,
     ),
   );
@@ -141,7 +141,7 @@ export default function SykepengesoknadListItem({
       </div>
       <div className="flex flex-row justify-between">
         <div className="flex flex-col gap-2">
-          <BodyShort size="small">{`Opprettet ${tilLesbarDatoMedArstall(
+          <BodyShort size="small">{`Opprettet ${formatDateWithYear(
             soknad.opprettetDato,
           )}`}</BodyShort>
           {soknad.arbeidsgiver && (
@@ -150,7 +150,7 @@ export default function SykepengesoknadListItem({
           {undertekst && <BodyShort size="small">{undertekst}</BodyShort>}
           {soknad.soknadstype !== Soknadstype.OPPHOLD_UTLAND && (
             <BodyShort size="small">
-              {`Gjelder for perioden ${tilLesbarPeriodeMedArstall(
+              {`Gjelder for perioden ${formatDateRangeWithYear(
                 soknad.fom,
                 soknad.tom,
               )}

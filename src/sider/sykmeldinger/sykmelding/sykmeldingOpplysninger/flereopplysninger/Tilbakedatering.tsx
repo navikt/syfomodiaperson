@@ -1,5 +1,5 @@
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import { BodyLong, BodyShort, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -25,7 +25,7 @@ export function TilbakedateringSykmeldingssiden({ sykmelding }: Props) {
             {texts.dokumenterbarPasientkontakt}
           </Heading>
           <BodyLong size="small" className="whitespace-pre-line">
-            {tilLesbarDatoMedArstall(
+            {formatDateWithYear(
               sykmelding.tilbakedatering.dokumenterbarPasientkontakt,
             )}
           </BodyLong>
@@ -57,7 +57,7 @@ export function TilbakedateringUtdragFraSykmeldingen({ sykmelding }: Props) {
             {texts.dokumenterbarPasientkontakt}
           </BodyShort>
           <BodyLong size="small" className="whitespace-pre-line">
-            {tilLesbarDatoMedArstall(
+            {formatDateWithYear(
               sykmelding.tilbakedatering.dokumenterbarPasientkontakt,
             )}
           </BodyLong>

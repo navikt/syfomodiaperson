@@ -6,7 +6,7 @@ import {
   DialogmoteStatus,
   getDialogmoteReferat,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import { formatDateTimeWithWeekday } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/AppRouter";
 import DeltakereSvarInfo from "@/sider/dialogmoter/components/DeltakereSvarInfo";
@@ -38,7 +38,7 @@ const texts = {
 };
 
 function Subtitle(dialogmote: DialogmoteDTO): ReactNode {
-  const moteDatoTid = tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid);
+  const moteDatoTid = formatDateTimeWithWeekday(dialogmote.tid);
 
   return (
     <>

@@ -12,7 +12,7 @@ import {
   useKartleggingssporsmalKandidaterQuery,
   useKartleggingssporsmalSvarQuery,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
@@ -115,12 +115,12 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 {answeredQuestions ? (
                   <>
                     <BodyShort size="small" weight="semibold">
-                      {`${texts.svart} ${tilLesbarDatoMedArstall(
+                      {`${texts.svart} ${formatDateWithYear(
                         answeredQuestions.createdAt,
                       )}`}
                     </BodyShort>
                     <BodyShort size="small" weight="semibold">
-                      {`${texts.kandidat} ${tilLesbarDatoMedArstall(
+                      {`${texts.kandidat} ${formatDateWithYear(
                         nyesteKandidat.varsletAt,
                       )}`}
                     </BodyShort>
@@ -151,7 +151,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                       {texts.ikkeSvart}
                     </BodyShort>
                     <BodyShort size="small" weight="semibold">
-                      {`${texts.kandidat} ${tilLesbarDatoMedArstall(
+                      {`${texts.kandidat} ${formatDateWithYear(
                         nyesteKandidat.varsletAt,
                       )}`}
                     </BodyShort>

@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { restdatoTilLesbarDato } from "@/utils/datoUtils";
+import { formatReadableDate } from "@/utils/datoUtils";
 import { Adresse, Fastlege } from "@/data/fastlege/types/Fastlege";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
 import PersonkortInformasjon from "@/components/personkort/PersonkortInformasjon";
@@ -22,7 +22,7 @@ function hentTekstFastlegeNavn(fastlege?: Fastlege) {
 }
 
 function hentTekstFastlegePeriode(fastlege: Fastlege): string {
-  return `Fastlege: ${restdatoTilLesbarDato(fastlege.pasientforhold.fom)} - nå`;
+  return `Fastlege: ${formatReadableDate(fastlege.pasientforhold.fom)} - nå`;
 }
 
 function hentTekstFastlegeBesoeksadresse(besoeksadresse: Adresse): string {
@@ -39,9 +39,9 @@ function hentTekstFastlegePostadresse(postadresse: Adresse): string {
 
 function fastlegeVikarTekst(fastlegeVikar: Fastlege) {
   const vikarlegeNavn = hentTekstFastlegeNavn(fastlegeVikar);
-  const periodeTekst = `${restdatoTilLesbarDato(
+  const periodeTekst = `${formatReadableDate(
     fastlegeVikar.gyldighet.fom,
-  )} - ${restdatoTilLesbarDato(fastlegeVikar.gyldighet.tom)}`;
+  )} - ${formatReadableDate(fastlegeVikar.gyldighet.tom)}`;
   const stillingsprosentTekst =
     fastlegeVikar.stillingsprosent && `${fastlegeVikar.stillingsprosent}%`;
   return (

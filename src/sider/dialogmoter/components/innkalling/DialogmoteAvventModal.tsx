@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useAvventDialogmoteMutation } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import dayjs from "dayjs";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 
 const now = new Date();
 const inThreeWeeks = dayjs(now).add(3, "weeks").toDate();
@@ -65,9 +65,9 @@ export function DialogmoteAvventModal({
 
   const deadline = isKandidat ? inTwoMonths : inThreeWeeks;
   const invalidDateMessage = (deadline: Date) =>
-    `Vennligst angi en gyldig dato i intervallet ${toDatePrettyPrint(
+    `Vennligst angi en gyldig dato i intervallet ${formatShortDateOrUndefined(
       now,
-    )} - ${toDatePrettyPrint(deadline)}`;
+    )} - ${formatShortDateOrUndefined(deadline)}`;
 
   const { datepickerProps, inputProps } = useDatepicker({
     onDateChange: (date) => {

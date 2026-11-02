@@ -34,7 +34,7 @@ import {
   meldingTilOgFraBehandler,
   returLegeerklaring,
 } from "./meldingTestdataGenerator";
-import { getManedText } from "@/utils/datoUtils";
+import { getMonthName } from "@/utils/datoUtils";
 import { Box, Heading } from "@navikt/ds-react";
 import BehandleBehandlerdialogSvarOppgaveKnapp from "@/sider/behandlerdialog/meldinger/BehandleBehandlerdialogSvarOppgaveKnapp";
 import Samtaler from "@/sider/behandlerdialog/meldinger/Samtaler";
@@ -353,7 +353,7 @@ describe("Meldinger panel", () => {
       renderMeldinger();
 
       const accordions = screen.getAllByRole("button", {
-        name: new RegExp(getManedText(new Date())),
+        name: new RegExp(getMonthName(new Date())),
       });
       for (const accordion of accordions) {
         await userEvent.click(accordion);
@@ -371,7 +371,7 @@ describe("Meldinger panel", () => {
       renderMeldinger();
 
       const accordions = screen.getAllByRole("button", {
-        name: new RegExp(getManedText(new Date())),
+        name: new RegExp(getMonthName(new Date())),
       });
       for (const accordion of accordions) {
         await userEvent.click(accordion);

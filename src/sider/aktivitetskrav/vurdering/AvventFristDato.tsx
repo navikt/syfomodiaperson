@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { useController } from "react-hook-form";
 import { AvventAktivitetskravSkjemaValues } from "@/sider/aktivitetskrav/vurdering/AvventAktivitetskravSkjema";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 
 const texts = {
   label: "Avventer til",
@@ -11,7 +11,7 @@ const texts = {
 export function AvventFristDato() {
   const now = new Date();
   const inTwoMonths = dayjs(now).add(2, "months").toDate();
-  const invalidDateMessage = `Vennligst angi en gyldig dato innen ${toDatePrettyPrint(
+  const invalidDateMessage = `Vennligst angi en gyldig dato innen ${formatShortDateOrUndefined(
     inTwoMonths,
   )}`;
 

@@ -43,7 +43,7 @@ import { Malform } from "@/context/malform/MalformContext";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import {
   showTimeIncludingSeconds,
-  tilDatoMedManedNavn,
+  formatDateWithMonthName,
 } from "@/utils/datoUtils";
 import { SaveFile } from "../../../../../img/ImageComponents";
 import {
@@ -340,7 +340,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
     return <Navigate to={moteoversiktRoutePath} />;
   }
 
-  const header = `${navbruker?.navn}, ${tilDatoMedManedNavn(dialogmote.tid)}, ${
+  const header = `${navbruker?.navn}, ${formatDateWithMonthName(dialogmote.tid)}, ${
     dialogmote.sted
   }`;
   const arbeidsgiverDeltakerHeading = `Fra arbeidsgiver: ${

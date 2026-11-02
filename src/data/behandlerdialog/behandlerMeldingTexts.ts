@@ -1,4 +1,4 @@
-import { addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { addWeeks, formatDateWithMonthName } from "@/utils/datoUtils";
 
 export const tilleggsOpplysningerPasientTexts = {
   header: "Spørsmål om tilleggsopplysninger vedrørende pasient",
@@ -31,7 +31,7 @@ export const legeerklaringTexts = {
   header: "Forespørsel om legeerklæring ved arbeidsuførhet",
   opplysninger:
     "Nav trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
-  frist: `For å kunne behandle din pasient sin sak ber vi om svar så fort som mulig og innen ${tilDatoMedManedNavn(
+  frist: `For å kunne behandle din pasient sin sak ber vi om svar så fort som mulig og innen ${formatDateWithMonthName(
     addWeeks(new Date(), 3),
   )} (tre uker). Nav kan gi forlenget frist.`,
   takst:

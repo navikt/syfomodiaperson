@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/react";
 import Sykmeldingsgrad from "@/sider/nokkelinformasjon/sykmeldingsgrad/Sykmeldingsgrad";
 import { beforeEach, describe, expect, it } from "vitest";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
-import { addDays, tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
+import { addDays, formatNumericDateRange } from "@/utils/datoUtils";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import {
@@ -78,7 +78,7 @@ describe("Sykmeldingsgrad", () => {
       .to.exist;
     expect(
       screen.getByText(
-        `${tilLesbarPeriodeMedArUtenManednavn(
+        `${formatNumericDateRange(
           oppfolgingstilfeller[0].start,
           oppfolgingstilfeller[0].end,
         )}`,
@@ -122,7 +122,7 @@ describe("Sykmeldingsgrad", () => {
       .to.exist;
     expect(
       screen.getByText(
-        `${tilLesbarPeriodeMedArUtenManednavn(
+        `${formatNumericDateRange(
           oppfolgingstilfeller[0].start,
           oppfolgingstilfeller[0].end,
         )}`,

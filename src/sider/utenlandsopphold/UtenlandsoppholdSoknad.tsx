@@ -25,8 +25,8 @@ import {
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  tilLesbarDatoMedArUtenManedNavn,
-  tilLesbarPeriodeMedArUtenManednavn,
+  formatNumericDate,
+  formatNumericDateRange,
 } from "@/utils/datoUtils.ts";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import Oppsummeringsvisning from "@/sider/sykepengsoknader/soknad-felles-oppsummering/Oppsummeringsvisning";
@@ -448,9 +448,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
             </BodyShort>
 
             <BodyShort>
-              {tilLesbarDatoMedArUtenManedNavn(
-                utenlandsoppholdSoknad.innsendtTidspunkt,
-              )}
+              {formatNumericDate(utenlandsoppholdSoknad.innsendtTidspunkt)}
             </BodyShort>
           </HStack>
 
@@ -501,7 +499,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
               <Alert variant="info" size="small" className="w-fit p-4">
                 {texts.alertIkkeAktuell}{" "}
                 {utenlandsoppholdSoknad.behandling.behandletAv}{" "}
-                {tilLesbarDatoMedArUtenManedNavn(
+                {formatNumericDate(
                   utenlandsoppholdSoknad.behandling.behandletTidspunkt,
                 )}
                 {" – "}
@@ -515,7 +513,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
               <Alert variant="info" size="small" className="w-fit p-4">
                 {texts.alertBehandlet}{" "}
                 {utenlandsoppholdSoknad.behandling?.behandletAv}{" "}
-                {tilLesbarDatoMedArUtenManedNavn(
+                {formatNumericDate(
                   utenlandsoppholdSoknad.behandling?.behandletTidspunkt,
                 )}
               </Alert>
@@ -595,10 +593,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                         </BodyShort>
                         {avslattePerioder.map((periode, index) => (
                           <BodyShort key={index} size="small">
-                            {tilLesbarPeriodeMedArUtenManednavn(
-                              periode.fom,
-                              periode.tom,
-                            )}
+                            {formatNumericDateRange(periode.fom, periode.tom)}
                           </BodyShort>
                         ))}
                       </div>

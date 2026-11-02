@@ -4,7 +4,7 @@ import { SenOppfolgingHistorikk } from "@/sider/senoppfolging/historikk/SenOppfo
 import { ferdigbehandletKandidatMock } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
 
 import { generateUUID } from "@/utils/utils";
-import { addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
+import { addWeeks, formatShortDateOrUndefined } from "@/utils/datoUtils";
 import {
   OnskerOppfolging,
   SenOppfolgingKandidatResponseDTO,
@@ -68,14 +68,14 @@ describe("SenOppfolgingHistorikk", () => {
 
     expect(
       screen.getByRole("button", {
-        name: `Sykmeldte fikk varsel ${toDatePrettyPrint(
+        name: `Sykmeldte fikk varsel ${formatShortDateOrUndefined(
           kandidatSvartOgVarsletMock.varselAt,
         )}`,
       }),
     ).to.exist;
     expect(
       screen.getByRole("button", {
-        name: `Sykmeldte svarte ${toDatePrettyPrint(
+        name: `Sykmeldte svarte ${formatShortDateOrUndefined(
           kandidatSvartIkkeVarsletMock.svar?.svarAt,
         )}`,
       }),
@@ -91,17 +91,17 @@ describe("SenOppfolgingHistorikk", () => {
 
     expect(
       screen.getAllByText(
-        `Sykmeldte fikk varsel ${toDatePrettyPrint(varselAt)}`,
+        `Sykmeldte fikk varsel ${formatShortDateOrUndefined(varselAt)}`,
       ),
     ).to.not.be.empty;
     expect(
       screen.getByText(
-        `Sykmeldte svarte ${toDatePrettyPrint(svarAt)}: Ønsker oppfølging`,
+        `Sykmeldte svarte ${formatShortDateOrUndefined(svarAt)}: Ønsker oppfølging`,
       ),
     ).to.exist;
     expect(
       screen.getByText(
-        `Vurdert av ${VEILEDER_DEFAULT.fulltNavn()} ${toDatePrettyPrint(
+        `Vurdert av ${VEILEDER_DEFAULT.fulltNavn()} ${formatShortDateOrUndefined(
           vurdering.createdAt,
         )}`,
       ),

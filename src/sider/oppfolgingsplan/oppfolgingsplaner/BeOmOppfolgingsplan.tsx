@@ -19,7 +19,7 @@ import {
   useGetOppfolgingsplanForesporselQuery,
   usePostOppfolgingsplanForesporsel,
 } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import {
   isDateInOppfolgingstilfelle,
   OppfolgingstilfelleDTO,
@@ -173,7 +173,7 @@ export default function BeOmOppfolgingsplan({
   const aktivForesporselTekst = texts.aktivForesporsel(
     lastForesporsel?.veilederident ?? "",
     lastForesporselVirksomhetsnavn ?? lastForesporsel?.virksomhetsnummer ?? "",
-    tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt),
+    formatNumericDate(lastForesporselCreatedAt),
   );
 
   function submit(values: FormValues) {

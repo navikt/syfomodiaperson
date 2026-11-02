@@ -10,14 +10,12 @@ import {
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 import { statusTexts } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
 import { ikkeAktuellArsakTexts } from "@/sider/utenlandsopphold/ikkeAktuellTexts.ts";
-import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils.ts";
+import { formatNumericDateRange } from "@/utils/datoUtils.ts";
 
 function tilInnvilgedePerioderText(perioder: Periode[]): string {
   return perioder.length > 0
     ? `\n\nInnvilgede perioder: ${perioder
-        .map((periode) =>
-          tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom),
-        )
+        .map((periode) => formatNumericDateRange(periode.fom, periode.tom))
         .join(", ")}`
     : "";
 }

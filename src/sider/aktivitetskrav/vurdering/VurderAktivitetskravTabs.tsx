@@ -7,7 +7,7 @@ import { UnntakAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/Unn
 import { OppfyltAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/OppfyltAktivitetskravSkjema";
 import { SendForhandsvarselSkjema } from "@/sider/aktivitetskrav/vurdering/SendForhandsvarselSkjema";
 import InnstillingOmStansSkjema from "@/sider/aktivitetskrav/vurdering/InnstillingOmStansSkjema";
-import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
+import { isExpired } from "@/utils/datoUtils";
 import { DraftTextDTO, useDraftQuery } from "@/hooks/useDraftQuery";
 import AppSpinner from "@/components/AppSpinner";
 
@@ -42,8 +42,7 @@ interface Props {
 export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
   const latestVurdering = aktivitetskrav.vurderinger[0];
   const isInnstillingOmStansTabVisible =
-    latestVurdering &&
-    isExpiredForhandsvarsel(latestVurdering.varsel?.svarfrist);
+    latestVurdering && isExpired(latestVurdering.varsel?.svarfrist);
   const isForhandsvarselTabVisible = isValidStateForForhandsvarsel(
     aktivitetskrav.status,
   );

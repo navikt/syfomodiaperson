@@ -7,8 +7,8 @@ import { getCommonTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 import {
-  tilDatoMedManedNavnOgKlokkeslettWithComma,
-  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
+  formatDateTimeWithComma,
+  formatDateTimeWithWeekday,
 } from "@/utils/datoUtils";
 import { genererDato } from "@/sider/dialogmoter/utils";
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
@@ -41,10 +41,7 @@ export const useDialogmoteDocumentComponents = () => {
     const { dato, klokkeslett, sted, videoLink } = values;
     const tidStedTekst =
       dato && klokkeslett
-        ? tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-            genererDato(dato, klokkeslett),
-            malform,
-          )
+        ? formatDateTimeWithWeekday(genererDato(dato, klokkeslett), malform)
         : "";
     const components: DocumentComponentDto[] = [];
     components.push(
@@ -72,9 +69,7 @@ export const useDialogmoteDocumentComponents = () => {
       veilederinfo?.fulltNavn() || "",
       `Nav`,
       "---",
-      `${commonTexts.brevSendt} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        new Date(),
-      )}`,
+      `${commonTexts.brevSendt} ${formatDateTimeWithComma(new Date())}`,
     );
 
   return {

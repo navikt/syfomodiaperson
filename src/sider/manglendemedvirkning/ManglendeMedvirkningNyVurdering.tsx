@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { Alert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import {
   typeTexts,
   VurderingResponseDTO,
@@ -26,9 +26,9 @@ const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
   const lastVurderingType =
     typeTexts[lastVurdering.vurderingType].toLowerCase();
 
-  return `Forrige forhåndsvarsel på § 8-8 ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
+  return `Forrige forhåndsvarsel på § 8-8 ble sendt ut ${formatNumericDate(
     lastForhandsvarsel?.createdAt,
-  )} og det ble vurdert ${lastVurderingType} ${tilLesbarDatoMedArUtenManedNavn(
+  )} og det ble vurdert ${lastVurderingType} ${formatNumericDate(
     lastVurdering?.createdAt,
   )}.`;
 };

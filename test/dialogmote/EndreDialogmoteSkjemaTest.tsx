@@ -41,9 +41,9 @@ import {
 } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
 import { mockServer } from "../setup";
 import { http, HttpResponse } from "msw";
+import { formatDateTimeWithComma } from "@/utils/datoUtils";
 import { ISDIALOGMELDING_ROOT, ISDIALOGMOTE_ROOT } from "@/apiConstants";
 import { defaultErrorTexts } from "@/api/errors";
-import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 
 let queryClient: QueryClient;
 
@@ -295,7 +295,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
             expect(paragraphs).toContain(
               getEndreTexts(Malform.BOKMAL).endretTidspunkt.replace(
                 "{tidspunkt}",
-                tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid),
+                formatDateTimeWithComma(dialogmote.tid),
               ),
             );
           },
@@ -353,7 +353,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
         expect(JSON.stringify(mutation.state.variables)).not.toContain(
           getEndreTexts(Malform.BOKMAL).endretTidspunkt.replace(
             "{tidspunkt}",
-            tilDatoMedManedNavnOgKlokkeslettWithComma(endretMote.datoTid),
+            formatDateTimeWithComma(endretMote.datoTid),
           ),
         );
         expect(mutation.state.status).to.equal("success");
@@ -629,7 +629,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       screen.getByText(
         getEndreTexts(Malform.NYNORSK).endretTidspunkt.replace(
           "{tidspunkt}",
-          tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmoteMedBehandler.tid),
+          formatDateTimeWithComma(dialogmoteMedBehandler.tid),
         ),
       ),
     ).to.exist;

@@ -11,7 +11,7 @@ import {
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 
 export const getSendForhandsvarselDocument = (
   begrunnelse: string,
@@ -85,7 +85,7 @@ export const getOppfyltDocument = (
     },
     {
       texts: [
-        `I forhåndsvarsel av ${tilDatoMedManedNavn(
+        `I forhåndsvarsel av ${formatDateWithMonthName(
           new Date(),
         )} ble du informert om at Nav vurderte å stanse dine sykepenger. Vi har nå vurdert at plikten til å medvirke er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
       ],
@@ -134,7 +134,7 @@ export const getSettUnntakDocument = (
     },
     {
       texts: [
-        `I forhåndsvarsel av ${tilDatoMedManedNavn(
+        `I forhåndsvarsel av ${formatDateWithMonthName(
           forhandsvarselSendtDato,
         )} ble du informert om at Nav vurderte å stanse utbetaling av sykepengene dine. Vi har nå vurdert at du har rimelig grunn til ikke å medvirke i egen sak.`,
       ],
@@ -201,7 +201,7 @@ export const getStansDocument = (
     },
     {
       texts: [
-        `Nav har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
+        `Nav har stanset sykepengene dine fra og med ${formatDateWithMonthName(
           stansdato,
         )}.`,
       ],

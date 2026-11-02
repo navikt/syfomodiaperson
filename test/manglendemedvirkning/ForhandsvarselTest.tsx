@@ -2,11 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { manglendeMedvirkningPath } from "@/AppRouter";
 import { screen, waitFor } from "@testing-library/react";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
-import {
-  addDays,
-  addWeeks,
-  tilLesbarDatoMedArUtenManedNavn,
-} from "@/utils/datoUtils";
+import { addDays, addWeeks, formatNumericDate } from "@/utils/datoUtils";
 import {
   ForhandsvarselVurdering,
   VurderingResponseDTO,
@@ -147,9 +143,7 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
 
       expect(
         screen.getByText(
-          `Forhåndsvarselet er sendt ${tilLesbarDatoMedArUtenManedNavn(
-            new Date(),
-          )}.`,
+          `Forhåndsvarselet er sendt ${formatNumericDate(new Date())}.`,
         ),
       ).to.exist;
       expect(screen.getByText("Venter på svar fra bruker")).to.exist;
@@ -200,8 +194,7 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
 
       expect(screen.getByText("Fristen er gått ut")).to.exist;
       expect(screen.getByText("Fristen var:")).to.exist;
-      expect(screen.getByText(tilLesbarDatoMedArUtenManedNavn(svarfrist))).to
-        .exist;
+      expect(screen.getByText(formatNumericDate(svarfrist))).to.exist;
       expect(screen.getByRole("img", { name: "bjelleikon" })).to.exist;
       expect(screen.getByText("Følgende alternativer er tilgjengelig:")).to
         .exist;

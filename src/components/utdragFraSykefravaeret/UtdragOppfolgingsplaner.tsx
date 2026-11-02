@@ -1,8 +1,5 @@
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
-import {
-  restdatoTilLesbarDato,
-  tilLesbarDatoMedArstall,
-} from "@/utils/datoUtils";
+import { formatReadableDate, formatDateWithYear } from "@/utils/datoUtils";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import {
   LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
@@ -58,7 +55,7 @@ function LPSPlaner({ lpsPlaner }: LpsPlanerProps) {
   return (
     <>
       {lpsPlaner.map((plan, index) => {
-        const lesbarDato = tilLesbarDatoMedArstall(plan.opprettet);
+        const lesbarDato = formatDateWithYear(plan.opprettet);
         return (
           <Box key={index} className="col-span-2 grid grid-cols-subgrid">
             <OppfolgingsplanLenke
@@ -80,7 +77,7 @@ interface AktivPlanV2Props {
 }
 
 function AktivPlanV2({ aktivPlan }: AktivPlanV2Props) {
-  const deltMedNav = restdatoTilLesbarDato(aktivPlan.deltMedNavTidspunkt);
+  const deltMedNav = formatReadableDate(aktivPlan.deltMedNavTidspunkt);
   return (
     <div className="col-span-2 grid grid-cols-subgrid">
       <OppfolgingsplanLenke

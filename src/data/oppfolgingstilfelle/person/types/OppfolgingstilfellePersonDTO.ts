@@ -1,4 +1,4 @@
-import { dagerMellomDatoer } from "@/utils/datoUtils";
+import { getAbsoluteCalendarDaysBetween } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 
@@ -122,7 +122,7 @@ export function hasGjentakendeSykefravar(
 function daysInTilfelle(tilfelle: OppfolgingstilfelleDTO): number {
   return (
     tilfelle.antallSykedager ??
-    dagerMellomDatoer(tilfelle.start, tilfelle.end) + 1
+    getAbsoluteCalendarDaysBetween(tilfelle.start, tilfelle.end) + 1
   );
 }
 

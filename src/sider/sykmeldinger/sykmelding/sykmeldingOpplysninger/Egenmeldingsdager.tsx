@@ -1,4 +1,4 @@
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { BodyLong, Heading } from "@navikt/ds-react";
 
@@ -26,7 +26,7 @@ export function Egenmeldingsdager({ egenmeldingsdager }: Props) {
       </Heading>
       {egenmeldingsdager.sort(asDateAscending).map((dag, index) => (
         <BodyLong size="small" key={index} className="mb-1">
-          {tilLesbarDatoMedArstall(dag)}
+          {formatDateWithYear(dag)}
         </BodyLong>
       ))}
       <BodyLong size="small">{`(${antallDager} ${dayText})`}</BodyLong>

@@ -1,6 +1,6 @@
 import { useBehandlePersonoppgave } from "@/data/personoppgave/useBehandlePersonoppgave";
 import { StatusKanImage } from "../../../../img/ImageComponents";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { BodyShort, Button } from "@navikt/ds-react";
@@ -47,7 +47,7 @@ export default function BehandleOppfolgingsplanLPS({
             alt="Ferdig behandlet"
             className="w-6 h-6"
           />
-          {`Ferdigbehandlet: ${toDatePrettyPrint(
+          {`Ferdigbehandlet: ${formatShortDateOrUndefined(
             personoppgave.behandletTidspunkt,
           )} av ${personoppgave.behandletVeilederIdent}`}
         </BodyShort>

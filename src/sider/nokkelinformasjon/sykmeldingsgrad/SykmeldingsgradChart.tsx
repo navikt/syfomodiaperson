@@ -1,7 +1,10 @@
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { ReactElement } from "react";
 import dayjs from "dayjs";
-import { dagerMellomDatoer, getManedText } from "@/utils/datoUtils";
+import {
+  getAbsoluteCalendarDaysBetween,
+  getMonthName,
+} from "@/utils/datoUtils";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 interface Props {
@@ -12,7 +15,7 @@ export default function SykmeldingsgradChart({ sykmeldingsperioder }: Props) {
   const varighetOppfolgingstilfelle =
     sykmeldingsperioder.length === 0
       ? 0
-      : dagerMellomDatoer(
+      : getAbsoluteCalendarDaysBetween(
           sykmeldingsperioder[0].fom,
           sykmeldingsperioder[sykmeldingsperioder.length - 1].tom,
         );
@@ -25,10 +28,13 @@ export default function SykmeldingsgradChart({ sykmeldingsperioder }: Props) {
 
   sykmeldingsperioder.forEach((periode) => {
     const dayZero = sykmeldingsperioder[0].fom;
-    const daysInPeriode = dagerMellomDatoer(periode.fom, periode.tom);
+    const daysInPeriode = getAbsoluteCalendarDaysBetween(
+      periode.fom,
+      periode.tom,
+    );
 
     for (let i = 0; i < daysInPeriode; i++) {
-      const dayCount = dagerMellomDatoer(dayZero, periode.fom) + i;
+      const dayCount = getAbsoluteCalendarDaysBetween(dayZero, periode.fom) + i;
       sykmeldingsgradPerDay[dayCount] = periode.grad || 100;
     }
   });
@@ -55,7 +61,7 @@ export default function SykmeldingsgradChart({ sykmeldingsperioder }: Props) {
     } else if (currentDate.getDate() === 15) {
       return (
         <text x={x} y={y + 8} textAnchor="middle" fill="#666">
-          {getManedText(currentDate).substring(0, 3)}
+          {getMonthName(currentDate).substring(0, 3)}
         </text>
       );
     }
