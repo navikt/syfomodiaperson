@@ -284,8 +284,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
             <SkjemaInnsendingFeil
               error={endreDialogmote.error}
               defaultErrorMsgOverride={
-                errors.root?.ingenEndring ||
-                isBadRequest(endreDialogmote.error)
+                errors.root?.ingenEndring || isBadRequest(endreDialogmote.error)
                   ? texts.ingenEndring
                   : undefined
               }
