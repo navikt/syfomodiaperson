@@ -138,7 +138,7 @@ export default function EndreTildeltVeilederModal({
       open={open}
       onClose={handleClose}
     >
-      <Modal.Body className="flex flex-col gap-8 flex-1">
+      <Modal.Body className="flex flex-col gap-4 flex-1">
         {hentVeilederFeilet && (
           <LocalAlert status="error" size="small">
             <LocalAlert.Header>
