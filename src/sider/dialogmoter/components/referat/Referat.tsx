@@ -24,7 +24,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useDebouncedCallback } from "use-debounce";
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
 import {
-  Alert,
+  LocalAlert,
   BodyLong,
   BodyShort,
   Box,
@@ -659,9 +659,13 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
             <SkjemaInnsendingFeil error={mellomlagreReferat.error} />
           )}
           {mellomlagreReferat.isSuccess && uendretSidenMellomlagring && (
-            <Alert variant="success" size="small">
-              {savedReferatText(lastSavedTime.toDate())}
-            </Alert>
+            <LocalAlert status="success" size="small">
+              <LocalAlert.Header>
+                <LocalAlert.Title>
+                  {savedReferatText(lastSavedTime.toDate())}
+                </LocalAlert.Title>
+              </LocalAlert.Header>
+            </LocalAlert>
           )}
           <HStack gap="space-16" className="mt-8">
             <Button

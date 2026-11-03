@@ -1,5 +1,5 @@
 import { MeldingTilBehandlerSkjema } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingTilBehandlerSkjema";
-import { Alert, Box, Heading } from "@navikt/ds-react";
+import { LocalAlert, Box, Heading } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useMeldingTilBehandlerDraftQuery } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
 import AppSpinner from "@/components/AppSpinner";
@@ -20,9 +20,11 @@ export function MeldingTilBehandler() {
         {texts.header}
       </Heading>
       {!hasActiveOppfolgingstilfelle && (
-        <Alert variant="warning" size="small">
-          {texts.alertInfo}
-        </Alert>
+        <LocalAlert status="warning" size="small">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.alertInfo}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       {getMeldingTilBehandlerDraftQuery.isPending ? (
         <AppSpinner />

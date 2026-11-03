@@ -1,5 +1,5 @@
 import {
-  Alert,
+  LocalAlert,
   BodyShort,
   Button,
   Heading,
@@ -61,7 +61,13 @@ export default function OppfolgingsenhetInnhold({ modalRef }: Props) {
 
   if (!behandlendeenhet) {
     return (
-      <Alert variant={"error"}>{text.errorIngenInfoOmBehandlendeEnhet}</Alert>
+      <LocalAlert status="error">
+        <LocalAlert.Header>
+          <LocalAlert.Title>
+            {text.errorIngenInfoOmBehandlendeEnhet}
+          </LocalAlert.Title>
+        </LocalAlert.Header>
+      </LocalAlert>
     );
   }
 

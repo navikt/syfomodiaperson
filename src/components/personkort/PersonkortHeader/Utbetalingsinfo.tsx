@@ -1,4 +1,4 @@
-import { Alert, Tag } from "@navikt/ds-react";
+import { LocalAlert, Tag } from "@navikt/ds-react";
 import { MaksdatoSummary } from "@/components/personkort/PersonkortHeader/MaksdatoSummary";
 import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { Maksdato } from "@/data/maksdato/useMaksdatoQuery";
@@ -30,9 +30,11 @@ export default function Utbetalingsinfo({ maksdato }: Props) {
         maksdato,
         startDate,
       ) && (
-        <Alert inline variant="warning" size="small">
-          {texts.utbetalingsinfoAlert}
-        </Alert>
+        <LocalAlert status="warning" size="small">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.utbetalingsinfoAlert}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
     </>
   ) : (

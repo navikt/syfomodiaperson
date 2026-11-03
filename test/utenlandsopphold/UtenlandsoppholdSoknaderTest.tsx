@@ -13,25 +13,47 @@ import {
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import { formatNumericDate, formatNumericDateRange } from "@/utils/datoUtils";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
-import { NotificationProvider } from "@/context/notification/NotificationContext";
+import {
+  Notification,
+  NotificationContext,
+} from "@/context/notification/NotificationContext";
 import { stubSoknaderQuery } from "../stubs/stubIsutenlandsopphold";
 import { renderWithRouter } from "../testRouterUtils";
+import userEvent from "@testing-library/user-event";
 
 let queryClient: QueryClient;
 
-const renderUtenlandsopphold = () =>
-  renderWithRouter(
+function renderUtenlandsopphold(notification?: Notification) {
+  return renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <NotificationProvider>
+      <NotificationContext.Provider
+        value={{ notification, setNotification: () => undefined }}
+      >
         <UtenlandsoppholdSoknader />
-      </NotificationProvider>
+      </NotificationContext.Provider>
     </QueryClientProvider>,
     "*",
   );
+}
 
 describe("UtenlandsoppholdSoknader", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
+  });
+
+  it("dismisses the success notification without hiding the information alert", async () => {
+    stubSoknaderQuery({ soknader: [] });
+    renderUtenlandsopphold({ message: "Søknaden er behandlet" });
+
+    await userEvent.click(screen.getByRole("button", { name: /lukk/i }));
+
+    expect(screen.queryByText("Søknaden er behandlet")).to.not.exist;
+    expect(
+      screen.getByRole("heading", {
+        name: /Pass på at en søknad ikke blir behandlet både i Infotrygd og i Modia/,
+        level: 2,
+      }),
+    ).to.exist;
   });
 
   it("viser feilmelding når henting av søknader feiler", async () => {

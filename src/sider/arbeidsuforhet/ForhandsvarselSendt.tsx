@@ -1,7 +1,7 @@
 import ForhandsvarselBeforeDeadline from "@/sider/arbeidsuforhet/ForhandsvarselBeforeDeadline";
 import ForhandsvarselAfterDeadline from "@/sider/arbeidsuforhet/ForhandsvarselAfterDeadline";
 import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { Alert } from "@navikt/ds-react";
+import { LocalAlert } from "@navikt/ds-react";
 import { useNotification } from "@/context/notification/NotificationContext";
 
 interface Props {
@@ -16,9 +16,11 @@ export default function ForhandsvarselSendt({ forhandsvarsel }: Props) {
   return (
     <div>
       {notification && (
-        <Alert variant="success" className="mb-2">
-          {notification.message}
-        </Alert>
+        <LocalAlert status="success" className="mb-2">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       {isForhandsvarselExpired ? (
         <ForhandsvarselAfterDeadline forhandsvarsel={forhandsvarsel} />

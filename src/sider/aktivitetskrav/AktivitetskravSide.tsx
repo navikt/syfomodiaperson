@@ -4,7 +4,7 @@ import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQuer
 import { AktivitetskravHistorikk } from "@/sider/aktivitetskrav/historikk/AktivitetskravHistorikk";
 import { StartNyVurdering } from "./vurdering/StartNyVurdering";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { Alert } from "@navikt/ds-react";
+import { LocalAlert } from "@navikt/ds-react";
 
 const texts = {
   noTilfelle:
@@ -25,14 +25,11 @@ export const AktivitetskravSide = () => {
   return (
     <div className="w-full">
       {!hasActiveOppfolgingstilfelle && (
-        <Alert
-          contentMaxWidth={false}
-          variant="warning"
-          size="small"
-          className="mb-4"
-        >
-          {texts.noTilfelle}
-        </Alert>
+        <LocalAlert status="warning" size="small" className="mb-4">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.noTilfelle}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       {showStartNyVurdering ? (
         <StartNyVurdering aktivitetskrav={aktivitetskrav} />

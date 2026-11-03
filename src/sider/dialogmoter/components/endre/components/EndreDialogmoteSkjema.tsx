@@ -11,7 +11,7 @@ import { useEndreDialogmote } from "@/sider/dialogmoter/hooks/useEndreDialogmote
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { Alert, Box, Button, Label, VStack } from "@navikt/ds-react";
+import { LocalAlert, Box, Button, Label, VStack } from "@navikt/ds-react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
@@ -232,13 +232,15 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
             />
             {!narmesteLeder && (
-              <Alert
-                variant="warning"
+              <LocalAlert
+                status="warning"
                 size="small"
                 className="mb-4 [&>*]:max-w-fit"
               >
-                {texts.noNarmesteleder}
-              </Alert>
+                <LocalAlert.Header>
+                  <LocalAlert.Title>{texts.noNarmesteleder}</LocalAlert.Title>
+                </LocalAlert.Header>
+              </LocalAlert>
             )}
             <Forhandsvisning
               contentLabel={texts.forhandsvisningArbeidsgiverContentLabel}

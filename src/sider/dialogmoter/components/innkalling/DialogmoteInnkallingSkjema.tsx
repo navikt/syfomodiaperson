@@ -18,7 +18,7 @@ import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { Alert, Box, Button } from "@navikt/ds-react";
+import { LocalAlert, Box, Button } from "@navikt/ds-react";
 import MalformRadioGroup from "@/components/MalformRadioGroup";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import DialogmoteDato from "@/sider/dialogmoter/components/DialogmoteDato";
@@ -180,13 +180,15 @@ export default function DialogmoteInnkallingSkjema() {
             />
           </div>
           {brukerKanIkkeVarslesDigitalt && (
-            <Alert
-              variant="warning"
+            <LocalAlert
+              status="warning"
               size="small"
               className="mb-4 [&>*]:max-w-fit"
             >
-              {texts.reservertAlert}
-            </Alert>
+              <LocalAlert.Header>
+                <LocalAlert.Title>{texts.reservertAlert}</LocalAlert.Title>
+              </LocalAlert.Header>
+            </LocalAlert>
           )}
           <div className="mb-8">
             <TextareaField
@@ -249,9 +251,13 @@ export default function DialogmoteInnkallingSkjema() {
             </div>
           )}
           {!hasActiveOppfolgingstilfelle && (
-            <Alert variant="warning" size="small" className="mb-4">
-              {texts.arbeidsgiverBlirIkkeVarsletAlert}
-            </Alert>
+            <LocalAlert status="warning" size="small" className="mb-4">
+              <LocalAlert.Header>
+                <LocalAlert.Title>
+                  {texts.arbeidsgiverBlirIkkeVarsletAlert}
+                </LocalAlert.Title>
+              </LocalAlert.Header>
+            </LocalAlert>
           )}
           {opprettInnkalling.isError && (
             <SkjemaInnsendingFeil error={opprettInnkalling.error} />

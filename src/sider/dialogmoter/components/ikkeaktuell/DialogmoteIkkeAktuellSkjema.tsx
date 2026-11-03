@@ -11,7 +11,7 @@ import { useSettDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useSettD
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
-  Alert,
+  LocalAlert,
   BodyShort,
   Box,
   Button,
@@ -63,9 +63,11 @@ export default function DialogmoteIkkeAktuellSkjema() {
 
   return (
     <Box background="default" padding="space-24">
-      <Alert variant="info" size="small" className="p-4 mb-4">
-        {texts.noBrev}
-      </Alert>
+      <LocalAlert status="announcement" size="small" className="p-4 mb-4">
+        <LocalAlert.Header>
+          <LocalAlert.Title>{texts.noBrev}</LocalAlert.Title>
+        </LocalAlert.Header>
+      </LocalAlert>
       <BodyShort>{texts.infoKandidatlist}</BodyShort>
       <form onSubmit={handleSubmit(onSubmit)}>
         {settDialogmoteikkeaktuell.isError && (

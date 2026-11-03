@@ -1,5 +1,5 @@
 import {
-  Alert,
+  LocalAlert,
   BodyLong,
   BodyShort,
   Button,
@@ -109,9 +109,11 @@ export function StartNyVurdering({ aktivitetskrav }: StartNyVurderingProps) {
   return (
     <>
       {notification && (
-        <Alert className="mb-4" variant="success">
-          {notification.message}
-        </Alert>
+        <LocalAlert className="mb-4" status="success">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       <Panel className="mb-4 flex flex-col p-8">
         <Heading level="2" size="large" className="mb-1">

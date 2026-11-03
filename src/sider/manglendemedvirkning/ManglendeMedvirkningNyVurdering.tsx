@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { useNotification } from "@/context/notification/NotificationContext";
-import { Alert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
+import { LocalAlert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
 import { formatNumericDate } from "@/utils/datoUtils";
 import {
   typeTexts,
@@ -46,9 +46,11 @@ export default function ManglendeMedvirkningNyVurdering({
   return (
     <>
       {notification && (
-        <Alert variant="success" className="mb-2">
-          {notification.message}
-        </Alert>
+        <LocalAlert status="success" className="mb-2">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       <Box background="default" padding="space-24">
         <Heading className="mb-4" level="2" size="medium">

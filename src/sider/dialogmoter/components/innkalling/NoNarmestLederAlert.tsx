@@ -1,4 +1,4 @@
-import { Alert } from "@navikt/ds-react";
+import { LocalAlert } from "@navikt/ds-react";
 
 const texts = {
   noNarmesteleder:
@@ -7,7 +7,9 @@ const texts = {
 };
 
 export const NoNarmesteLederAlert = () => (
-  <Alert variant="warning" size="small" className="mb-4 [&>*]:max-w-fit">
-    {texts.noNarmesteleder}
-  </Alert>
+  <LocalAlert status="warning" size="small" className="mb-4 [&>*]:max-w-fit">
+    <LocalAlert.Header>
+      <LocalAlert.Title>{texts.noNarmesteleder}</LocalAlert.Title>
+    </LocalAlert.Header>
+  </LocalAlert>
 );

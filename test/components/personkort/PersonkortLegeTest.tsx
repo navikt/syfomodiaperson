@@ -38,6 +38,13 @@ describe("PersonkortLege", () => {
     renderPersonkortLege();
 
     expect(screen.getByText(expectedFeilmelding)).to.exist;
+    expect(screen.getByRole("alert")).to.exist;
+    expect(
+      screen.getByRole("heading", {
+        name: new RegExp(expectedFeilmelding),
+        level: 2,
+      }),
+    ).to.exist;
   });
 
   it("Skal vise overskrifter for aktiv fastlege og fastlegevikarer", async () => {

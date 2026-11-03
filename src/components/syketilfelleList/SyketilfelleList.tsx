@@ -1,5 +1,5 @@
 import {
-  Alert,
+  LocalAlert,
   BodyShort,
   Box,
   Button,
@@ -60,7 +60,11 @@ export function SyketilfelleList() {
         <Heading level="2" size="medium">
           {texts.header}
         </Heading>
-        <Alert variant={"error"}>{texts.error}</Alert>
+        <LocalAlert status="error">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.error}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       </Box>
     );
   }

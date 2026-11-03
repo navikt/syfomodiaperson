@@ -17,7 +17,7 @@ import { MalformProvider } from "@/context/malform/MalformContext";
 import DialogmoteInnkallingSkjema from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
-import { Alert } from "@navikt/ds-react";
+import { LocalAlert } from "@navikt/ds-react";
 
 const texts = {
   title: "Innkalling til dialogmøte",
@@ -65,13 +65,15 @@ export default function DialogmoteInnkallingContainer(): ReactElement {
         <Sidetopp tittel={texts.title} />
 
         {!hasActiveOppfolgingstilfelle && (
-          <Alert
-            variant="warning"
+          <LocalAlert
+            status="warning"
             size="small"
             className="mb-4 [&>*]:max-w-fit"
           >
-            {texts.ikkeSykmeldtAlert}
-          </Alert>
+            <LocalAlert.Header>
+              <LocalAlert.Title>{texts.ikkeSykmeldtAlert}</LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         )}
 
         <Tredelt.Container>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Button, Select, Textarea } from "@navikt/ds-react";
+import { LocalAlert, Button, Select, Textarea } from "@navikt/ds-react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import {
   MeldingTilBehandlerDTO,
@@ -168,9 +168,13 @@ export function MeldingTilBehandlerSkjema({
         className={"flex flex-col gap-4"}
       >
         {meldingSentTime && (
-          <Alert variant="success" size="small">
-            {`Meldingen ble sendt ${formatDateTime(meldingSentTime)}`}
-          </Alert>
+          <LocalAlert status="success" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                {`Meldingen ble sendt ${formatDateTime(meldingSentTime)}`}
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         )}
         <div className="max-w-[23rem]">
           <Select

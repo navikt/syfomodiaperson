@@ -5,7 +5,7 @@ import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnh
 import { ApiErrorException } from "@/api/errors";
 import AppSpinner from "@/components/AppSpinner";
 import PersonkortChangeEnhet from "@/components/personkort/PersonkortChangeEnhet";
-import { Alert } from "@navikt/ds-react";
+import { LocalAlert } from "@navikt/ds-react";
 import { Buildings3Icon } from "@navikt/aksel-icons";
 
 const texts = {
@@ -53,9 +53,11 @@ export function PersonkortEnhet() {
           </div>
         </PersonkortElement>
       ) : (
-        <Alert variant="info" size="small">
-          {texts.notFound}
-        </Alert>
+        <LocalAlert status="announcement" size="small">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.notFound}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
     </ErrorBoundary>
   );

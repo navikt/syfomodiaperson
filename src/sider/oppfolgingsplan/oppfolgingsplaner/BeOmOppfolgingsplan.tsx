@@ -1,5 +1,5 @@
 import {
-  Alert,
+  LocalAlert,
   BodyLong,
   Box,
   Button,
@@ -193,9 +193,11 @@ export default function BeOmOppfolgingsplan({
   return (
     <form onSubmit={handleSubmit(submit)}>
       {isAktivForesporsel && (
-        <Alert variant="warning" className="mb-2">
-          {aktivForesporselTekst}
-        </Alert>
+        <LocalAlert status="warning" className="mb-2">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{aktivForesporselTekst}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       <Box background="default" className="mb-4 flex flex-col p-4 gap-4">
         <Heading size="small" level="3">
@@ -281,9 +283,11 @@ export default function BeOmOppfolgingsplan({
           </ReadMore>
         </div>
         {postOppfolgingsplanForesporsel.isSuccess ? (
-          <Alert inline variant="success">
-            {texts.foresporselSendt}
-          </Alert>
+          <LocalAlert status="success">
+            <LocalAlert.Header>
+              <LocalAlert.Title>{texts.foresporselSendt}</LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         ) : (
           <Button
             type="submit"

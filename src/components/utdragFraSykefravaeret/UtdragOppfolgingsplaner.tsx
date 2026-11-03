@@ -11,7 +11,14 @@ import {
   partitionOppfolgingsplanerByActiveTilfelle,
 } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { Alert, BodyShort, Box, Heading, Link, Loader } from "@navikt/ds-react";
+import {
+  LocalAlert,
+  BodyShort,
+  Box,
+  Heading,
+  Link,
+  Loader,
+} from "@navikt/ds-react";
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
@@ -163,9 +170,11 @@ export default function UtdragOppfolgingsplaner({
       {isLoading ? (
         <Loader size="large" title={texts.pending} />
       ) : isError ? (
-        <Alert size="small" inline variant="error">
-          {texts.error}
-        </Alert>
+        <LocalAlert size="small" status="error">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.error}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       ) : (
         <Oppfolgingsplaner
           planerV2={planerV2ByOppfolgingstilfelle}

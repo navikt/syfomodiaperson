@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Alert, BodyShort, Box, Button, Loader, Table } from "@navikt/ds-react";
+import {
+  LocalAlert,
+  BodyShort,
+  Box,
+  Button,
+  Loader,
+  Table,
+} from "@navikt/ds-react";
 import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import {
   Soknad,
@@ -88,24 +95,31 @@ export function UtenlandsoppholdSoknader() {
   return (
     <div className="flex flex-col gap-4">
       {notification && isNotificationVisible && (
-        <Alert
-          variant="success"
-          closeButton
-          onClose={() => setIsNotificationVisible(false)}
-        >
-          {notification.message}
-        </Alert>
+        <LocalAlert status="success">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+            <LocalAlert.CloseButton
+              onClick={() => setIsNotificationVisible(false)}
+            />
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
 
-      <Alert variant="info">{texts.infotrygdInfo}</Alert>
+      <LocalAlert status="announcement">
+        <LocalAlert.Header>
+          <LocalAlert.Title>{texts.infotrygdInfo}</LocalAlert.Title>
+        </LocalAlert.Header>
+      </LocalAlert>
 
       <Box background="default" padding="space-16" className="flex flex-col">
         {isPending ? (
           <Loader size="xlarge" title={texts.pending} />
         ) : isError ? (
-          <Alert size="small" variant="error">
-            {texts.error}
-          </Alert>
+          <LocalAlert size="small" status="error">
+            <LocalAlert.Header>
+              <LocalAlert.Title>{texts.error}</LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         ) : !data.soknader.length ? (
           <BodyShort>{texts.ingenSoknader}</BodyShort>
         ) : (

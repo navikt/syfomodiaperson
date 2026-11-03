@@ -1,5 +1,5 @@
 import {
-  Alert,
+  LocalAlert,
   BodyLong,
   Button,
   Modal,
@@ -158,9 +158,13 @@ export default function TildelOppfolgingsenhetModal({
           </>
         )}
         {getMuligeOppfolgingsenheter.isError && (
-          <Alert size="small" variant="error">
-            {text.getMuligeOppfolgingsenheterFailedErrorMessage}
-          </Alert>
+          <LocalAlert size="small" status="error">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                {text.getMuligeOppfolgingsenheterFailedErrorMessage}
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         )}
       </Modal.Body>
       <Modal.Footer>
