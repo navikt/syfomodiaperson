@@ -102,13 +102,13 @@ const AvlysDialogmoteSkjema = ({
 
   return (
     <Box background="default" padding="space-24">
-      <form onSubmit={handleSubmit(submit)}>
+      <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-4">
         <MalformRadioGroup />
-        <div className="mb-8 flex flex-col">
+        <div className="flex flex-col">
           <Label size="small">{texts.gjelderTitle}</Label>
           {formatDateTimeWithWeekday(dialogmote.tid)}
         </div>
-        <div className="mb-8">
+        <div>
           <TextareaField
             id="begrunnelseArbeidstaker"
             {...register("begrunnelseArbeidstaker", {
@@ -128,7 +128,7 @@ const AvlysDialogmoteSkjema = ({
             }
           />
         </div>
-        <div className="mb-8">
+        <div>
           <TextareaField
             id="begrunnelseArbeidsgiver"
             {...register("begrunnelseArbeidsgiver", {
@@ -149,7 +149,7 @@ const AvlysDialogmoteSkjema = ({
           />
         </div>
         {dialogmote.behandler && (
-          <div className="mb-8">
+          <div>
             <TextareaField
               id="begrunnelseBehandler"
               {...register("begrunnelseBehandler", {
@@ -173,11 +173,7 @@ const AvlysDialogmoteSkjema = ({
         {avlysDialogmote.isError && (
           <SkjemaInnsendingFeil error={avlysDialogmote.error} />
         )}
-        <LocalAlert
-          status="warning"
-          size="small"
-          className="mb-8 [&>*]:max-w-fit"
-        >
+        <LocalAlert status="warning" size="small">
           <LocalAlert.Header>
             <LocalAlert.Title>{texts.alert}</LocalAlert.Title>
           </LocalAlert.Header>
