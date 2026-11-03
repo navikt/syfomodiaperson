@@ -65,11 +65,7 @@ export default function DialogmoteInnkallingContainer(): ReactElement {
         <Sidetopp tittel={texts.title} />
 
         {!hasActiveOppfolgingstilfelle && (
-          <LocalAlert
-            status="warning"
-            size="small"
-            className="mb-4 [&>*]:max-w-fit"
-          >
+          <LocalAlert status="warning" size="small" className="mb-4">
             <LocalAlert.Header>
               <LocalAlert.Title>{texts.ikkeSykmeldtAlert}</LocalAlert.Title>
             </LocalAlert.Header>

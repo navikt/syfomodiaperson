@@ -7,7 +7,7 @@ const texts = {
 };
 
 export const NoNarmesteLederAlert = () => (
-  <LocalAlert status="warning" size="small" className="mb-4 [&>*]:max-w-fit">
+  <LocalAlert status="warning" size="small" className="mb-4">
     <LocalAlert.Header>
       <LocalAlert.Title>{texts.noNarmesteleder}</LocalAlert.Title>
     </LocalAlert.Header>

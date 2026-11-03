@@ -232,11 +232,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
             />
             {!narmesteLeder && (
-              <LocalAlert
-                status="warning"
-                size="small"
-                className="mb-4 [&>*]:max-w-fit"
-              >
+              <LocalAlert status="warning" size="small" className="mb-4">
                 <LocalAlert.Header>
                   <LocalAlert.Title>{texts.noNarmesteleder}</LocalAlert.Title>
                 </LocalAlert.Header>
