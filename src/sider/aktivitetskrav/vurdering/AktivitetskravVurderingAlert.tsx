@@ -9,7 +9,11 @@ import {
 } from "@/utils/datoUtils";
 import { ReactElement } from "react";
 import { avventVurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
-import { BodyLong, LocalAlert } from "@navikt/ds-react";
+import { BodyLong, InfoCard, LocalAlert } from "@navikt/ds-react";
+import {
+  ExclamationmarkTriangleIcon,
+  InformationSquareIcon,
+} from "@navikt/aksel-icons";
 
 const texts = {
   forhandsvarselInfoTitle: (dato: string) => `Forhåndsvarsel er sendt ${dato}`,
@@ -49,37 +53,35 @@ export function AktivitetskravVurderingAlert({
           </LocalAlert.Content>
         </LocalAlert>
       ) : (
-        <LocalAlert status="announcement" className="mb-4">
-          <LocalAlert.Header>
-            <LocalAlert.Title>
+        <InfoCard data-color="info" className="mb-4">
+          <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+            <InfoCard.Title>
               {texts.forhandsvarselInfoTitle(vurderingDato)}
-            </LocalAlert.Title>
-          </LocalAlert.Header>
-          <LocalAlert.Content>
-            {texts.forhandsvarselInfoBody}
-          </LocalAlert.Content>
-        </LocalAlert>
+            </InfoCard.Title>
+          </InfoCard.Header>
+          <InfoCard.Content>{texts.forhandsvarselInfoBody}</InfoCard.Content>
+        </InfoCard>
       );
     }
     case AktivitetskravStatus.AVVENT: {
       return (
-        <LocalAlert status="warning" className="mb-4">
-          <LocalAlert.Header>
-            <LocalAlert.Title>
+        <InfoCard data-color="warning" className="mb-4">
+          <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+            <InfoCard.Title>
               {frist
                 ? texts.avventerTil(formatDateWithMonthName(frist))
                 : texts.avventer}
-            </LocalAlert.Title>
-          </LocalAlert.Header>
-          <LocalAlert.Content>
+            </InfoCard.Title>
+          </InfoCard.Header>
+          <InfoCard.Content>
             <BodyLong>{beskrivelse}</BodyLong>
             <ul>
               {arsaker.map((arsak, index) => (
                 <li key={index}>{avventVurderingArsakTexts[arsak] || arsak}</li>
               ))}
             </ul>
-          </LocalAlert.Content>
-        </LocalAlert>
+          </InfoCard.Content>
+        </InfoCard>
       );
     }
     default: {

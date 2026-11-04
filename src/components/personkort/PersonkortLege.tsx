@@ -4,7 +4,8 @@ import { Adresse, Fastlege } from "@/data/fastlege/types/Fastlege";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
 import PersonkortInformasjon from "@/components/personkort/PersonkortInformasjon";
 import { FlexColumn, FlexRow } from "@/components/Layout";
-import { LocalAlert, Detail, Heading } from "@navikt/ds-react";
+import { InfoCard, Detail, Heading } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 import { formatPhonenumber } from "@/utils/stringUtils";
 
 const texts = {
@@ -118,11 +119,11 @@ export function PersonkortLege() {
   };
 
   return ikkeFunnet ? (
-    <LocalAlert status="announcement" size="small">
-      <LocalAlert.Header>
-        <LocalAlert.Title>{texts.error}</LocalAlert.Title>
-      </LocalAlert.Header>
-    </LocalAlert>
+    <InfoCard data-color="info" size="small">
+      <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+        {texts.error}
+      </InfoCard.Message>
+    </InfoCard>
   ) : (
     <>
       {fastlege && (
