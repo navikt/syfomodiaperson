@@ -110,7 +110,12 @@ describe("DialogmoteInnkallingSkjema", () => {
     );
     renderDialogmoteInnkallingSkjema();
 
-    expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
+    expect(
+      screen.getByRole("heading", {
+        name: (name) => name.endsWith(texts.reservertAlert),
+        level: 2,
+      }),
+    ).to.exist;
     expect(screen.getByText(texts.reservertAlert)).to.exist;
   });
   it("viser ikke advarsel om papirpost når bruker kan varsles digitalt", () => {
@@ -124,7 +129,12 @@ describe("DialogmoteInnkallingSkjema", () => {
     );
     renderDialogmoteInnkallingSkjema();
 
-    expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
+    expect(
+      screen.queryByRole("heading", {
+        name: (name) => name.endsWith(texts.reservertAlert),
+        level: 2,
+      }),
+    ).to.not.exist;
     expect(screen.queryByText(texts.reservertAlert)).to.not.exist;
   });
 

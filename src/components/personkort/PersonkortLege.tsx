@@ -4,7 +4,7 @@ import { Adresse, Fastlege } from "@/data/fastlege/types/Fastlege";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
 import PersonkortInformasjon from "@/components/personkort/PersonkortInformasjon";
 import { FlexColumn, FlexRow } from "@/components/Layout";
-import { Alert, Detail, Heading } from "@navikt/ds-react";
+import { LocalAlert, Detail, Heading } from "@navikt/ds-react";
 import { formatPhonenumber } from "@/utils/stringUtils";
 
 const texts = {
@@ -118,9 +118,11 @@ export function PersonkortLege() {
   };
 
   return ikkeFunnet ? (
-    <Alert variant="info" size="small">
-      {texts.error}
-    </Alert>
+    <LocalAlert status="announcement" size="small">
+      <LocalAlert.Header>
+        <LocalAlert.Title>{texts.error}</LocalAlert.Title>
+      </LocalAlert.Header>
+    </LocalAlert>
   ) : (
     <>
       {fastlege && (

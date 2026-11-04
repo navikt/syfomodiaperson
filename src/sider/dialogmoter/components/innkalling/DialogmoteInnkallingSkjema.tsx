@@ -18,7 +18,7 @@ import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { Alert, Box, Button } from "@navikt/ds-react";
+import { LocalAlert, Box, Button } from "@navikt/ds-react";
 import MalformRadioGroup from "@/components/MalformRadioGroup";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import DialogmoteDato from "@/sider/dialogmoter/components/DialogmoteDato";
@@ -145,15 +145,15 @@ export default function DialogmoteInnkallingSkjema() {
     <Box background="default" padding="space-24" className="mb-2">
       <MalformRadioGroup />
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(submit)}>
-          <div className="mb-6">
+        <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-4">
+          <div>
             <DialogmoteInnkallingVelgVirksomhet />
             <DialogmoteInnkallingBehandler
               setSelectedBehandler={setSelectedBehandler}
               selectedbehandler={selectedBehandler}
             />
           </div>
-          <div className="flex flex-col gap-4 mb-6">
+          <div className="flex flex-col gap-4">
             <DialogmoteFrist />
             <div className="flex gap-4 items-start">
               <DialogmoteDato />
@@ -180,15 +180,13 @@ export default function DialogmoteInnkallingSkjema() {
             />
           </div>
           {brukerKanIkkeVarslesDigitalt && (
-            <Alert
-              variant="warning"
-              size="small"
-              className="mb-4 [&>*]:max-w-fit"
-            >
-              {texts.reservertAlert}
-            </Alert>
+            <LocalAlert status="warning" size="small">
+              <LocalAlert.Header>
+                <LocalAlert.Title>{texts.reservertAlert}</LocalAlert.Title>
+              </LocalAlert.Header>
+            </LocalAlert>
           )}
-          <div className="mb-8">
+          <div>
             <TextareaField
               {...register("fritekstArbeidstaker", {
                 maxLength: MAX_LENGTH_INNKALLING_FRITEKST,
@@ -208,7 +206,7 @@ export default function DialogmoteInnkallingSkjema() {
               title={texts.forhandsvisningArbeidstakerTitle}
             />
           </div>
-          <div className="mb-8">
+          <div>
             <TextareaField
               {...register("fritekstArbeidsgiver", {
                 maxLength: MAX_LENGTH_INNKALLING_FRITEKST,
@@ -230,7 +228,7 @@ export default function DialogmoteInnkallingSkjema() {
           </div>
 
           {!!selectedBehandler && (
-            <div className="mb-8">
+            <div>
               <TextareaField
                 {...register("fritekstBehandler", {
                   maxLength: MAX_LENGTH_INNKALLING_FRITEKST,
@@ -249,9 +247,13 @@ export default function DialogmoteInnkallingSkjema() {
             </div>
           )}
           {!hasActiveOppfolgingstilfelle && (
-            <Alert variant="warning" size="small" className="mb-4">
-              {texts.arbeidsgiverBlirIkkeVarsletAlert}
-            </Alert>
+            <LocalAlert status="warning" size="small">
+              <LocalAlert.Header>
+                <LocalAlert.Title>
+                  {texts.arbeidsgiverBlirIkkeVarsletAlert}
+                </LocalAlert.Title>
+              </LocalAlert.Header>
+            </LocalAlert>
           )}
           {opprettInnkalling.isError && (
             <SkjemaInnsendingFeil error={opprettInnkalling.error} />

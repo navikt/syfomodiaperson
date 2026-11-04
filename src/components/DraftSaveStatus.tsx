@@ -1,4 +1,4 @@
-import { Alert } from "@navikt/ds-react";
+import { LocalAlert } from "@navikt/ds-react";
 import { SaveFile } from "../../img/ImageComponents";
 import {
   addDays,
@@ -20,9 +20,11 @@ export function DraftSaveStatus({ isSaveError, savedTime }: Props) {
   return (
     <>
       {isSaveError && (
-        <Alert variant="error" size="small">
-          {texts.saveFailed}
-        </Alert>
+        <LocalAlert status="error" size="small">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.saveFailed}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       {!isSaveError && savedTime && (
         <div className="mb-2 font-ax-bold flex gap-2">

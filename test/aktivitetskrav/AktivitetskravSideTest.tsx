@@ -91,7 +91,12 @@ describe("AktivitetskravSide", () => {
           name: "Start ny aktivitetskrav-vurdering",
         }),
       ).to.exist;
-      expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
+      expect(
+        screen.queryByRole("heading", {
+          name: new RegExp(noOppfolgingstilfelleAktivitetskravText),
+          level: 2,
+        }),
+      ).to.not.exist;
       expect(screen.queryByText(noOppfolgingstilfelleAktivitetskravText)).to.not
         .exist;
     });
@@ -109,7 +114,12 @@ describe("AktivitetskravSide", () => {
           name: "Start ny aktivitetskrav-vurdering",
         }),
       ).to.exist;
-      expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
+      expect(
+        screen.getByRole("heading", {
+          name: new RegExp(noOppfolgingstilfelleAktivitetskravText),
+          level: 2,
+        }),
+      ).to.exist;
       expect(screen.getByText(noOppfolgingstilfelleAktivitetskravText)).to
         .exist;
     });
@@ -127,7 +137,12 @@ describe("AktivitetskravSide", () => {
           name: "Start ny aktivitetskrav-vurdering",
         }),
       ).to.exist;
-      expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
+      expect(
+        screen.getByRole("heading", {
+          name: new RegExp(noOppfolgingstilfelleAktivitetskravText),
+          level: 2,
+        }),
+      ).to.exist;
       expect(screen.getByText(noOppfolgingstilfelleAktivitetskravText)).to
         .exist;
     });
@@ -380,7 +395,12 @@ describe("AktivitetskravSide", () => {
 
       renderAktivitetskravSide();
 
-      expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
+      expect(
+        screen.getByRole("heading", {
+          name: new RegExp(noOppfolgingstilfelleAktivitetskravText),
+          level: 2,
+        }),
+      ).to.exist;
       expect(screen.getByText(noOppfolgingstilfelleAktivitetskravText)).to
         .exist;
     });

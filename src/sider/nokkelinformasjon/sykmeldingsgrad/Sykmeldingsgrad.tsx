@@ -6,7 +6,7 @@ import { formatDateRangeWithYear } from "@/utils/datoUtils";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import SyketilfelleRadioList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleRadioList.tsx";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { Alert, BodyShort, Box, Heading } from "@navikt/ds-react";
+import { LocalAlert, BodyShort, Box, Heading } from "@navikt/ds-react";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import {
@@ -86,9 +86,13 @@ export default function Sykmeldingsgrad({
       {harOpplystOmJobbetIOppfolgingstilfelle(
         sykmeldingerIOppfolgingstilfelle,
       ) && (
-        <Alert variant="info" size="small" className="mt-2 w-fit">
-          {texts.harJobbetUtoverSykmeldingsgrad}
-        </Alert>
+        <LocalAlert status="announcement" size="small" className="mt-2 w-fit">
+          <LocalAlert.Header>
+            <LocalAlert.Title>
+              {texts.harJobbetUtoverSykmeldingsgrad}
+            </LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       <div className="flex flex-row">
         <SykmeldingsgradChart sykmeldingsperioder={sortedSykmeldingsperioder} />

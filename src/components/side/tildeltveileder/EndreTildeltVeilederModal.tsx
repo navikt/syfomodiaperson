@@ -9,7 +9,7 @@ import {
   VeilederIdent,
 } from "@/data/veilederbrukerknytning/useTildelVeileder";
 import {
-  Alert,
+  LocalAlert,
   BodyShort,
   Button,
   Modal,
@@ -138,15 +138,19 @@ export default function EndreTildeltVeilederModal({
       open={open}
       onClose={handleClose}
     >
-      <Modal.Body className="flex flex-col gap-8 flex-1">
+      <Modal.Body className="flex flex-col gap-4 flex-1">
         {hentVeilederFeilet && (
-          <Alert variant="error" size="small">
-            {texts.hentVeiledereFailed}
-          </Alert>
+          <LocalAlert status="error" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>{texts.hentVeiledereFailed}</LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         )}
-        <Alert variant="warning" size="small">
-          {texts.alert}
-        </Alert>
+        <LocalAlert status="warning" size="small">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.alert}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
         <UNSAFE_Combobox
           className="[&_.aksel-combobox__list]:max-h-60"
           shouldAutocomplete

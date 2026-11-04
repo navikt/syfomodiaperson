@@ -72,7 +72,12 @@ describe("MeldingTilBehandler", () => {
 
     expect(screen.getByRole("heading", { name: "Dialogmelding til behandler" }))
       .to.exist;
-    expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
+    expect(
+      screen.getByRole("heading", {
+        name: new RegExp(alertText),
+        level: 2,
+      }),
+    ).to.exist;
     expect(screen.getByText(alertText)).to.exist;
   });
 

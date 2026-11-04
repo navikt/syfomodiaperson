@@ -4,7 +4,12 @@ import {
   KartleggingssporsmalFormSnapshot,
   KartleggingssporsmalFormSnapshotFieldType,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
-import { Alert } from "@navikt/ds-react";
+import { LocalAlert } from "@navikt/ds-react";
+
+const texts = {
+  unsupportedFieldType: (fieldType: string) =>
+    `Mottok spørsmål av typen: ${fieldType} som fremvisningen ikke støtter. Send en sak i Porten der du melder ifra om dette.`,
+};
 
 interface Props {
   formSnapshot: KartleggingssporsmalFormSnapshot | null;
@@ -36,10 +41,13 @@ export function KartleggingssporsmalSkjemasvar({ formSnapshot }: Props) {
             );
           default:
             return (
-              <Alert key={index} className="w-1/2" variant={"error"}>
-                Mottok spørsmål av typen: {fieldType} som fremvisningen ikke
-                støtter. Send en sak i Porten der du melder ifra om dette.
-              </Alert>
+              <LocalAlert key={index} className="w-1/2" status="error">
+                <LocalAlert.Header>
+                  <LocalAlert.Title>
+                    {texts.unsupportedFieldType(fieldType)}
+                  </LocalAlert.Title>
+                </LocalAlert.Header>
+              </LocalAlert>
             );
         }
       })}

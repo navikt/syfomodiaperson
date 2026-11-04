@@ -1,4 +1,4 @@
-import { Alert } from "@navikt/ds-react";
+import { LocalAlert } from "@navikt/ds-react";
 
 const texts = {
   activeVedtakAlert:
@@ -20,16 +20,20 @@ export default function KanIkkeFatteNyttVedtakAlert({
 }: Props) {
   if (isActiveVedtak) {
     return (
-      <Alert variant="warning" size="small" className="max-w-fit">
-        {texts.activeVedtakAlert}
-      </Alert>
+      <LocalAlert status="warning" size="small" className="max-w-fit">
+        <LocalAlert.Header>
+          <LocalAlert.Title>{texts.activeVedtakAlert}</LocalAlert.Title>
+        </LocalAlert.Header>
+      </LocalAlert>
     );
   }
   if (!isRegisteredArbeidssoker || !hasArbeidssokerFom) {
     return (
-      <Alert variant="warning" size="small" className="max-w-fit">
-        {texts.arbeidssokerAlert}
-      </Alert>
+      <LocalAlert status="warning" size="small" className="max-w-fit">
+        <LocalAlert.Header>
+          <LocalAlert.Title>{texts.arbeidssokerAlert}</LocalAlert.Title>
+        </LocalAlert.Header>
+      </LocalAlert>
     );
   }
 }
