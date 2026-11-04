@@ -6,6 +6,7 @@ import {
   Heading,
   Label,
   List,
+  LocalAlert,
   Radio,
   RadioGroup,
   Textarea,
@@ -18,7 +19,7 @@ import {
 import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil.tsx";
 import { useState } from "react";
-import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
+import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
 import { Events, trackEvent } from "@/utils/umami.ts";
@@ -69,6 +70,7 @@ const texts = {
       "Velg denne der det ikke er risiko, eller der det er risiko, men ikke behov for oppfølging fra Nav på nåværende tidspunkt.",
   },
   button: "Lagre vurdering, fjern oppgaven",
+  vurderingLagret: "Vurderingen er lagret",
   vurderingIkkeValgtError: "Du må velge et alternativ",
   begrunnelseForLangError: `Begrunnelse kan ikke være lengre enn ${VURDERING_MAX_LENGTH} tegn`,
   vurdertRisikoForLangtidsfravar:
@@ -96,6 +98,7 @@ export function KartleggingVurdering({
   answeredQuestions,
 }: Props) {
   const vurderSvar = useKartleggingssporsmalVurderSvar();
+  const [isSuccessAlertDismissed, setIsSuccessAlertDismissed] = useState(false);
 
   const [vurdering, setVurdering] = useState<{
     vurderingAlternativ: VurderingAlternativ | null;
@@ -243,8 +246,19 @@ export function KartleggingVurdering({
 
       {vurderSvar.isError && <SkjemaInnsendingFeil error={vurderSvar.error} />}
 
+      {vurderSvar.isSuccess && !isSuccessAlertDismissed && (
+        <LocalAlert status="success" size="small">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.vurderingLagret}</LocalAlert.Title>
+            <LocalAlert.CloseButton
+              onClick={() => setIsSuccessAlertDismissed(true)}
+            />
+          </LocalAlert.Header>
+        </LocalAlert>
+      )}
+
       {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET && (
-        <SuccessAlert nyesteKandidat={nyesteKandidat} />
+        <FerdigbehandletInfoCard nyesteKandidat={nyesteKandidat} />
       )}
       {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET &&
         shouldShowBegrunnelse && (

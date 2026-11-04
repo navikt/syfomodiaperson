@@ -21,7 +21,7 @@ import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skj
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { KartleggingssporsmalHistorikk } from "@/sider/kartleggingssporsmal/historikk/KartleggingssporsmalHistorikk";
 import { KartleggingVurdering } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurdering.tsx";
-import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
+import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
 import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsmalSurvey.ts";
 import { ReactElement } from "react";
@@ -130,7 +130,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     />
 
                     {behandletWithoutVurdering && (
-                      <SuccessAlert nyesteKandidat={nyesteKandidat} />
+                      <FerdigbehandletInfoCard
+                        nyesteKandidat={nyesteKandidat}
+                      />
                     )}
                   </>
                 ) : (

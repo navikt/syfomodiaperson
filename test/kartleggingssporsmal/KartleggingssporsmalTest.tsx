@@ -424,6 +424,7 @@ describe("Kartleggingssporsmal", () => {
     expect(
       screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}`),
     ).to.exist;
+    expect(screen.queryByText("Vurderingen er lagret")).to.not.exist;
 
     expect(
       screen.queryByText(
@@ -476,6 +477,34 @@ describe("Kartleggingssporsmal", () => {
       await clickButton("Lagre vurdering, fjern oppgaven");
       expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
         .exist;
+      expect(
+        screen.getByRole("heading", {
+          name: (name) => name.endsWith("Vurderingen er lagret"),
+        }),
+      ).to.exist;
+    });
+
+    it("Success message can be closed", async () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1Answered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
+      stubDefaultIsmeroppfolging();
+      renderKartleggingssporsmal();
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
+      await clickButton("Lagre vurdering, fjern oppgaven");
+      await screen.findByText("Oppgaven er behandlet av Z990000");
+
+      await clickButton("Lukk");
+
+      expect(screen.queryByText("Vurderingen er lagret")).to.not.exist;
+      expect(screen.getByText("Oppgaven er behandlet av Z990000")).to.exist;
     });
 
     it("API returning error will show error message", async () => {
