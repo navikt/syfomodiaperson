@@ -477,6 +477,9 @@ describe("VurderAktivitetskrav", () => {
   });
 
   describe("Vurdering alert", () => {
+    const vurderingAlertHeading =
+      /Avventer|Forhåndsvarsel er sendt|Aktivitetskravet må vurderes/;
+
     it("viser alert for aktivitetskrav med siste vurdering AVVENT", () => {
       const aktivitetskravAvvent = createAktivitetskrav(
         daysFromToday(20),
@@ -485,12 +488,13 @@ describe("VurderAktivitetskrav", () => {
       );
       renderVurderAktivitetskrav(aktivitetskravAvvent);
 
-      expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
+      expect(screen.getByRole("heading", { name: /Avventer/ })).to.exist;
     });
     it("viser alert for aktivitetskrav med siste vurdering FORHANDSVARSEL", () => {
       renderVurderAktivitetskrav(forhandsvarselAktivitetskrav);
 
-      expect(screen.getByRole("img", { name: "Informasjon" })).to.exist;
+      expect(screen.getByRole("heading", { name: /Forhåndsvarsel er sendt/ }))
+        .to.exist;
     });
     it("viser ingen alert når aktivitetskrav har siste vurdering OPPFYLT", () => {
       const aktivitetskravOppfylt = createAktivitetskrav(
@@ -500,16 +504,14 @@ describe("VurderAktivitetskrav", () => {
       );
       renderVurderAktivitetskrav(aktivitetskravOppfylt);
 
-      expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
-      expect(screen.queryByRole("img", { name: "Suksess" })).to.not.exist;
-      expect(screen.queryByRole("img", { name: "Info" })).to.not.exist;
+      expect(screen.queryByRole("heading", { name: vurderingAlertHeading })).to
+        .not.exist;
     });
     it("viser ingen alert når aktivitetskrav har ingen vurdering", () => {
       renderVurderAktivitetskrav(aktivitetskrav);
 
-      expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
-      expect(screen.queryByRole("img", { name: "Suksess" })).to.not.exist;
-      expect(screen.queryByRole("img", { name: "Info" })).to.not.exist;
+      expect(screen.queryByRole("heading", { name: vurderingAlertHeading })).to
+        .not.exist;
     });
   });
 });
