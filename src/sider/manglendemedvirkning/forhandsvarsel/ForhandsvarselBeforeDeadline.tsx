@@ -1,15 +1,23 @@
-import { Alert, BodyShort, Box, Heading, HStack } from "@navikt/ds-react";
+import {
+  BodyShort,
+  Box,
+  Heading,
+  HStack,
+  InfoCard,
+  LocalAlert,
+} from "@navikt/ds-react";
 import { formatNumericDate } from "@/utils/datoUtils";
-import { ClockIcon } from "@navikt/aksel-icons";
+import { ClockIcon, InformationSquareIcon } from "@navikt/aksel-icons";
 import ManglendeMedvirkningButtons from "@/sider/manglendemedvirkning/ManglendeMedvirkningButtons";
 import { VurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import SupportingTextList from "@/sider/manglendemedvirkning/forhandsvarsel/SupportingTextList";
+import { useNotification } from "@/context/notification/NotificationContext";
 
 const texts = {
   title: "Venter på svar fra bruker",
   sentAlert: {
     isSent: (sentDate: Date) =>
-      `Forhåndsvarselet er sendt ${formatNumericDate(sentDate)}.`,
+      `Forhåndsvarselet er sendt ${formatNumericDate(sentDate)}`,
     oversikten:
       "Personen ligger nå i oversikten og kan finnes under filteret for § 8-8 manglende medvirkning.",
   },
@@ -26,15 +34,28 @@ export default function ForhandsvarselBeforeDeadline({
   forhandsvarsel,
 }: Props) {
   const frist = forhandsvarsel.varsel?.svarfrist;
+  const { notification, setNotification } = useNotification();
 
   return (
     <Box>
-      <Alert variant="success" className="mb-2">
-        <BodyShort className="mb-0">
-          {texts.sentAlert.isSent(forhandsvarsel.createdAt)}
-        </BodyShort>
-        <BodyShort>{texts.sentAlert.oversikten}</BodyShort>
-      </Alert>
+      {notification && (
+        <LocalAlert status="success" size="small" className="mb-2">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+            <LocalAlert.CloseButton
+              onClick={() => setNotification(undefined)}
+            />
+          </LocalAlert.Header>
+        </LocalAlert>
+      )}
+      <InfoCard data-color="info" size="small" className="mb-2">
+        <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+          <InfoCard.Title>
+            {texts.sentAlert.isSent(forhandsvarsel.createdAt)}
+          </InfoCard.Title>
+        </InfoCard.Header>
+        <InfoCard.Content>{texts.sentAlert.oversikten}</InfoCard.Content>
+      </InfoCard>
       <Box
         background="default"
         padding="space-24"

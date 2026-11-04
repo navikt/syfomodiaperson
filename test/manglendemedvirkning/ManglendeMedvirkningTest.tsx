@@ -19,7 +19,15 @@ import {
   createManglendeMedvirkningVurdering,
   defaultForhandsvarselVurdering,
 } from "./manglendeMedvirkningTestData";
-import { clickButton, getButton } from "../testUtils";
+import {
+  changeTextInput,
+  clickButton,
+  getButton,
+  getTextInput,
+} from "../testUtils";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
+import { ISMANGLENDEMEDVIRKNING_ROOT } from "@/apiConstants";
 
 let queryClient: QueryClient;
 
@@ -140,6 +148,32 @@ describe("Manglendemedvirkning", () => {
       ).to.exist;
       expect(screen.getByRole("button", { name: "Send" })).to.exist;
       expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
+    });
+
+    it("viser suksessmelding etter at forhåndsvarsel er sendt", async () => {
+      mockVurdering();
+      mockServer.use(
+        http.post(
+          `*${ISMANGLENDEMEDVIRKNING_ROOT}/manglende-medvirkning/vurderinger`,
+          () => HttpResponse.json(defaultForhandsvarselVurdering),
+        ),
+      );
+      renderManglendeMedvirkning();
+      await clickButton(nyVurderingButtonText);
+      await changeTextInput(
+        getTextInput("Begrunnelse (obligatorisk)"),
+        "En begrunnelse",
+      );
+
+      await clickButton("Send");
+
+      expect(
+        await screen.findByRole("heading", {
+          name: (name) =>
+            name.endsWith("Forhåndsvarselet er sendt til bruker."),
+        }),
+      ).to.exist;
+      expect(screen.getByText("Venter på svar fra bruker")).to.exist;
     });
 
     it("viser ikke ny vurdering-knapp når forhåndsvarsel sendt", () => {
