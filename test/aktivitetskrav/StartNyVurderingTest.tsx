@@ -1,10 +1,11 @@
+import { ComponentProps } from "react";
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 
 import { StartNyVurdering } from "@/sider/aktivitetskrav/vurdering/StartNyVurdering";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import {
@@ -31,6 +32,10 @@ import { vurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
 import { NotificationContext } from "@/context/notification/NotificationContext";
 
 let queryClient: QueryClient;
+
+type NotificationContextValue = ComponentProps<
+  typeof NotificationContext.Provider
+>["value"];
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 const buttonText = "Start ny vurdering";
@@ -79,15 +84,19 @@ const aktivitetskravAutomatiskOppfylt = createAktivitetskrav(
 const newVurderingText =
   "Hvis situasjonen har endret seg kan du gjøre en ny vurdering av aktivitetskravet.";
 
-const renderStartNyVurdering = (aktivitetskrav?: AktivitetskravDTO) => {
+const renderStartNyVurdering = (
+  aktivitetskrav?: AktivitetskravDTO,
+  notificationContext: NotificationContextValue = {
+    notification: undefined,
+    setNotification: () => void 0,
+  },
+) => {
   render(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <NotificationContext.Provider
-          value={{ notification: undefined, setNotification: () => void 0 }}
-        >
+        <NotificationContext.Provider value={notificationContext}>
           <StartNyVurdering aktivitetskrav={aktivitetskrav} />
         </NotificationContext.Provider>
       </ValgtEnhetContext.Provider>
@@ -120,6 +129,17 @@ describe("StartNyVurdering", () => {
     ).to.exist;
     expect(screen.getByText(`Gjelder tilfelle ${periodeText}`)).to.exist;
     expect(getButton(buttonText)).to.exist;
+  });
+  it("clears notification when starting ny vurdering", async () => {
+    const setNotification = vi.fn();
+    renderStartNyVurdering(undefined, {
+      notification: { message: "Det er vurdert unntak" },
+      setNotification,
+    });
+
+    await clickButton(buttonText);
+
+    expect(setNotification).toHaveBeenCalledWith(undefined);
   });
   describe("Without oppfolgingstilfelle", () => {
     it("renders start ny vurdering even without oppfolgingstilfelle", () => {

@@ -29,7 +29,7 @@ import {
   stubVurderAktivitetskravApi,
   stubVurderAktivitetskravForhandsvarselApi,
 } from "../../stubs/stubIsaktivitetskrav";
-import { NotificationContext } from "@/context/notification/NotificationContext";
+import { NotificationProvider } from "@/context/notification/NotificationContext";
 import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
 import {
   aktivitetskrav,
@@ -49,11 +49,9 @@ const renderVurderAktivitetskrav = (aktivitetskravDto: AktivitetskravDTO) =>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <NotificationContext.Provider
-          value={{ notification: undefined, setNotification: () => void 0 }}
-        >
+        <NotificationProvider>
           <VurderAktivitetskrav aktivitetskrav={aktivitetskravDto} />
-        </NotificationContext.Provider>
+        </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
   );
@@ -133,6 +131,11 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist,
       );
+      expect(
+        await screen.findByRole("heading", {
+          name: /Forhåndsvarselet er sendt til \S+/,
+        }),
+      ).to.exist;
     });
 
     it("Send forhåndsvarsel with mal 'Uten arbeidsgiver'", async () => {

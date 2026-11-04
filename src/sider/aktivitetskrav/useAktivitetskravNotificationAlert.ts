@@ -8,7 +8,8 @@ type AktivitetskravStatusSuccess =
   | AktivitetskravStatus.UNNTAK
   | AktivitetskravStatus.IKKE_OPPFYLT
   | AktivitetskravStatus.INNSTILLING_OM_STANS
-  | AktivitetskravStatus.IKKE_AKTUELL;
+  | AktivitetskravStatus.IKKE_AKTUELL
+  | AktivitetskravStatus.FORHANDSVARSEL;
 
 export const useAktivitetskravNotificationAlert = () => {
   const { navn: brukersNavn } = useNavBrukerData();
@@ -32,6 +33,9 @@ export const useAktivitetskravNotificationAlert = () => {
       case AktivitetskravStatus.IKKE_AKTUELL: {
         return `Det er vurdert at aktivitetskravet ikke er aktuelt for ${brukersNavn} ${today}.`;
       }
+      case AktivitetskravStatus.FORHANDSVARSEL: {
+        return `Forhåndsvarselet er sendt til ${brukersNavn}.`;
+      }
     }
   };
 
@@ -41,6 +45,7 @@ export const useAktivitetskravNotificationAlert = () => {
         message: getText(status),
       });
     },
+    clearNotification: () => setNotification(undefined),
     notification,
   };
 };

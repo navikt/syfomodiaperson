@@ -89,7 +89,8 @@ interface StartNyVurderingProps {
 export function StartNyVurdering({ aktivitetskrav }: StartNyVurderingProps) {
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const createAktivitetskrav = useCreateAktivitetskrav();
-  const { notification } = useAktivitetskravNotificationAlert();
+  const { notification, clearNotification } =
+    useAktivitetskravNotificationAlert();
   const aktivitetskravGjelderActiveOppfolgingstilfelle =
     !!aktivitetskrav &&
     !!latestOppfolgingstilfelle &&
@@ -99,6 +100,7 @@ export function StartNyVurdering({ aktivitetskrav }: StartNyVurderingProps) {
     );
 
   const handleStartNyVurdering = () => {
+    clearNotification();
     const newAktivitetskrav = aktivitetskravGjelderActiveOppfolgingstilfelle
       ? { previousAktivitetskravUuid: aktivitetskrav?.uuid }
       : undefined;
