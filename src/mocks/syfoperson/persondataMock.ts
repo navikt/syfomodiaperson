@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 export const kontaktinformasjonMock = {
   epost: ARBEIDSTAKER_DEFAULT.epost,
   tlf: "99887766",
-  skalHaVarsel: false,
+  skalHaVarsel: true,
 };
 
 export const brukerinfoMock: BrukerinfoDTO = {
