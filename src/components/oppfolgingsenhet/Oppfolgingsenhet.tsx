@@ -1,5 +1,5 @@
 import { ReactNode, useRef } from "react";
-import { AlertProps, Box, HGrid } from "@navikt/ds-react";
+import { Box, HGrid, LocalAlertProps } from "@navikt/ds-react";
 import OppfolgingsenhetInnhold from "@/components/oppfolgingsenhet/OppfolgingsenhetInnhold";
 import TildelOppfolgingsenhetModal from "@/components/oppfolgingsenhet/TildelOppfolgingsenhetModal";
 
@@ -9,7 +9,7 @@ interface Props {
   ) => void;
 }
 
-export interface TildeltNotification extends Pick<AlertProps, "variant"> {
+export interface TildeltNotification extends Pick<LocalAlertProps, "status"> {
   header?: string;
   message: ReactNode;
 }
