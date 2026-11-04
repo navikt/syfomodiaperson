@@ -38,7 +38,7 @@ const DialogmoteInnkallingVelgVirksomhet = () => {
   const virksomheterWithDuplicates = virksomheterFromTilfelle.concat(
     virksomheterFromCurentLedere,
   );
-  const virksomheter = [...new Set(virksomheterWithDuplicates)];
+  const virksomheter: string[] = [];
   const defaultVirksomhet =
     virksomheter.length === 1 ? virksomheter[0] : undefined;
   const { field, fieldState } = useController<

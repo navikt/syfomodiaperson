@@ -3,7 +3,10 @@ import { ToggleNames } from "@/data/unleash/unleash_types";
 import { http, HttpResponse } from "msw";
 
 export const mockUnleashEndpoint = http.get(`${UNLEASH_ROOT}/toggles`, () => {
-  return HttpResponse.json(mockUnleashResponse);
+  return HttpResponse.json({
+    ...mockUnleashResponse,
+    isVirksomhetsinputEnabled: false,
+  });
 });
 
 export const mockUnleashResponse = Object.values(ToggleNames).reduce(
