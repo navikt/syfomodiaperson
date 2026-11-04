@@ -57,6 +57,8 @@ const texts = {
       "rutine for bruk av kartleggingsspørsmålene i sykefraværsoppfølgingen.",
   },
   textLegend: "Begrunnelse (valgfritt)",
+  textDescription:
+    "Brukes kun for å dokumentere vurderingen internt og blir ikke synlig for den sykmeldte. Den sykmeldte kan alltid be om innsyn i egen sak.",
   radioOptions: {
     RISIKO_FOR_LANGTIDSFRAVAR:
       "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
@@ -182,6 +184,7 @@ export function KartleggingVurdering({
       {shouldShowBegrunnelse && (
         <Textarea
           label={texts.textLegend}
+          description={texts.textDescription}
           value={vurdering.vurderingFritekst ?? ""}
           maxLength={VURDERING_MAX_LENGTH}
           readOnly={nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET}
