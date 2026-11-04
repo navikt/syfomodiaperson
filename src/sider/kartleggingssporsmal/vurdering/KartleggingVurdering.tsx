@@ -58,7 +58,7 @@ const texts = {
   },
   textLegend: "Begrunnelse (valgfritt)",
   textDescription:
-    "Brukes kun for å dokumentere vurderingen internt og blir ikke synlig for den sykmeldte.",
+    "Brukes kun for å dokumentere vurderingen internt og blir ikke synlig for den sykmeldte. Den sykmeldte kan alltid be om innsyn i egen sak.",
   radioOptions: {
     RISIKO_FOR_LANGTIDSFRAVAR:
       "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
