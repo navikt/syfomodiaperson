@@ -1,7 +1,8 @@
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { Alert, BodyShort, Box, Heading, List } from "@navikt/ds-react";
+import { BodyShort, Box, InfoCard, List } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
 import {
@@ -135,17 +136,23 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 ) : (
                   <>
                     {brukerKanIkkeVarslesDigitalt && (
-                      <Alert variant="warning" size="small">
-                        <Heading size="xsmall">
-                          {texts.reservertWarning.header}
-                        </Heading>
-                        <BodyShort size="small" spacing>
-                          {texts.reservertWarning.info1}
-                        </BodyShort>
-                        <BodyShort size="small" spacing>
-                          {texts.reservertWarning.info2}
-                        </BodyShort>
-                      </Alert>
+                      <InfoCard data-color="warning" size="small">
+                        <InfoCard.Header
+                          icon={<ExclamationmarkTriangleIcon aria-hidden />}
+                        >
+                          <InfoCard.Title>
+                            {texts.reservertWarning.header}
+                          </InfoCard.Title>
+                        </InfoCard.Header>
+                        <InfoCard.Content>
+                          <BodyShort size="small" spacing>
+                            {texts.reservertWarning.info1}
+                          </BodyShort>
+                          <BodyShort size="small">
+                            {texts.reservertWarning.info2}
+                          </BodyShort>
+                        </InfoCard.Content>
+                      </InfoCard>
                     )}
                     <BodyShort size="small" weight="semibold">
                       {texts.ikkeSvart}
