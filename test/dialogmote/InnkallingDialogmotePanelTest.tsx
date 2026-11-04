@@ -61,7 +61,11 @@ describe("InnkallingDialogmotePanel", () => {
     it("viser advarsel om fysisk brev når bruker ikke kan varsles", () => {
       renderInnkallingDialogmotePanel(brukerKanIkkeVarsles);
 
-      expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
+      expect(
+        screen.getByRole("heading", {
+          name: brukerKanIkkeVarslesPapirpostTexts.title,
+        }),
+      ).to.exist;
       expect(
         screen.getByText(
           brukerKanIkkeVarslesPapirpostTexts.brukerKanIkkeVarslesTekst,
@@ -84,9 +88,13 @@ describe("InnkallingDialogmotePanel", () => {
     it("viser ingen advarsel når bruker kan varsles", () => {
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
-      expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
       expect(
-        screen.queryByRole(
+        screen.queryByRole("heading", {
+          name: brukerKanIkkeVarslesPapirpostTexts.title,
+        }),
+      ).to.not.exist;
+      expect(
+        screen.queryByText(
           brukerKanIkkeVarslesPapirpostTexts.brukerKanIkkeVarslesTekst,
         ),
       ).to.not.exist;
