@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import {
-  Alert,
   Box,
   Button,
   Checkbox,
@@ -8,9 +7,12 @@ import {
   DatePicker,
   Heading,
   HelpText,
+  InfoCard,
+  InlineMessage,
   Textarea,
   useDatepicker,
 } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { FormProvider, useForm } from "react-hook-form";
 import VedtakFraDato from "@/sider/frisktilarbeid/VedtakFraDato";
@@ -209,9 +211,9 @@ export default function FattVedtakSkjema({ arbeidssokerFom }: Props) {
                 />
               </DatePicker>
               {tilDatoIsMaxDato && (
-                <Alert variant="warning" className="w-fit">
+                <InlineMessage status="warning" size="small">
                   {texts.maksdatoWarning(dayjs(tilDato).format("DD.MM.YYYY"))}
-                </Alert>
+                </InlineMessage>
               )}
             </div>
           </div>
@@ -227,12 +229,12 @@ export default function FattVedtakSkjema({ arbeidssokerFom }: Props) {
             label={texts.begrunnelse.label}
             error={errors.begrunnelse?.message}
           />
-          <Alert variant="info" contentMaxWidth={false} size="small">
-            <Heading spacing size="xsmall" level="3">
-              {texts.gosysAlertHeader}
-            </Heading>
-            {texts.gosysAlertBody}
-          </Alert>
+          <InfoCard data-color="info" size="small">
+            <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+              <InfoCard.Title>{texts.gosysAlertHeader}</InfoCard.Title>
+            </InfoCard.Header>
+            <InfoCard.Content>{texts.gosysAlertBody}</InfoCard.Content>
+          </InfoCard>
           {fattVedtak.isError && (
             <SkjemaInnsendingFeil
               error={fattVedtak.error}
