@@ -83,7 +83,7 @@ export default function DialogmoteMoteStatusPanel({ dialogmote }: Props) {
     : texts.skrivReferat;
 
   const { data: personOppgaver } = usePersonoppgaverQuery();
-  const personOppgaveForMote = personOppgaver.find(
+  const personOppgaveForMote = (personOppgaver ?? []).find(
     (oppgave: PersonOppgave) => oppgave.referanseUuid === dialogmote.uuid,
   );
 

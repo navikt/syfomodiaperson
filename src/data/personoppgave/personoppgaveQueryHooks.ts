@@ -1,7 +1,10 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISPERSONOPPGAVE_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
-import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
+import {
+  PersonOppgave,
+  PersonOppgaveDTO,
+} from "@/data/personoppgave/types/PersonOppgave";
 import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
 
@@ -12,16 +15,24 @@ export const personoppgaverQueryKeys = {
 export function usePersonoppgaverQuery() {
   const fnr = useValgtPersonident();
   const path = `${ISPERSONOPPGAVE_ROOT}/personoppgave/personident`;
-  const fetchPersonoppgaver = () => get<PersonOppgave[]>(path, fnr);
-  const query = useQuery({
+  const fetchPersonoppgaver = () => get<PersonOppgaveDTO[]>(path, fnr);
+  return useQuery({
     queryKey: personoppgaverQueryKeys.personoppgaver(fnr),
     queryFn: fetchPersonoppgaver,
     enabled: !!fnr,
     staleTime: minutesToMillis(60 * 12),
+    select: (data) => parseOppgaver(data),
   });
-
-  return {
-    data: query.data || [],
-    isPending: query.isPending,
-  };
 }
+
+export const parseOppgaver = (
+  oppgaver: PersonOppgaveDTO[],
+): PersonOppgave[] => {
+  return oppgaver.map((oppgave) => ({
+    ...oppgave,
+    opprettet: new Date(oppgave.opprettet),
+    behandletTidspunkt: oppgave.behandletTidspunkt
+      ? new Date(oppgave.behandletTidspunkt)
+      : null,
+  }));
+};

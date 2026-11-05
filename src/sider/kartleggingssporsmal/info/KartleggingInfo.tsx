@@ -47,7 +47,7 @@ export function KartleggingInfo() {
   const { data: oppgaver } = usePersonoppgaverQuery();
   const { sykmeldinger } = useGetSykmeldingerQuery();
 
-  const relevanteSykmeldinger = handleOppgaver(oppgaver, sykmeldinger);
+  const relevanteSykmeldinger = handleOppgaver(oppgaver ?? [], sykmeldinger);
 
   return (
     <Box

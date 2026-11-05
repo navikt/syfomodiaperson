@@ -61,7 +61,7 @@ export default function OppfolgingsplanerOversikt() {
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(
         oppfolgingsplanLPS,
-        getPersonOppgaverQuery.data,
+        getPersonOppgaverQuery.data ?? [],
       ),
   );
 
