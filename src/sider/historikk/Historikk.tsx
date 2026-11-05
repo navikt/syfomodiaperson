@@ -89,6 +89,12 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
           Friskmelding til arbeidsformidling
         </Tag>
       );
+    case "BISTANDSBEHOV":
+      return (
+        <Tag data-color="neutral" variant="outline">
+          Bistandsbehov
+        </Tag>
+      );
     case "DIALOG_MED_BEHANDLER":
       return (
         <Tag data-color="neutral" className="w-max" variant="outline">

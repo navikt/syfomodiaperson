@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -77,6 +77,12 @@ import {
   soknadUtenVedtakMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold.ts";
 import { unntaksvurderingQueryKeys } from "@/sider/oppfolgingsplan/hooks/unntaksvurderingerQueryHook";
+import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
+import {
+  personOppgaveBehandletBehandlerBerOmBistand,
+  personOppgaveUbehandletBehandlerBerOmBistand,
+  personOppgaveUbehandletBehandlerdialogSvar,
+} from "@/mocks/ispersonoppgave/personoppgaveMock";
 
 let queryClient: QueryClient;
 
@@ -94,6 +100,10 @@ const renderHistorikk = () =>
   );
 
 function setupTestdataHistorikk() {
+  queryClient.setQueryData(
+    personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => [],
+  );
   queryClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
       ARBEIDSTAKER_DEFAULT.personIdent,
@@ -200,6 +210,69 @@ describe("Historikk", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
     setupTestdataHistorikk();
+  });
+
+  describe("Bistandsbehov", () => {
+    it("viser mottatt bistandsbehov, men ikke andre personoppgaver", async () => {
+      queryClient.setQueryData(
+        personoppgaverQueryKeys.personoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent,
+        ),
+        () => [
+          personOppgaveUbehandletBehandlerBerOmBistand,
+          personOppgaveUbehandletBehandlerdialogSvar,
+        ],
+      );
+
+      renderHistorikk();
+
+      const mottatt = await screen.findByText("Behandler ber om bistand");
+      const row = mottatt.closest("tr");
+      expect(row).to.not.equal(null);
+      expect(row?.textContent).to.contain(
+        formatDateWithYear(
+          new Date(personOppgaveUbehandletBehandlerBerOmBistand.opprettet),
+        ),
+      );
+      expect(screen.getByText("Bistandsbehov")).to.exist;
+      expect(screen.getAllByRole("row")).to.have.length(2);
+      expect(screen.queryByText(/Bistandsbehov vurdert av/)).to.not.exist;
+    });
+
+    it("viser behandling før mottak med riktig dato og veileder", async () => {
+      queryClient.setQueryData(
+        personoppgaverQueryKeys.personoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent,
+        ),
+        () => [personOppgaveBehandletBehandlerBerOmBistand],
+      );
+
+      renderHistorikk();
+
+      await screen.findByText(
+        `Bistandsbehov vurdert av ${VEILEDER_IDENT_DEFAULT}`,
+      );
+      const rows = screen.getAllByRole("row");
+      expect(rows).to.have.length(3);
+      expect(
+        within(rows[1]).getByText(
+          `Bistandsbehov vurdert av ${VEILEDER_IDENT_DEFAULT}`,
+        ),
+      ).to.exist;
+      expect(within(rows[1]).getAllByRole("cell")[1].textContent).to.equal(
+        formatDateWithYear(
+          new Date(
+            personOppgaveBehandletBehandlerBerOmBistand.behandletTidspunkt,
+          ),
+        ),
+      );
+      expect(within(rows[2]).getByText("Behandler ber om bistand")).to.exist;
+      expect(within(rows[2]).getAllByRole("cell")[1].textContent).to.equal(
+        formatDateWithYear(
+          new Date(personOppgaveBehandletBehandlerBerOmBistand.opprettet),
+        ),
+      );
+    });
   });
 
   it("viser tilbakemelding når ingen historikk", async () => {
