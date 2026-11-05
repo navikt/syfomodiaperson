@@ -13,7 +13,6 @@ import {
 import {
   KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
-  KartleggingssporsmalSvarResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
 import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil.tsx";
@@ -24,7 +23,6 @@ import { EksternLenke } from "@/components/EksternLenke.tsx";
 import { Events, trackEvent } from "@/utils/umami.ts";
 import { KartleggingInfo } from "@/sider/kartleggingssporsmal/info/KartleggingInfo.tsx";
 import { useKartleggingssporsmalVurderSvar } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
-import { hasRisikoForLangtidsfravar } from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
 
 const VURDERING_MAX_LENGTH = 200;
 const LINK_14A = `https://veilarbpersonflate${finnNaisUrlIntern()}/vedtaksstotte`;
@@ -88,13 +86,9 @@ function logLinkEvent(tekst: string, href: string) {
 
 interface Props {
   nyesteKandidat: KartleggingssporsmalKandidatResponseDTO;
-  answeredQuestions: KartleggingssporsmalSvarResponseDTO;
 }
 
-export function KartleggingVurdering({
-  nyesteKandidat,
-  answeredQuestions,
-}: Props) {
+export function KartleggingVurdering({ nyesteKandidat }: Props) {
   const vurderSvar = useKartleggingssporsmalVurderSvar();
 
   const [vurdering, setVurdering] = useState<{
@@ -113,10 +107,11 @@ export function KartleggingVurdering({
     vurderingFritekstError: null,
   });
 
-  const shouldShowBegrunnelse =
-    vurdering.vurderingAlternativ &&
-    (vurdering.vurderingAlternativ === "RISIKO_FOR_LANGTIDSFRAVAR" ||
-      hasRisikoForLangtidsfravar(answeredQuestions));
+  const isFerdigbehandlet =
+    nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET;
+  const isVurdertRisikoForLangtidsfravar =
+    nyesteKandidat.vurdering?.vurderingAlternativ ===
+    "RISIKO_FOR_LANGTIDSFRAVAR";
 
   return (
     <Box background="default" className="flex flex-col p-6 gap-4 mb-2">
@@ -181,22 +176,20 @@ export function KartleggingVurdering({
           {texts.radioOptions.IKKE_RISIKO_FOR_LANGTIDSFRAVAR}
         </Radio>
       </RadioGroup>
-      {shouldShowBegrunnelse && (
-        <Textarea
-          label={texts.textLegend}
-          description={texts.textDescription}
-          value={vurdering.vurderingFritekst ?? ""}
-          maxLength={VURDERING_MAX_LENGTH}
-          readOnly={nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET}
-          error={vurderingError.vurderingFritekstError}
-          onChange={(e) =>
-            setVurdering((vurderingParam) => ({
-              ...vurderingParam,
-              vurderingFritekst: e.target.value,
-            }))
-          }
-        />
-      )}
+      <Textarea
+        label={texts.textLegend}
+        description={texts.textDescription}
+        value={vurdering.vurderingFritekst ?? ""}
+        maxLength={VURDERING_MAX_LENGTH}
+        readOnly={isFerdigbehandlet}
+        error={vurderingError.vurderingFritekstError}
+        onChange={(e) =>
+          setVurdering((vurderingParam) => ({
+            ...vurderingParam,
+            vurderingFritekst: e.target.value,
+          }))
+        }
+      />
 
       {nyesteKandidat.status === KandidatStatus.SVAR_MOTTATT && (
         <Button
@@ -216,7 +209,6 @@ export function KartleggingVurdering({
               return;
             }
             if (
-              shouldShowBegrunnelse &&
               vurdering.vurderingFritekst &&
               vurdering.vurderingFritekst.length > VURDERING_MAX_LENGTH
             ) {
@@ -230,9 +222,7 @@ export function KartleggingVurdering({
             vurderSvar.mutate({
               kandidatUuid: nyesteKandidat.kandidatUuid,
               vurderingAlternativ: vurdering.vurderingAlternativ,
-              vurderingFritekst: shouldShowBegrunnelse
-                ? (vurdering.vurderingFritekst ?? undefined)
-                : undefined,
+              vurderingFritekst: vurdering.vurderingFritekst ?? undefined,
             });
           }}
           loading={vurderSvar.isPending}
@@ -243,21 +233,18 @@ export function KartleggingVurdering({
 
       {vurderSvar.isError && <SkjemaInnsendingFeil error={vurderSvar.error} />}
 
-      {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET && (
-        <SuccessAlert nyesteKandidat={nyesteKandidat} />
+      {isFerdigbehandlet && <SuccessAlert nyesteKandidat={nyesteKandidat} />}
+      {isFerdigbehandlet && isVurdertRisikoForLangtidsfravar && (
+        <BodyLong size="small">
+          {texts.vurdertRisikoForLangtidsfravar}
+          <EksternLenke
+            href={LINK_14A}
+            onClick={() => logLinkEvent(texts.lenkeTilModiaAO, LINK_14A)}
+          >
+            {texts.lenkeTilModiaAO}
+          </EksternLenke>
+        </BodyLong>
       )}
-      {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET &&
-        shouldShowBegrunnelse && (
-          <BodyLong size="small">
-            {texts.vurdertRisikoForLangtidsfravar}
-            <EksternLenke
-              href={LINK_14A}
-              onClick={() => logLinkEvent(texts.lenkeTilModiaAO, LINK_14A)}
-            >
-              {texts.lenkeTilModiaAO}
-            </EksternLenke>
-          </BodyLong>
-        )}
     </Box>
   );
 }
