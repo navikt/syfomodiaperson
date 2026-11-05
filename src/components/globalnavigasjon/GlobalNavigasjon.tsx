@@ -129,7 +129,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(
         oppfolgingsplanLPS,
-        personoppgaver.data,
+        personoppgaver.data ?? [],
       ),
   );
 
@@ -154,7 +154,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
           const tasks = numberOfTasks(
             menypunkt,
             motebehov.data,
-            personoppgaver.data,
+            personoppgaver.data ?? [],
             oppfolgingsplanerLPSMedPersonOppgave,
             aktivitetskrav.data,
             arbeidsuforhetVurderinger.data,
