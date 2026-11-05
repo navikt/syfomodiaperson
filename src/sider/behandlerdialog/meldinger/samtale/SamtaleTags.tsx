@@ -130,7 +130,7 @@ function getSamtaleTagStatus(
 
 export default function SamtaleTags({ meldinger }: Props): ReactElement | null {
   const { data: oppgaver } = usePersonoppgaverQuery();
-  const samtaleTagStatus = getSamtaleTagStatus(meldinger, oppgaver);
+  const samtaleTagStatus = getSamtaleTagStatus(meldinger, oppgaver ?? []);
 
   switch (samtaleTagStatus) {
     case "NY_MELDING": {
