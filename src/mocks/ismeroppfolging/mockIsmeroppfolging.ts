@@ -17,6 +17,7 @@ import { http, HttpResponse } from "msw";
 import {
   KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
+  KartleggingssporsmalKandidatVurderingRequestDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 
 export const senOppfolgingKandidatMock: SenOppfolgingKandidatResponseDTO = {
@@ -125,12 +126,26 @@ export const mockIsmeroppfolging = [
       kartleggingssporsmalVurderingFerdigbehandlet,
     ]);
   }),
-  http.put(
+  http.put<
+    { kandidatUUID: string },
+    Omit<KartleggingssporsmalKandidatVurderingRequestDTO, "kandidatUuid">
+  >(
     `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/:kandidatUUID`,
-    () => {
-      kartleggingssporsmalMock = kartleggingssporsmalVurderingFerdigbehandlet;
+    async ({ request }) => {
+      const { vurderingAlternativ, vurderingFritekst } = await request.json();
+      kartleggingssporsmalMock = {
+        ...kartleggingssporsmalMock,
+        status: KandidatStatus.FERDIGBEHANDLET,
+        statusAt: new Date(),
+        vurdering: {
+          vurdertAt: new Date(),
+          vurdertBy: VEILEDER_DEFAULT.ident,
+          vurderingAlternativ,
+          vurderingFritekst,
+        },
+      };
 
-      return HttpResponse.json(kartleggingssporsmalVurderingFerdigbehandlet);
+      return HttpResponse.json(kartleggingssporsmalMock);
     },
   ),
 ];

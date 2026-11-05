@@ -168,10 +168,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
               {!behandletWithoutVurdering &&
                 answeredQuestions &&
                 nyesteKandidat.status !== KandidatStatus.KANDIDAT && (
-                  <KartleggingVurdering
-                    nyesteKandidat={nyesteKandidat}
-                    answeredQuestions={answeredQuestions}
-                  />
+                  <KartleggingVurdering nyesteKandidat={nyesteKandidat} />
                 )}
               <KartleggingssporsmalHistorikk
                 tidligereKandidater={kandidater.slice(1)}
