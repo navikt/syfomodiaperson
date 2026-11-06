@@ -463,6 +463,68 @@ describe("Kartleggingssporsmal", () => {
     );
   });
 
+  describe("§ 14a-vurdering text", () => {
+    const vurdertRisikoText =
+      "Det er vurdert risiko for langtidsfravær. Da kan det være aktuelt å gjøre en § 14a-vurdering i";
+
+    beforeEach(() => {
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1Answered,
+        kartleggingssporsmalVurderingFerdigbehandlet.kandidatUuid,
+      );
+    });
+
+    it("is shown when ferdigbehandlet with vurdert risiko for langtidsfravær", () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingssporsmalVurderingFerdigbehandlet,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(screen.getByText(vurdertRisikoText, { exact: false })).to.exist;
+    });
+
+    it("is hidden when ferdigbehandlet without vurdert risiko for langtidsfravær", () => {
+      const vurdering = kartleggingssporsmalVurderingFerdigbehandlet.vurdering;
+      mockKartleggingssporsmalKandidat(
+        {
+          ...kartleggingssporsmalVurderingFerdigbehandlet,
+          vurdering: vurdering && {
+            ...vurdering,
+            vurderingAlternativ: "IKKE_RISIKO_FOR_LANGTIDSFRAVAR",
+          },
+        },
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(screen.queryByText(vurdertRisikoText, { exact: false })).to.not
+        .exist;
+    });
+
+    it("is hidden before vurdering is saved, even when risiko is selected", async () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1Answered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
+
+      renderKartleggingssporsmal();
+
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
+
+      expect(screen.queryByText(vurdertRisikoText, { exact: false })).to.not
+        .exist;
+    });
+  });
+
   describe("Evaluate answers to kartleggingsspørsmål with vurdering", () => {
     it("Submitting without choosing an option shows error message", async () => {
       mockKartleggingssporsmalKandidat(
@@ -554,79 +616,19 @@ describe("Kartleggingssporsmal", () => {
       ).to.exist;
     });
 
-    describe("Begrunnelse field visibility", () => {
-      it("is shown regardless of selected alternativ when answers indicate risk", async () => {
-        mockKartleggingssporsmalKandidat(
-          kartleggingIsKandidatAndAnsweredQuestions,
-          ARBEIDSTAKER_DEFAULT.personIdent,
-        );
-        mockKartleggingssporsmalSvar(
-          kartleggingssporsmalFlervalgV1Answered,
-          kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
-        );
+    it("Begrunnelse is shown before any alternativ is selected", () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1LowRiskAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
 
-        renderKartleggingssporsmal();
+      renderKartleggingssporsmal();
 
-        expect(
-          screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
-        ).to.not.exist;
-
-        await clickRadio(
-          "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
-        );
-
-        expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
-
-        await clickRadio(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-        );
-
-        expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
-      });
-
-      it("is hidden when answers do not indicate risk and IKKE_RISIKO_FOR_LANGTIDSFRAVAR is selected", async () => {
-        mockKartleggingssporsmalKandidat(
-          kartleggingIsKandidatAndAnsweredQuestions,
-          ARBEIDSTAKER_DEFAULT.personIdent,
-        );
-        mockKartleggingssporsmalSvar(
-          kartleggingssporsmalFlervalgV1LowRiskAnswered,
-          kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
-        );
-
-        renderKartleggingssporsmal();
-
-        expect(
-          screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
-        ).to.not.exist;
-
-        await clickRadio(
-          "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
-        );
-
-        expect(
-          screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
-        ).to.not.exist;
-      });
-
-      it("is shown when answers do not indicate risk but RISIKO_FOR_LANGTIDSFRAVAR is selected", async () => {
-        mockKartleggingssporsmalKandidat(
-          kartleggingIsKandidatAndAnsweredQuestions,
-          ARBEIDSTAKER_DEFAULT.personIdent,
-        );
-        mockKartleggingssporsmalSvar(
-          kartleggingssporsmalFlervalgV1LowRiskAnswered,
-          kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
-        );
-
-        renderKartleggingssporsmal();
-
-        await clickRadio(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-        );
-
-        expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
-      });
+      expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
     });
 
     it("Begrunnelse is optional, and submitting without one succeeds", async () => {
