@@ -23,6 +23,14 @@ import AvslagDatePicker from "@/sider/arbeidsuforhet/avslag/AvslagDatePicker";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { Paragraph } from "@/components/Paragraph";
 import dayjs from "dayjs";
+import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
   title: "Skriv innstilling om avslag til Nav arbeid og ytelser",
@@ -58,6 +66,7 @@ const begrunnelseMaxLength = 8000;
 
 interface Props {
   sisteVurdering: VurderingResponseDTO;
+  begrunnelseUtkast?: string;
 }
 
 interface FormValues {
@@ -65,17 +74,37 @@ interface FormValues {
   fom: Date;
 }
 
-export function AvslagForm({ sisteVurdering }: Props) {
+const DRAFT_CATEGORY = "arbeidsuforhet-avslag";
+
+export function AvslagForm({ sisteVurdering, begrunnelseUtkast }: Props) {
   const lagreVurdering = useSaveVurderingArbeidsuforhet();
   const { getAvslagDocument } = useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
-  const formMethods = useForm<FormValues>();
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
+  const formMethods = useForm<FormValues>({
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "" },
+  });
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
   } = formMethods;
+  const saveDraft = useSaveDraft<DraftTextDTO>(DRAFT_CATEGORY);
+  const deleteDraft = useDeleteDraft(DRAFT_CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) {
+      return;
+    }
+    saveDraft.mutate(
+      { begrunnelse: tekst },
+      {
+        onSuccess: () => setUtkastSavedTime(new Date()),
+        onError: () => setUtkastSavedTime(undefined),
+      },
+    );
+  }, 750);
 
   function submit(values: FormValues) {
     const vurderingRequestDTO: Avslag = {
@@ -92,6 +121,9 @@ export function AvslagForm({ sisteVurdering }: Props) {
     };
     lagreVurdering.mutate(vurderingRequestDTO, {
       onSuccess: () => {
+        setUtkastSavedTime(undefined);
+        debouncedAutoSaveDraft.cancel();
+        deleteDraft.mutate(undefined);
         setNotification({
           message: texts.success,
         });
@@ -116,6 +148,9 @@ export function AvslagForm({ sisteVurdering }: Props) {
             {...register("begrunnelse", {
               maxLength: begrunnelseMaxLength,
               required: texts.missingBegrunnelse,
+              onChange: (e) => {
+                debouncedAutoSaveDraft(e.target.value);
+              },
             })}
             description={texts.begrunnelseDescription}
             value={watch("begrunnelse")}
@@ -124,6 +159,10 @@ export function AvslagForm({ sisteVurdering }: Props) {
             size="small"
             minRows={6}
             maxLength={begrunnelseMaxLength}
+          />
+          <DraftSaveStatus
+            isSaveError={saveDraft.isError}
+            savedTime={utkastSavedTime}
           />
           {lagreVurdering.isError && (
             <SkjemaInnsendingFeil error={lagreVurdering.error} />
