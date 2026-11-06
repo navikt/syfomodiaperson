@@ -40,6 +40,9 @@ import {
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { generateUUID } from "@/utils/utils";
+import { mockServer } from "../setup";
+import { delay, http, HttpResponse } from "msw";
+import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { mockUnleashTogglesOffResponse } from "@/mocks/unleashMocks.ts";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks.ts";
 import { ToggleNames } from "@/data/unleash/unleash_types.ts";
@@ -246,6 +249,26 @@ describe("Kartleggingssporsmal", () => {
         exact: false,
       }),
     ).to.exist;
+  });
+
+  it("venter med å vise siden til kontaktinformasjon er hentet", () => {
+    mockKartleggingssporsmalKandidat(
+      kartleggingIsKandidatAndReceivedQuestions,
+      ARBEIDSTAKER_DEFAULT.personIdent,
+    );
+    queryClient.removeQueries({
+      queryKey: brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+    });
+    mockServer.use(
+      http.get(`*${SYFOPERSON_ROOT}/person/kontaktinformasjon`, async () => {
+        await delay("infinite");
+        return HttpResponse.json(kontaktinformasjonMock);
+      }),
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(screen.queryByText("Den sykmeldte har ikke svart")).to.not.exist;
   });
 
   it("Sykmeldt is kandidat, is reservert, and has not answered questions", () => {

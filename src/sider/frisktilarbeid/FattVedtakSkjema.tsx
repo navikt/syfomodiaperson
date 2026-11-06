@@ -231,7 +231,7 @@ export default function FattVedtakSkjema({ arbeidssokerFom }: Props) {
           />
           <InfoCard data-color="info" size="small">
             <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
-              <InfoCard.Title>{texts.gosysAlertHeader}</InfoCard.Title>
+              <InfoCard.Title as="h3">{texts.gosysAlertHeader}</InfoCard.Title>
             </InfoCard.Header>
             <InfoCard.Content>{texts.gosysAlertBody}</InfoCard.Content>
           </InfoCard>

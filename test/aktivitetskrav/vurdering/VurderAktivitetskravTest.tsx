@@ -45,7 +45,7 @@ import {
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { stubVurderAktivitetskravApi } from "../../stubs/stubIsaktivitetskrav";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { NotificationContext } from "@/context/notification/NotificationContext";
+import { NotificationProvider } from "@/context/notification/NotificationContext";
 import {
   aktivitetskrav,
   buttonTexts,
@@ -69,11 +69,9 @@ const renderVurderAktivitetskrav = (aktivitetskravDto: AktivitetskravDTO) =>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <NotificationContext.Provider
-          value={{ notification: undefined, setNotification: () => void 0 }}
-        >
+        <NotificationProvider>
           <VurderAktivitetskrav aktivitetskrav={aktivitetskravDto} />
-        </NotificationContext.Provider>
+        </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
   );
@@ -319,6 +317,11 @@ describe("VurderAktivitetskrav", () => {
           expectedVurdering,
         );
       });
+      expect(
+        await screen.findByRole("heading", {
+          name: /Det er vurdert å avvente aktivitetskravet for/,
+        }),
+      ).to.exist;
     });
   });
   describe("Ikke oppfylt", () => {

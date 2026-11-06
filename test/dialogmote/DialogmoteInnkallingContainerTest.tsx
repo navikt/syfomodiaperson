@@ -21,6 +21,12 @@ import {
 } from "@/utils/datoUtils";
 import DialogmoteInnkallingContainer from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingContainer";
 import { renderWithRouter } from "../testRouterUtils";
+import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
+import { KontaktinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
+import { mockServer } from "../setup";
+import { delay, http, HttpResponse } from "msw";
+import { SYFOPERSON_ROOT } from "@/apiConstants";
 
 let queryClient: QueryClient;
 
@@ -52,6 +58,10 @@ const createOppfolgingstilfelle = (end: Date): OppfolgingstilfelleDTO => {
   };
 };
 
+const mockKontaktinfo = (kontaktinfo: KontaktinfoDTO) => {
+  queryClient.setQueryData(brukerQueryKeys.kontaktinfo(fnr), () => kontaktinfo);
+};
+
 const renderDialogmoteInnkallingContainer = () =>
   renderWithRouter(
     <QueryClientProvider client={queryClient}>
@@ -69,6 +79,7 @@ const renderDialogmoteInnkallingContainer = () =>
 describe("DialogmoteInnkallingContainer", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
+    mockKontaktinfo({ ...kontaktinformasjonMock, skalHaVarsel: true });
   });
 
   it("viser skjema når det er mindre enn 16 dager siden brukers siste oppfolgingstilfelle", () => {
@@ -100,6 +111,40 @@ describe("DialogmoteInnkallingContainer", () => {
     ).to.exist;
 
     expect(screen.queryByRole("img", { name: "feil-ikon" })).to.not.exist;
+  });
+
+  it("venter med å vise skjema til kontaktinformasjon er hentet", () => {
+    queryClient.removeQueries({ queryKey: brukerQueryKeys.kontaktinfo(fnr) });
+    mockServer.use(
+      http.get(`*${SYFOPERSON_ROOT}/person/kontaktinformasjon`, async () => {
+        await delay("infinite");
+        return HttpResponse.json(kontaktinformasjonMock);
+      }),
+    );
+    mockOppfolgingstilfellePerson([
+      createOppfolgingstilfelle(daysFromToday(-15)),
+    ]);
+
+    renderDialogmoteInnkallingContainer();
+
+    expect(screen.queryByRole("button", { name: "Send innkallingene" })).to.not
+      .exist;
+  });
+
+  it("viser advarsel om papirpost sammen med skjema når innbygger ikke kan varsles digitalt", () => {
+    mockKontaktinfo({ ...kontaktinformasjonMock, skalHaVarsel: false });
+    mockOppfolgingstilfellePerson([
+      createOppfolgingstilfelle(daysFromToday(-15)),
+    ]);
+
+    renderDialogmoteInnkallingContainer();
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Innbyggeren kan ikke varsles digitalt",
+      }),
+    ).to.exist;
+    expect(screen.getByRole("button", { name: "Send innkallingene" })).to.exist;
   });
 
   it("don't show a no virksomhet alert in schema when innbygger has no oppfolgingstilfelle", () => {

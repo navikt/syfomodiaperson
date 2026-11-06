@@ -68,7 +68,8 @@ export default function KartleggingssporsmalSide(): ReactElement {
     useKartleggingssporsmalSvarQuery(nyesteKandidat);
   const answeredQuestions = getKartleggingssporsmalSvar.data;
 
-  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
+  const { brukerKanIkkeVarslesDigitalt, isLoading: henterKontaktinfo } =
+    useKontaktinfoQuery();
 
   const isSurveyVisible =
     toggles.isFlexjarKartleggingssporsmalEnabled &&
@@ -90,7 +91,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
   ) : null;
 
   const isPending =
-    getKandidater.isPending || getKartleggingssporsmalSvar.isLoading;
+    getKandidater.isPending ||
+    getKartleggingssporsmalSvar.isLoading ||
+    henterKontaktinfo;
   const isError = getKandidater.isError || getKartleggingssporsmalSvar.isError;
 
   const behandletWithoutVurdering =

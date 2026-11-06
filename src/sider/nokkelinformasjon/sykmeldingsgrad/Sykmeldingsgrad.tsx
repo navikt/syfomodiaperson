@@ -84,15 +84,17 @@ export default function Sykmeldingsgrad({
           )}
         </BodyShort>
       )}
-      {harOpplystOmJobbetIOppfolgingstilfelle(
-        sykmeldingerIOppfolgingstilfelle,
-      ) && (
-        <InfoCard data-color="info" size="small" className="mt-2 w-fit">
-          <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-            {texts.harJobbetUtoverSykmeldingsgrad}
-          </InfoCard.Message>
-        </InfoCard>
-      )}
+      <div role="status">
+        {harOpplystOmJobbetIOppfolgingstilfelle(
+          sykmeldingerIOppfolgingstilfelle,
+        ) && (
+          <InfoCard data-color="info" size="small" className="mt-2 w-fit">
+            <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+              {texts.harJobbetUtoverSykmeldingsgrad}
+            </InfoCard.Message>
+          </InfoCard>
+        )}
+      </div>
       <div className="flex flex-row">
         <SykmeldingsgradChart sykmeldingsperioder={sortedSykmeldingsperioder} />
 
