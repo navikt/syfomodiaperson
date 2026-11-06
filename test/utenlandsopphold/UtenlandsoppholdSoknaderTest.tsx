@@ -49,10 +49,9 @@ describe("UtenlandsoppholdSoknader", () => {
 
     expect(screen.queryByText("Søknaden er behandlet")).to.not.exist;
     expect(
-      screen.getByRole("heading", {
-        name: /Pass på at en søknad ikke blir behandlet både i Infotrygd og i Modia/,
-        level: 2,
-      }),
+      screen.getByText(
+        /Pass på at en søknad ikke blir behandlet både i Infotrygd og i Modia/,
+      ),
     ).to.exist;
   });
 

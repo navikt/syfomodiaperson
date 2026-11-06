@@ -53,7 +53,7 @@ const forbeholdOvrigeVilkarBrevText =
 
 const perioderUtenforTilfelleWarning =
   "En eller flere av periodene det er søkt om ligger utenfor sykmeldingsperioden.";
-const sykepengerIkkeUtbetaltWarning = /Sykepenger er ikke utbetalt\./;
+const sykepengerIkkeUtbetaltWarning = "Sykepenger er ikke utbetalt";
 
 const renderUtenlandsoppholdSoknad = (
   soknadId: string = soknadUtenVedtakMock.soknadId,
@@ -107,9 +107,12 @@ describe("UtenlandsoppholdSoknad", () => {
     renderUtenlandsoppholdSoknad();
 
     expect(
-      await screen.findByText(
-        "Noe gikk galt ved henting av søknader. Vennligst prøv igjen senere.",
-      ),
+      await screen.findByRole("heading", {
+        name: (name) =>
+          name.endsWith(
+            "Noe gikk galt ved henting av søknader. Vennligst prøv igjen senere.",
+          ),
+      }),
     ).to.exist;
   });
 
@@ -1035,7 +1038,11 @@ describe("UtenlandsoppholdSoknad", () => {
 
       await clickButton("Start behandling");
 
-      expect(await screen.findByText(sykepengerIkkeUtbetaltWarning)).to.exist;
+      expect(
+        await screen.findByRole("heading", {
+          name: sykepengerIkkeUtbetaltWarning,
+        }),
+      ).to.exist;
 
       await clickRadio("Innvilget: Godkjenn hele perioden");
       await clickButton("Se brev og send");
@@ -1077,7 +1084,11 @@ describe("UtenlandsoppholdSoknad", () => {
 
       await clickButton("Start behandling");
 
-      expect(await screen.findByText(sykepengerIkkeUtbetaltWarning)).to.exist;
+      expect(
+        await screen.findByRole("heading", {
+          name: sykepengerIkkeUtbetaltWarning,
+        }),
+      ).to.exist;
 
       await clickRadio("Innvilget: Godkjenn hele perioden");
       await clickButton("Se brev og send");

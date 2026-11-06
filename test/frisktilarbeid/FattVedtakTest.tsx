@@ -61,6 +61,12 @@ describe("FattVedtakSkjema", () => {
 
     expect(screen.getByRole("button", { name: "Fatt vedtak" })).to.exist;
     expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
+    expect(
+      screen.getByRole("heading", {
+        name: "Modia sender Gosys-oppgaven automatisk",
+        level: 3,
+      }),
+    ).to.exist;
   });
 
   it("beregner tom-dato basert på maksdato", async () => {

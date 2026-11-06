@@ -9,14 +9,23 @@ import {
 } from "@/utils/datoUtils";
 import { ReactElement } from "react";
 import { avventVurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
-import { Alert, BodyLong, BodyShort, Label } from "@navikt/ds-react";
+import { BodyLong, InfoCard, LocalAlert } from "@navikt/ds-react";
+import {
+  ExclamationmarkTriangleIcon,
+  InformationSquareIcon,
+} from "@navikt/aksel-icons";
 
 const texts = {
+  forhandsvarselInfoTitle: (dato: string) => `Forhåndsvarsel er sendt ${dato}`,
   forhandsvarselInfoBody:
     "Når fristen er passert vil det dukke opp en hendelse i oversikten.",
-  forhandsvarselWarningLabel: "Aktivitetskravet må vurderes",
+  forhandsvarselWarningTitle: "Aktivitetskravet må vurderes",
+  forhandsvarselWarningSendt: (dato: string) =>
+    `Det ble sendt ut et forhåndsvarsel ${dato}.`,
   forhandsvarselWarningBody:
     "Fristen er gått ut og aktivitetskravet må vurderes.",
+  avventerTil: (dato: string) => `Avventer til ${dato}`,
+  avventer: "Avventer",
 };
 
 interface Props {
@@ -32,38 +41,47 @@ export function AktivitetskravVurderingAlert({
   switch (status) {
     case AktivitetskravStatus.FORHANDSVARSEL: {
       return isExpired(vurdering.varsel?.svarfrist) ? (
-        <Alert variant="warning" className="mb-4">
-          <Label size="small">{texts.forhandsvarselWarningLabel}</Label>
-          <BodyShort size="small">{`Det ble sendt ut et forhåndsvarsel ${vurderingDato}.`}</BodyShort>
-          <BodyShort size="small">{texts.forhandsvarselWarningBody}</BodyShort>
-        </Alert>
+        <LocalAlert status="warning" className="mb-4">
+          <LocalAlert.Header>
+            <LocalAlert.Title>
+              {texts.forhandsvarselWarningTitle}
+            </LocalAlert.Title>
+          </LocalAlert.Header>
+          <LocalAlert.Content>
+            {texts.forhandsvarselWarningSendt(vurderingDato)}{" "}
+            {texts.forhandsvarselWarningBody}
+          </LocalAlert.Content>
+        </LocalAlert>
       ) : (
-        <Alert variant="info" className="mb-4">
-          <Label size="small">{`Forhåndsvarsel er sendt ${vurderingDato}`}</Label>
-          <BodyShort size="small">{texts.forhandsvarselInfoBody}</BodyShort>
-        </Alert>
+        <InfoCard data-color="info" className="mb-4">
+          <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+            <InfoCard.Title>
+              {texts.forhandsvarselInfoTitle(vurderingDato)}
+            </InfoCard.Title>
+          </InfoCard.Header>
+          <InfoCard.Content>{texts.forhandsvarselInfoBody}</InfoCard.Content>
+        </InfoCard>
       );
     }
     case AktivitetskravStatus.AVVENT: {
       return (
-        <Alert variant="warning" className="mb-4" contentMaxWidth={false}>
-          <Label size="small">
-            {frist
-              ? `Avventer til ${formatDateWithMonthName(frist)}`
-              : "Avventer"}
-          </Label>
-          <BodyLong size="small">{beskrivelse}</BodyLong>
-          <ul>
-            {arsaker.map((arsak, index) => {
-              const avventArsakText = avventVurderingArsakTexts[arsak] || arsak;
-              return (
-                <li key={index}>
-                  <BodyShort size="small">{avventArsakText}</BodyShort>
-                </li>
-              );
-            })}
-          </ul>
-        </Alert>
+        <InfoCard data-color="warning" className="mb-4">
+          <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+            <InfoCard.Title>
+              {frist
+                ? texts.avventerTil(formatDateWithMonthName(frist))
+                : texts.avventer}
+            </InfoCard.Title>
+          </InfoCard.Header>
+          <InfoCard.Content>
+            <BodyLong>{beskrivelse}</BodyLong>
+            <ul>
+              {arsaker.map((arsak, index) => (
+                <li key={index}>{avventVurderingArsakTexts[arsak] || arsak}</li>
+              ))}
+            </ul>
+          </InfoCard.Content>
+        </InfoCard>
       );
     }
     default: {

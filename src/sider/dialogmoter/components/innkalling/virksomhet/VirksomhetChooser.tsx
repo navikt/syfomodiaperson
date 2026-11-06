@@ -1,8 +1,9 @@
-import { ReactElement, ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import { VirksomhetInput } from "@/sider/dialogmoter/components/innkalling/virksomhet/VirksomhetInput";
 import { VirksomhetRadioGruppe } from "@/sider/dialogmoter/components/innkalling/virksomhet/VirksomhetRadioGruppe";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { Alert } from "@navikt/ds-react";
+import { InfoCard } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const texts = {
   chooseArbeidsgiver: "Velg arbeidsgiver",
@@ -12,7 +13,7 @@ const texts = {
   report_error: "Hvis du mener det er feil, meld sak i Porten.",
 };
 
-interface VirksomhetRadioGruppeProps {
+interface Props {
   velgVirksomhet(virksomhetsnummer: string): void;
   defaultVirksomhet: string | undefined;
   virksomheter: string[];
@@ -20,13 +21,13 @@ interface VirksomhetRadioGruppeProps {
   error: ReactNode;
 }
 
-export const VirksomhetChooser = ({
+export function VirksomhetChooser({
   velgVirksomhet,
   defaultVirksomhet,
   virksomheter,
   label,
   error,
-}: VirksomhetRadioGruppeProps): ReactElement => {
+}: Props) {
   const { toggles } = useFeatureToggles();
   const [showInput, setShowInput] = useState<boolean>(false);
 
@@ -44,14 +45,18 @@ export const VirksomhetChooser = ({
       {showInput && <VirksomhetInput velgVirksomhet={velgVirksomhet} />}
 
       {virksomheter.length === 0 && !toggles.isVirksomhetsinputEnabled && (
-        <Alert variant="warning" size="small" className="[&>*]:max-w-fit">
-          {texts.noArbeidsgiver}
-          <ul>
-            <li>{texts.unemployed}</li>
-            <li>{texts.report_error}</li>
-          </ul>
-        </Alert>
+        <InfoCard data-color="warning" size="small">
+          <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+            <InfoCard.Title>{texts.noArbeidsgiver}</InfoCard.Title>
+          </InfoCard.Header>
+          <InfoCard.Content>
+            <ul>
+              <li>{texts.unemployed}</li>
+              <li>{texts.report_error}</li>
+            </ul>
+          </InfoCard.Content>
+        </InfoCard>
       )}
     </div>
   );
-};
+}

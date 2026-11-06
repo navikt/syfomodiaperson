@@ -23,6 +23,9 @@ import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { KontaktinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { renderWithRouter } from "../testRouterUtils";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
+import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
 
 let queryClient: QueryClient;
 
@@ -61,7 +64,11 @@ describe("InnkallingDialogmotePanel", () => {
     it("viser advarsel om fysisk brev når bruker ikke kan varsles", () => {
       renderInnkallingDialogmotePanel(brukerKanIkkeVarsles);
 
-      expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
+      expect(
+        screen.getByRole("heading", {
+          name: brukerKanIkkeVarslesPapirpostTexts.title,
+        }),
+      ).to.exist;
       expect(
         screen.getByText(
           brukerKanIkkeVarslesPapirpostTexts.brukerKanIkkeVarslesTekst,
@@ -84,9 +91,13 @@ describe("InnkallingDialogmotePanel", () => {
     it("viser ingen advarsel når bruker kan varsles", () => {
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
-      expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
       expect(
-        screen.queryByRole(
+        screen.queryByRole("heading", {
+          name: brukerKanIkkeVarslesPapirpostTexts.title,
+        }),
+      ).to.not.exist;
+      expect(
+        screen.queryByText(
           brukerKanIkkeVarslesPapirpostTexts.brukerKanIkkeVarslesTekst,
         ),
       ).to.not.exist;
@@ -240,6 +251,34 @@ describe("InnkallingDialogmotePanel", () => {
     const labels = screen.getAllByText(/Avventer til/i);
     expect(labels.length).to.be.greaterThan(0);
     expect(screen.getByText("Vi avventer ny informasjon")).to.exist;
+  });
+
+  it("viser suksessmelding etter at avvent er lagret", async () => {
+    setKandidat();
+    mockServer.use(
+      http.post(`*${ISDIALOGMOTE_ROOT}/avvent`, () => HttpResponse.json({})),
+      http.post(`*${ISDIALOGMOTE_ROOT}/avvent/query`, () =>
+        HttpResponse.json([]),
+      ),
+    );
+    renderInnkallingDialogmotePanel(brukerKanVarsles);
+    await userEvent.click(screen.getByRole("button", { name: "Avvent" }));
+    await userEvent.type(
+      screen.getByLabelText("Beskrivelse"),
+      "En utfyllende begrunnelse",
+    );
+    await userEvent.type(
+      screen.getByLabelText("Avventer til"),
+      dayjs().add(1, "day").format("DD.MM.YYYY"),
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Lagre" }));
+
+    expect(
+      await screen.findByRole("heading", {
+        name: (name) => name.endsWith("Dialogmøtet er satt til avvent"),
+      }),
+    ).to.exist;
   });
 
   it("viser ikke avvent-banner når bruker verken er kandidat eller har motebehov", () => {

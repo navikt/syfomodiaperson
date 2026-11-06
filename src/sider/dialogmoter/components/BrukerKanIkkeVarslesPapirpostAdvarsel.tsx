@@ -1,16 +1,24 @@
-import { Alert, BodyShort } from "@navikt/ds-react";
-import { ReactElement } from "react";
+import { BodyShort, InfoCard } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 export const texts = {
+  title: "Innbyggeren kan ikke varsles digitalt",
   papirpostDialogmote:
     "Innkalling, referat og andre brev blir sendt som papirpost, i tillegg til at det blir sendt digitalt.",
   brukerKanIkkeVarslesTekst:
     "Innbyggeren er reservert mot elektronisk kommunikasjon med det offentlige, eller kontaktinformasjon mangler. Vi kan derfor ikke sende varsler til denne innbyggeren.",
 };
 
-export const BrukerKanIkkeVarslesPapirpostAdvarsel = (): ReactElement => (
-  <Alert variant="warning" size="small" className="mb-4 [&>*]:max-w-fit">
-    <BodyShort size="small">{texts.brukerKanIkkeVarslesTekst}</BodyShort>
-    <BodyShort size="small">{texts.papirpostDialogmote}</BodyShort>
-  </Alert>
-);
+export function BrukerKanIkkeVarslesPapirpostAdvarsel() {
+  return (
+    <InfoCard data-color="warning" size="small" className="mb-4">
+      <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+        <InfoCard.Title>{texts.title}</InfoCard.Title>
+      </InfoCard.Header>
+      <InfoCard.Content>
+        <BodyShort size="small">{texts.brukerKanIkkeVarslesTekst}</BodyShort>
+        <BodyShort size="small">{texts.papirpostDialogmote}</BodyShort>
+      </InfoCard.Content>
+    </InfoCard>
+  );
+}

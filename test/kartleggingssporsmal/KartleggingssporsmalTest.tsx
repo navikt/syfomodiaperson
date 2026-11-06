@@ -40,6 +40,9 @@ import {
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { generateUUID } from "@/utils/utils";
+import { mockServer } from "../setup";
+import { delay, http, HttpResponse } from "msw";
+import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { mockUnleashTogglesOffResponse } from "@/mocks/unleashMocks.ts";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks.ts";
 import { ToggleNames } from "@/data/unleash/unleash_types.ts";
@@ -248,6 +251,26 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
   });
 
+  it("venter med å vise siden til kontaktinformasjon er hentet", () => {
+    mockKartleggingssporsmalKandidat(
+      kartleggingIsKandidatAndReceivedQuestions,
+      ARBEIDSTAKER_DEFAULT.personIdent,
+    );
+    queryClient.removeQueries({
+      queryKey: brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+    });
+    mockServer.use(
+      http.get(`*${SYFOPERSON_ROOT}/person/kontaktinformasjon`, async () => {
+        await delay("infinite");
+        return HttpResponse.json(kontaktinformasjonMock);
+      }),
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(screen.queryByText("Den sykmeldte har ikke svart")).to.not.exist;
+  });
+
   it("Sykmeldt is kandidat, is reservert, and has not answered questions", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingIsKandidatAndReceivedQuestions,
@@ -424,6 +447,7 @@ describe("Kartleggingssporsmal", () => {
     expect(
       screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}`),
     ).to.exist;
+    expect(screen.queryByText("Vurderingen er lagret")).to.not.exist;
 
     expect(
       screen.queryByText(
@@ -538,6 +562,34 @@ describe("Kartleggingssporsmal", () => {
       await clickButton("Lagre vurdering, fjern oppgaven");
       expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
         .exist;
+      expect(
+        screen.getByRole("heading", {
+          name: (name) => name.endsWith("Vurderingen er lagret"),
+        }),
+      ).to.exist;
+    });
+
+    it("Success message can be closed", async () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1Answered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
+      stubDefaultIsmeroppfolging();
+      renderKartleggingssporsmal();
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
+      await clickButton("Lagre vurdering, fjern oppgaven");
+      await screen.findByText("Oppgaven er behandlet av Z990000");
+
+      await clickButton("Lukk");
+
+      expect(screen.queryByText("Vurderingen er lagret")).to.not.exist;
+      expect(screen.getByText("Oppgaven er behandlet av Z990000")).to.exist;
     });
 
     it("API returning error will show error message", async () => {

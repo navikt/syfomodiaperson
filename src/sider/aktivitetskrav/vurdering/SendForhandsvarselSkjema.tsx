@@ -1,5 +1,9 @@
 import { ChangeEvent, useState } from "react";
-import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import {
+  AktivitetskravStatus,
+  SendForhandsvarselDTO,
+} from "@/data/aktivitetskrav/aktivitetskravTypes";
+import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
 import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { addWeeks, toDateOnly } from "@/utils/datoUtils";
@@ -63,6 +67,7 @@ export function SendForhandsvarselSkjema({
   begrunnelseUtkast,
 }: VurderAktivitetskravSkjemaProps) {
   const sendForhandsvarsel = useSendForhandsvarsel(aktivitetskravUuid);
+  const { displayNotification } = useAktivitetskravNotificationAlert();
   const [brevmal, setBrevmal] = useState<Brevmal>(Brevmal.MED_ARBEIDSGIVER);
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
@@ -122,6 +127,7 @@ export function SendForhandsvarselSkjema({
     if (aktivitetskravUuid) {
       sendForhandsvarsel.mutate(forhandsvarselDTO, {
         onSuccess: () => {
+          displayNotification(AktivitetskravStatus.FORHANDSVARSEL);
           setUtkastSavedTime(undefined);
           debouncedAutoSaveDraft.cancel();
           deleteDraft.mutate(undefined);

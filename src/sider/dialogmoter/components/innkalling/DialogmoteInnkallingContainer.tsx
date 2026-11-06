@@ -50,12 +50,14 @@ export default function DialogmoteInnkallingContainer(): ReactElement {
     isError: hentingOppfolgingstilfellerFeilet,
   } = useOppfolgingstilfellePersonQuery();
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+  const { isLoading: henterKontaktinfo } = useKontaktinfoQuery();
 
   if (aktivtDialogmote) {
     return <Navigate to={moteoversiktRoutePath} />;
   }
 
-  const henter = henterLedere || henterOppfolgingstilfeller;
+  const henter =
+    henterLedere || henterOppfolgingstilfeller || henterKontaktinfo;
   const hentingFeilet =
     hentingLedereFeilet || hentingOppfolgingstilfellerFeilet;
 

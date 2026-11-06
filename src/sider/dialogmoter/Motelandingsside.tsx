@@ -12,6 +12,7 @@ import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDia
 import { MotelandingssidePanels } from "@/sider/dialogmoter/utils/MotelandingssidePanels";
 import { harUbehandletMotebehov } from "@/utils/motebehovUtils";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
+import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { MoteSvarHistorikkGroupedByMote } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkGroupedByMote.tsx";
 
 const texts = {
@@ -36,11 +37,13 @@ export default function Motelandingsside() {
   const { isLoading: henterLedere, isError: henterLedereFeilet } =
     useLedereQuery();
   const motebehov = useMotebehovQuery();
+  const { isLoading: henterKontaktinfo } = useKontaktinfoQuery();
 
   const henter =
     henterDialogmoter ||
     henterDialogmoteunntak ||
     henterLedere ||
+    henterKontaktinfo ||
     getDialogmoteIkkeAktuell.isLoading;
   const hentingFeilet =
     henterLedereFeilet ||

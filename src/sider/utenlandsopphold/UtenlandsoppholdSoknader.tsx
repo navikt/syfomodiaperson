@@ -4,9 +4,11 @@ import {
   BodyShort,
   Box,
   Button,
+  InfoCard,
   Loader,
   Table,
 } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import {
   Soknad,
@@ -105,11 +107,11 @@ export function UtenlandsoppholdSoknader() {
         </LocalAlert>
       )}
 
-      <LocalAlert status="announcement">
-        <LocalAlert.Header>
-          <LocalAlert.Title>{texts.infotrygdInfo}</LocalAlert.Title>
-        </LocalAlert.Header>
-      </LocalAlert>
+      <InfoCard data-color="info">
+        <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+          {texts.infotrygdInfo}
+        </InfoCard.Message>
+      </InfoCard>
 
       <Box background="default" padding="space-16" className="flex flex-col">
         {isPending ? (
