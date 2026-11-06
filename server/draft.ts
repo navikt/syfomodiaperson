@@ -10,6 +10,7 @@ enum Draft {
   MELDING_TIL_BEHANDLER = "behandlerdialog-meldingtilbehandler",
   ARBEIDSUFORHET_FORHANDSVARSEL = "arbeidsuforhet-forhandsvarsel",
   ARBEIDSUFORHET_AVSLAG_UTEN_FORHANDSVARSEL = "arbeidsuforhet-avslag-uten-forhandsvarsel",
+  ARBEIDSUFORHET_AVSLAG = "arbeidsuforhet-avslag",
   ARBEIDSUFORHET_OPPFYLT = "arbeidsuforhet-oppfylt",
   MANGLENDEMEDVIRKNING_FORHANDSVARSEL = "manglendemedvirkning-forhandsvarsel",
   AKTIVITETSKRAV_FORHANDSVARSEL = "aktivitetskrav-forhandsvarsel",
@@ -38,6 +39,8 @@ function toDraftCachekey(
       return `draft:arbeidsuforhet:forhandsvarsel:${veilederIdent}:${personident}`;
     case Draft.ARBEIDSUFORHET_AVSLAG_UTEN_FORHANDSVARSEL:
       return `draft:arbeidsuforhet:avslag-uten-forhandsvarsel:${veilederIdent}:${personident}`;
+    case Draft.ARBEIDSUFORHET_AVSLAG:
+      return `draft:arbeidsuforhet:avslag:${veilederIdent}:${personident}`;
     case Draft.ARBEIDSUFORHET_OPPFYLT:
       return `draft:arbeidsuforhet:oppfylt:${veilederIdent}:${personident}`;
     case Draft.MANGLENDEMEDVIRKNING_FORHANDSVARSEL:
