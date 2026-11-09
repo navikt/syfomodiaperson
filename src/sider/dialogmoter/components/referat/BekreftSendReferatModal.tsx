@@ -1,10 +1,14 @@
-import { ReactElement, ReactNode } from "react";
+import { MouseEvent, ReactElement, ReactNode, useRef } from "react";
+import type { ModalLukketProperties } from "@navikt/analytics-types";
 import { BodyShort, Button, Label, Modal, VStack } from "@navikt/ds-react";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { formaterFnr } from "@/utils/fnrUtils";
 import { formatDateTimeWithComma } from "@/utils/datoUtils";
+
+/** Måten modalen ble lukket på, for Umami-sporing. */
+export type LukkMetode = NonNullable<ModalLukketProperties["lukkMetode"]>;
 
 export const texts = {
   heading: "Sjekk at referatet gjelder riktig person",
@@ -27,12 +31,23 @@ interface Props {
   isPending: boolean;
   onBekreft: () => void;
   onAvbryt: () => void;
-  onClose: () => void;
+  onClose: (lukkMetode: LukkMetode) => void;
 }
 
 interface MottakerProps {
   label: string;
   children: ReactNode;
+}
+
+function isKlikkUtenforDialog(event: MouseEvent<HTMLDialogElement>): boolean {
+  if (event.target !== event.currentTarget) return false;
+  const rect = event.currentTarget.getBoundingClientRect();
+  return (
+    event.clientX < rect.left ||
+    event.clientX > rect.right ||
+    event.clientY < rect.top ||
+    event.clientY > rect.bottom
+  );
 }
 
 function Mottaker({ label, children }: MottakerProps): ReactElement {
@@ -63,12 +78,31 @@ export function BekreftSendReferatModal({
     virksomhetsnavn ??
     `${texts.orgnr} ${dialogmote.arbeidsgiver.virksomhetsnummer}`;
   const behandler = dialogmote.behandler;
+  const lukkMetodeRef = useRef<LukkMetode | undefined>(undefined);
+
+  function handleClick(event: MouseEvent<HTMLDialogElement>) {
+    lukkMetodeRef.current = isKlikkUtenforDialog(event)
+      ? "klikk-utenfor"
+      : undefined;
+  }
+
+  function handleCancel() {
+    lukkMetodeRef.current = "escape";
+  }
+
+  function handleClose() {
+    const lukkMetode = lukkMetodeRef.current ?? "lukk-knapp";
+    lukkMetodeRef.current = undefined;
+    onClose(lukkMetode);
+  }
 
   return (
     <Modal
       open
       closeOnBackdropClick
-      onClose={onClose}
+      onClick={handleClick}
+      onCancel={handleCancel}
+      onClose={handleClose}
       header={{ heading: texts.heading, size: "medium" }}
       width="medium"
     >

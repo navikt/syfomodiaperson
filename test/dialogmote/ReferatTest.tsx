@@ -10,7 +10,7 @@ import Referat, {
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/sider/dialogmoter/components/referat/Referat";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   changeTextInput,
   clickButton,
@@ -32,7 +32,11 @@ import {
   narmesteLederNavn,
   veileder,
 } from "./testData";
-import { screen, waitFor, within } from "@testing-library/react";
+import {
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedReferatDocument } from "./testDataDocuments";
 import { queryClientWithMockData } from "../testQueryClient";
@@ -43,6 +47,12 @@ import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 import { StoreKey } from "@/hooks/useLocalStorageState";
 import { texts as bekreftTexts } from "@/sider/dialogmoter/components/referat/BekreftSendReferatModal";
 import { formaterFnr } from "@/utils/fnrUtils";
+import { Events, trackEvent } from "@/utils/umami";
+
+vi.mock("@/utils/umami", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/utils/umami")>()),
+  trackEvent: vi.fn(),
+}));
 
 let queryClient: QueryClient;
 
@@ -375,8 +385,49 @@ describe("ReferatTest", () => {
       expect(screen.queryByText(bekreftTexts.intro)).to.not.exist;
       expect(queryClient.getMutationCache().getAll()).to.be.empty;
     });
+
+    describe("Sporing av lukking", () => {
+      beforeEach(() => {
+        vi.mocked(trackEvent).mockClear();
+      });
+
+      it("sporer handlings-knapp når veileder avbryter", async () => {
+        const modal = await apneBekreftModal();
+
+        await userEvent.click(
+          within(modal).getByRole("button", {
+            name: bekreftTexts.avbryt,
+            hidden: true,
+          }),
+        );
+
+        expectModalLukket("handlings-knapp");
+      });
+    });
   });
 });
+
+const apneBekreftModal = async () => {
+  renderReferat(dialogmoteMedBehandler);
+  await passSkjemaTekstInput();
+  await clickButton("Lagre og send");
+  return screen.getByRole("dialog", {
+    name: bekreftTexts.heading,
+    hidden: true,
+  });
+};
+
+const expectModalLukket = (lukkMetode: string) => {
+  expect(trackEvent).toHaveBeenCalledWith({
+    name: Events.MODAL_LUKKET,
+    properties: { tittel: bekreftTexts.heading, lukkMetode },
+  });
+  expect(
+    vi
+      .mocked(trackEvent)
+      .mock.calls.filter(([event]) => event.name === Events.MODAL_LUKKET),
+  ).to.have.length(1);
+};
 
 const bekreftSendReferat = async () => {
   await userEvent.click(

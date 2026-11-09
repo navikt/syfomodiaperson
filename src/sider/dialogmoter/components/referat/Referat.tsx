@@ -63,6 +63,7 @@ import { PlusIcon, TrashIcon } from "@navikt/aksel-icons";
 import { EksternLenke } from "@/components/EksternLenke";
 import {
   BekreftSendReferatModal,
+  LukkMetode,
   texts as bekreftTexts,
 } from "@/sider/dialogmoter/components/referat/BekreftSendReferatModal";
 import { Events, trackEvent } from "@/utils/umami";
@@ -304,9 +305,7 @@ export default function Referat({ dialogmote, mode }: Props): ReactElement {
     });
   };
 
-  const lukkBekreftModal = (
-    lukkMetode?: "handlings-knapp" | "programmatisk",
-  ) => {
+  const lukkBekreftModal = (lukkMetode: LukkMetode) => {
     setReferatTilBekreftelse(undefined);
     trackEvent({
       name: Events.MODAL_LUKKET,
@@ -321,7 +320,7 @@ export default function Referat({ dialogmote, mode }: Props): ReactElement {
       properties: { tekst: bekreftTexts.bekreft, variant: "primary" },
     });
     submit(referatTilBekreftelse);
-    lukkBekreftModal("programmatisk");
+    lukkBekreftModal("handlings-knapp");
   };
 
   const isNullOrEmpty = (value?: string | undefined) => {
@@ -739,7 +738,7 @@ export default function Referat({ dialogmote, mode }: Props): ReactElement {
           isPending={isSendingReferat()}
           onBekreft={bekreftSendReferat}
           onAvbryt={() => lukkBekreftModal("handlings-knapp")}
-          onClose={() => lukkBekreftModal()}
+          onClose={lukkBekreftModal}
         />
       )}
     </Box>
