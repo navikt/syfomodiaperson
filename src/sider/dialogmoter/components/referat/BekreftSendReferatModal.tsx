@@ -39,7 +39,7 @@ interface MottakerProps {
   children: ReactNode;
 }
 
-function isKlikkUtenforDialog(event: MouseEvent<HTMLDialogElement>): boolean {
+function isClickOutsideOfModal(event: MouseEvent<HTMLDialogElement>): boolean {
   if (event.target !== event.currentTarget) return false;
   const rect = event.currentTarget.getBoundingClientRect();
   return (
@@ -86,7 +86,7 @@ export function BekreftSendReferatModal({
   const lukkMetodeRef = useRef<LukkMetode | undefined>(undefined);
 
   function handleClick(event: MouseEvent<HTMLDialogElement>) {
-    lukkMetodeRef.current = isKlikkUtenforDialog(event)
+    lukkMetodeRef.current = isClickOutsideOfModal(event)
       ? "klikk-utenfor"
       : undefined;
   }
