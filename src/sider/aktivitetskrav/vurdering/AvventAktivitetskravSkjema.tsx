@@ -21,6 +21,7 @@ import {
 } from "@navikt/ds-react";
 import { avventVurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
 import { ButtonRow } from "@/components/Layout";
+import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
 
 const texts = {
   body1:
@@ -49,6 +50,7 @@ export function AvventAktivitetskravSkjema({
   setModalOpen,
 }: AvventAktivitetskravSkjemaProps) {
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
+  const { displayNotification } = useAktivitetskravNotificationAlert();
   const methods = useForm<AvventAktivitetskravSkjemaValues>();
   const {
     register,
@@ -65,7 +67,10 @@ export function AvventAktivitetskravSkjema({
       frist: values.fristDato,
     };
     vurderAktivitetskrav.mutate(createAktivitetskravVurderingDTO, {
-      onSuccess: () => setModalOpen(false),
+      onSuccess: () => {
+        displayNotification(AktivitetskravStatus.AVVENT);
+        setModalOpen(false);
+      },
     });
   };
 

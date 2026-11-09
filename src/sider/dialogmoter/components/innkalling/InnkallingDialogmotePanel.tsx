@@ -8,7 +8,7 @@ import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandi
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { harUbehandletMotebehov } from "@/utils/motebehovUtils";
-import { BodyShort, Button } from "@navikt/ds-react";
+import { BodyShort, Button, LocalAlert } from "@navikt/ds-react";
 import {
   dialogmoteIkkeAktuellRoutePath,
   dialogmoteRoutePath,
@@ -32,6 +32,7 @@ const texts = {
   nyttMote: "Nytt dialogmøte",
   ikkeAktuell: "Ikke aktuell",
   avvent: "Avvent",
+  avventLagret: "Dialogmøtet er satt til avvent",
 };
 
 function NyttDialogmoteButton() {
@@ -82,6 +83,7 @@ export default function InnkallingDialogmotePanel({
   const { isKandidat, avvent } = useDialogmotekandidat();
   const { data: motebehovData } = useMotebehovQuery();
   const [visAvventModal, setVisAvventModal] = useState(false);
+  const [isAvventLagret, setIsAvventLagret] = useState(false);
   const isPossibleToAvvent =
     isKandidat || harUbehandletMotebehov(motebehovData);
 
@@ -94,7 +96,18 @@ export default function InnkallingDialogmotePanel({
           isKandidat={isKandidat}
           isOpen={visAvventModal}
           onClose={() => setVisAvventModal(false)}
+          onSaved={() => setIsAvventLagret(true)}
         />
+        {isAvventLagret && (
+          <LocalAlert status="success" size="small" className="mb-4">
+            <LocalAlert.Header>
+              <LocalAlert.Title>{texts.avventLagret}</LocalAlert.Title>
+              <LocalAlert.CloseButton
+                onClick={() => setIsAvventLagret(false)}
+              />
+            </LocalAlert.Header>
+          </LocalAlert>
+        )}
         {isPossibleToAvvent && avvent && (
           <DialogmoteAvventAlert avvent={avvent} />
         )}

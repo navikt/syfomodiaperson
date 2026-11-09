@@ -15,7 +15,12 @@ const renderDialogmoteAvventModal = (
 ) =>
   render(
     <QueryClientProvider client={queryClient}>
-      <DialogmoteAvventModal isKandidat={isKandidat} isOpen onClose={onClose} />
+      <DialogmoteAvventModal
+        isKandidat={isKandidat}
+        isOpen
+        onClose={onClose}
+        onSaved={() => undefined}
+      />
     </QueryClientProvider>,
   );
 

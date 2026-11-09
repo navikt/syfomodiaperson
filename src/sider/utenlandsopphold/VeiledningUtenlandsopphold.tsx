@@ -4,7 +4,8 @@ import {
   NestableListItem,
   VeiledningListForItems,
 } from "@/components/veiledning/VeiledningListForItems";
-import { Box, Heading, LocalAlert } from "@navikt/ds-react";
+import { Box, Heading, InfoCard } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const linkRutineYrkesskade =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Vurdering-av-%C3%A5rsakssammenheng-ved-yrkesskade-yrkessykdm.aspx";
@@ -92,19 +93,17 @@ const seOgsaLenkerListItems: NestableListItem[] = [
 function Rutine() {
   return (
     <Box>
-      <LocalAlert status={"warning"} className="mb-4">
-        <LocalAlert.Header>
-          <LocalAlert.Title>
-            {texts.warningStorbritanniaHeading}
-          </LocalAlert.Title>
-        </LocalAlert.Header>
-        <LocalAlert.Content>
+      <InfoCard data-color="warning" size="small" className="mb-4">
+        <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+          <InfoCard.Title>{texts.warningStorbritanniaHeading}</InfoCard.Title>
+        </InfoCard.Header>
+        <InfoCard.Content>
           {texts.warningStorbritanniaContent}{" "}
           <EksternLenke href="https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Sykepenger-under-opphold-i-Storbritannia.aspx?web=1">
             {texts.warningStorbritanniaLinkText}
           </EksternLenke>
-        </LocalAlert.Content>
-      </LocalAlert>
+        </InfoCard.Content>
+      </InfoCard>
 
       <Heading level="3" size="small" spacing>
         {texts.headingRutine}
