@@ -4,6 +4,7 @@ import { BodyShort, Button, Label, Modal, VStack } from "@navikt/ds-react";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { formaterFnr } from "@/utils/fnrUtils";
 import { formatDateTimeWithComma } from "@/utils/datoUtils";
 
@@ -26,7 +27,6 @@ export const texts = {
 
 interface Props {
   dialogmote: DialogmoteDTO;
-  naermesteLeder: string;
   behandlerMottarReferat: boolean | undefined;
   isPending: boolean;
   onBekreft: () => void;
@@ -63,7 +63,6 @@ function Mottaker({ label, children }: MottakerProps): ReactElement {
 
 export function BekreftSendReferatModal({
   dialogmote,
-  naermesteLeder,
   behandlerMottarReferat,
   isPending,
   onBekreft,
@@ -71,12 +70,18 @@ export function BekreftSendReferatModal({
   onClose,
 }: Props): ReactElement {
   const navbruker = useNavBrukerData();
+  const { getCurrentNarmesteLeder, isLoading, isError } = useLedereQuery();
   const { virksomhetsnavn } = useVirksomhetQuery(
     dialogmote.arbeidsgiver.virksomhetsnummer,
   );
   const arbeidsgiver =
     virksomhetsnavn ??
     `${texts.orgnr} ${dialogmote.arbeidsgiver.virksomhetsnummer}`;
+  const narmesteLederNavn =
+    !isLoading && !isError
+      ? getCurrentNarmesteLeder(dialogmote.arbeidsgiver.virksomhetsnummer)
+          ?.narmesteLederNavn
+      : undefined;
   const behandler = dialogmote.behandler;
   const lukkMetodeRef = useRef<LukkMetode | undefined>(undefined);
 
@@ -115,7 +120,9 @@ export function BekreftSendReferatModal({
               {`, ${texts.fnr} ${formaterFnr(dialogmote.arbeidstaker.personIdent)}`}
             </Mottaker>
             <Mottaker label={texts.arbeidsgiver}>
-              {`${naermesteLeder}, ${arbeidsgiver}`}
+              {narmesteLederNavn
+                ? `${narmesteLederNavn}, ${arbeidsgiver}`
+                : arbeidsgiver}
             </Mottaker>
             {behandler && (
               <Mottaker label={texts.behandler}>

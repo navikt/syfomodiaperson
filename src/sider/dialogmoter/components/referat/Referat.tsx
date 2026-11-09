@@ -733,7 +733,6 @@ export default function Referat({ dialogmote, mode }: Props): ReactElement {
       {referatTilBekreftelse && (
         <BekreftSendReferatModal
           dialogmote={dialogmote}
-          naermesteLeder={referatTilBekreftelse.naermesteLeder}
           behandlerMottarReferat={referatTilBekreftelse.behandlerMottarReferat}
           isPending={isSendingReferat()}
           onBekreft={bekreftSendReferat}
