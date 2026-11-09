@@ -24,6 +24,7 @@ import {
   annenDeltakerFunksjon,
   annenDeltakerNavn,
   arbeidstaker,
+  behandlerDeltaker,
   behandlerDeltakerTekst,
   dialogmote,
   dialogmoteMedBehandler,
@@ -31,7 +32,7 @@ import {
   narmesteLederNavn,
   veileder,
 } from "./testData";
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedReferatDocument } from "./testDataDocuments";
 import { queryClientWithMockData } from "../testQueryClient";
@@ -40,6 +41,8 @@ import { NewDialogmoteReferatDTO } from "@/sider/dialogmoter/types/dialogmoteRef
 import { renderWithRouter } from "../testRouterUtils";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 import { StoreKey } from "@/hooks/useLocalStorageState";
+import { texts as bekreftTexts } from "@/sider/dialogmoter/components/referat/BekreftSendReferatModal";
+import { formaterFnr } from "@/utils/fnrUtils";
 
 let queryClient: QueryClient;
 
@@ -150,11 +153,11 @@ describe("ReferatTest", () => {
     await userEvent.click(behandlerMottaReferatCheckbox);
 
     await clickButton("Lagre og send");
+    await bekreftSendReferat();
 
     // Sjekk behandlers deltakelse-felter og brev
-    const ferdigstillMutation = queryClient.getMutationCache().getAll().pop();
-    const newReferat = ferdigstillMutation?.state
-      .variables as unknown as NewDialogmoteReferatDTO;
+    const newReferat =
+      (await getFerdigstiltReferat()) as NewDialogmoteReferatDTO;
     expect(newReferat).to.deep.include({
       behandlerDeltatt: false,
       behandlerMottarReferat: false,
@@ -174,6 +177,7 @@ describe("ReferatTest", () => {
 
     expect(screen.getAllByText(referatSkjemaValideringsTexts.situasjonMissing))
       .to.not.be.empty;
+    expect(screen.queryByText(bekreftTexts.intro)).to.not.exist;
     expect(screen.getAllByText(referatSkjemaValideringsTexts.konklusjonMissing))
       .to.not.be.empty;
     expect(
@@ -268,8 +272,8 @@ describe("ReferatTest", () => {
 
     const expectedSendtDato = new Date();
     await clickButton("Lagre og send");
+    await bekreftSendReferat();
 
-    const ferdigstillMutation = queryClient.getMutationCache().getAll().pop();
     const expectedFerdigstilling = {
       narmesteLederNavn: narmesteLederNavn,
       situasjon: moteTekster.situasjonTekst,
@@ -285,9 +289,7 @@ describe("ReferatTest", () => {
         { funksjon: annenDeltakerFunksjon, navn: annenDeltakerNavn },
       ],
     };
-    expect(ferdigstillMutation?.state.variables).to.deep.equal(
-      expectedFerdigstilling,
-    );
+    expect(await getFerdigstiltReferat()).to.deep.equal(expectedFerdigstilling);
   });
 
   it("forhåndsviser referat", async () => {
@@ -326,7 +328,74 @@ describe("ReferatTest", () => {
 
     expect(screen.getByText(getReferatTexts(Malform.NYNORSK).intro2)).to.exist;
   });
+
+  describe("Bekreftelse før sending", () => {
+    beforeEach(() => {
+      stubFerdigstillApi(dialogmoteMedBehandler.uuid);
+    });
+
+    it("viser hvem referatet gjelder og mottakere, uten å sende referatet", async () => {
+      renderReferat(dialogmoteMedBehandler);
+      await passSkjemaTekstInput();
+
+      await clickButton("Lagre og send");
+
+      const modal = screen.getByRole("dialog", {
+        name: bekreftTexts.heading,
+        hidden: true,
+      });
+      expect(within(modal).getByText(arbeidstaker.navn)).to.exist;
+      expect(
+        within(modal).getByText(`${formaterFnr(arbeidstaker.personident)}`, {
+          exact: false,
+        }),
+      ).to.exist;
+      expect(within(modal).getByText(narmesteLederNavn, { exact: false })).to
+        .exist;
+      expect(within(modal).getByText(behandlerDeltaker.behandlerNavn)).to.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
+    it("sender ikke referatet når veileder avbryter", async () => {
+      renderReferat(dialogmoteMedBehandler);
+      await passSkjemaTekstInput();
+      await clickButton("Lagre og send");
+
+      const modal = screen.getByRole("dialog", {
+        name: bekreftTexts.heading,
+        hidden: true,
+      });
+      await userEvent.click(
+        within(modal).getByRole("button", {
+          name: bekreftTexts.avbryt,
+          hidden: true,
+        }),
+      );
+
+      expect(screen.queryByText(bekreftTexts.intro)).to.not.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+  });
 });
+
+const bekreftSendReferat = async () => {
+  await userEvent.click(
+    screen.getByRole("button", { name: bekreftTexts.bekreft, hidden: true }),
+  );
+};
+
+const getFerdigstiltReferat = async () => {
+  let referat: unknown;
+  await waitFor(() => {
+    referat = queryClient
+      .getMutationCache()
+      .getAll()
+      .map((mutation) => mutation.state.variables)
+      .find((variables) => typeof variables === "object");
+    expect(referat).to.exist;
+  });
+  return referat;
+};
 
 const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
   return renderWithRouter(
