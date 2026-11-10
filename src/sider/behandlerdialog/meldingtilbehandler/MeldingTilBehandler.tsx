@@ -1,13 +1,15 @@
 import { MeldingTilBehandlerSkjema } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingTilBehandlerSkjema";
-import { LocalAlert, Box, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, InfoCard } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useMeldingTilBehandlerDraftQuery } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
 import AppSpinner from "@/components/AppSpinner";
 
 const texts = {
   header: "Dialogmelding til behandler",
-  alertInfo:
-    "Personen har ikke et aktivt oppfølgingstilfelle. Du kan likevel sende en dialogmelding til behandler så lenge henvendelsen gjelder sykefraværsoppfølging. Meldingen blir synlig for innbyggeren på innloggede sider.",
+  ingenAktivtTilfelleTitle: "Personen har ikke et aktivt oppfølgingstilfelle",
+  ingenAktivtTilfelleBody:
+    "Du kan likevel sende en dialogmelding til behandler så lenge henvendelsen gjelder sykefraværsoppfølging. Meldingen blir synlig for innbyggeren på innloggede sider.",
 };
 
 export function MeldingTilBehandler() {
@@ -20,11 +22,16 @@ export function MeldingTilBehandler() {
         {texts.header}
       </Heading>
       {!hasActiveOppfolgingstilfelle && (
-        <LocalAlert status="warning" size="small">
-          <LocalAlert.Header>
-            <LocalAlert.Title>{texts.alertInfo}</LocalAlert.Title>
-          </LocalAlert.Header>
-        </LocalAlert>
+        <InfoCard data-color="warning" size="small">
+          <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+            <InfoCard.Title as="h3">
+              {texts.ingenAktivtTilfelleTitle}
+            </InfoCard.Title>
+          </InfoCard.Header>
+          <InfoCard.Content>
+            <BodyShort size="small">{texts.ingenAktivtTilfelleBody}</BodyShort>
+          </InfoCard.Content>
+        </InfoCard>
       )}
       {getMeldingTilBehandlerDraftQuery.isPending ? (
         <AppSpinner />

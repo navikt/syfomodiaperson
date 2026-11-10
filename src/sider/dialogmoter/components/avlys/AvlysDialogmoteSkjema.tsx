@@ -9,7 +9,8 @@ import { useAvlysningDocument } from "@/hooks/dialogmote/document/useAvlysningDo
 import { moteoversiktRoutePath } from "@/AppRouter";
 import { useAvlysDialogmote } from "@/sider/dialogmoter/hooks/useAvlysDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { LocalAlert, Box, Button, Label } from "@navikt/ds-react";
+import { Box, Button, InfoCard, Label } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 import { formatDateTimeWithWeekday } from "@/utils/datoUtils";
 import { useForm } from "react-hook-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
@@ -173,11 +174,11 @@ const AvlysDialogmoteSkjema = ({
         {avlysDialogmote.isError && (
           <SkjemaInnsendingFeil error={avlysDialogmote.error} />
         )}
-        <LocalAlert status="warning" size="small">
-          <LocalAlert.Header>
-            <LocalAlert.Title>{texts.alert}</LocalAlert.Title>
-          </LocalAlert.Header>
-        </LocalAlert>
+        <InfoCard data-color="info" size="small">
+          <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+            {texts.alert}
+          </InfoCard.Message>
+        </InfoCard>
         <div className="flex gap-4">
           <Button
             type="submit"
