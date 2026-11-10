@@ -18,7 +18,7 @@ export default function BehandleOppfolgingsplanLPS({
   oppfolgingsplanLPS,
 }: Props) {
   const { data: personoppgaver } = usePersonoppgaverQuery();
-  const personoppgave = personoppgaver.find(
+  const personoppgave = (personoppgaver ?? []).find(
     (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid,
   );
   const behandlePersonoppgave = useBehandlePersonoppgave();
