@@ -5,7 +5,7 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { formatDateRangeWithYear } from "@/utils/datoUtils";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil";
-import { Events, trackEvent } from "@/utils/umami";
+import { trackLinkKlikket } from "@/utils/umami";
 
 const texts = {
   header: "Utdrag fra sykefraværet",
@@ -20,16 +20,6 @@ function tilfelleText(start: Date, end: Date, varighet: number) {
 }
 
 const lenkeKommunikasjonMedBruker = `https://modiapersonoversikt${finnNaisUrlIntern()}/person/meldinger`;
-
-function logEvent() {
-  trackEvent({
-    name: Events.LINK_KLIKKET,
-    properties: {
-      tekst: texts.kommunikasjonMedBruker,
-      href: lenkeKommunikasjonMedBruker,
-    },
-  });
-}
 
 interface Props {
   selectedOppfolgingstilfelle?: OppfolgingstilfelleDTO;
@@ -69,7 +59,12 @@ export default function UtdragFraSykefravaeret({
       <Link
         href={lenkeKommunikasjonMedBruker}
         target="_blank"
-        onClick={logEvent}
+        onClick={() =>
+          trackLinkKlikket(
+            texts.kommunikasjonMedBruker,
+            lenkeKommunikasjonMedBruker,
+          )
+        }
       >
         {texts.kommunikasjonMedBruker}
       </Link>

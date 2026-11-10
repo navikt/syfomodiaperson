@@ -15,6 +15,7 @@ import {
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import { formatDateWithYear } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
+import { trackLinkKlikket } from "@/utils/umami";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
@@ -129,7 +130,13 @@ export default function KartleggingssporsmalSide(): ReactElement {
                         nyesteKandidat.varsletAt,
                       )}`}
                     </BodyShort>
-                    <EksternLenke href={texts.demoUrl} className="text-[16px]">
+                    <EksternLenke
+                      href={texts.demoUrl}
+                      className="text-[16px]"
+                      onClick={() =>
+                        trackLinkKlikket(texts.link, texts.demoUrl)
+                      }
+                    >
                       {texts.link}
                     </EksternLenke>
                     <KartleggingssporsmalSkjemasvar
@@ -219,7 +226,12 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 </List>
               </Box>
             </div>
-            <EksternLenke href={texts.behovsrettetUrl}>
+            <EksternLenke
+              href={texts.behovsrettetUrl}
+              onClick={() =>
+                trackLinkKlikket(texts.behovsrettetLink, texts.behovsrettetUrl)
+              }
+            >
               {texts.behovsrettetLink}
             </EksternLenke>
           </Box>

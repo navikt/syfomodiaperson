@@ -17,7 +17,7 @@ import { useState } from "react";
 import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
-import { Events, trackEvent } from "@/utils/umami.ts";
+import { trackLinkKlikket } from "@/utils/umami.ts";
 import { KartleggingInfo } from "@/sider/kartleggingssporsmal/info/KartleggingInfo.tsx";
 import { useKartleggingssporsmalVurderSvar } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
 import { useDebouncedCallback } from "use-debounce";
@@ -37,26 +37,8 @@ const LINK_14A = `https://veilarbpersonflate${finnNaisUrlIntern()}/vedtaksstotte
 const texts = {
   heading: "Vurdering",
   radioLegend: "Velg alternativet som passer",
-  rutine: {
-    intro:
-      "Her skal du vurdere om den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging. Ta utgangspunkt i veiledningen på høyre side når du vurderer saken.",
-    vurderRisiko: {
-      heading: "Vurder om svarene indikerer risiko for langtidsfravær",
-      info: "Når svarene fra den sykmeldte ikke indikerer risiko for langvarig sykefravær, skal saken som hovedregel ikke følges opp videre på dette tidspunktet.",
-    },
-    vurderKontakt: {
-      heading:
-        "Vurder om det er behov for kontakt med Nav der det indikeres risiko",
-      info: "Se på svarene og annen tilgjengelig informasjon i saken. Vurder ut fra de samlede opplysningene om det er behov for å forstå situasjonen bedre, eller om det ikke er behov for oppfølging fra Nav på nåværende tidspunkt.",
-    },
-    behovForOppfolging: {
-      heading: "Dersom det er behov for oppfølging fra Nav",
-      info: "Vurder hvordan du skal følge opp saken. Dette kan innebære kontakt med den sykmeldte per telefon eller digital dialog, individuell samtale, eller dialogmøte med arbeidsgiver. Planlegg videre oppfølging før du avslutter oppgaven.",
-    },
-    info: "Vurderingen av svarene skal gjøres basert på ",
-    linkText:
-      "rutine for bruk av kartleggingsspørsmålene i sykefraværsoppfølgingen.",
-  },
+  intro:
+    "Her skal du vurdere om den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging. Ta utgangspunkt i veiledningen på høyre side når du vurderer saken.",
   textLegend: "Begrunnelse (valgfritt)",
   textDescription:
     "Brukes kun for å dokumentere vurderingen internt og blir ikke synlig for den sykmeldte. Den sykmeldte kan alltid be om innsyn i egen sak.",
@@ -77,16 +59,6 @@ const texts = {
     "Det er vurdert risiko for langtidsfravær. Da kan det være aktuelt å gjøre en § 14a-vurdering i ",
   lenkeTilModiaAO: "vedtaksstøtteløsningen i Modia Arbeidsrettet oppfølging.",
 };
-
-function logLinkEvent(tekst: string, href: string) {
-  trackEvent({
-    name: Events.LINK_KLIKKET,
-    properties: {
-      tekst,
-      href,
-    },
-  });
-}
 
 interface Props {
   nyesteKandidat: KartleggingssporsmalKandidatResponseDTO;
@@ -142,7 +114,7 @@ export function KartleggingVurdering({
   return (
     <Box background="default" className="flex flex-col p-6 gap-4 mb-2">
       <Heading size={"medium"}>{texts.heading}</Heading>
-      <BodyShort size="small">{texts.rutine.intro}</BodyShort>
+      <BodyShort size="small">{texts.intro}</BodyShort>
       <KartleggingInfo />
 
       <RadioCardGroup
@@ -266,7 +238,7 @@ export function KartleggingVurdering({
           {texts.vurdertRisikoForLangtidsfravar}
           <EksternLenke
             href={LINK_14A}
-            onClick={() => logLinkEvent(texts.lenkeTilModiaAO, LINK_14A)}
+            onClick={() => trackLinkKlikket(texts.lenkeTilModiaAO, LINK_14A)}
           >
             {texts.lenkeTilModiaAO}
           </EksternLenke>
