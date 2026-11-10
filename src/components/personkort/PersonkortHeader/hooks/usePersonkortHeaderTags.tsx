@@ -46,10 +46,6 @@ export interface PersonkortTag {
   icon?: ReactNode;
 }
 
-interface PersonkortTagCandidate extends PersonkortTag {
-  isVisible: boolean;
-}
-
 /**
  * Finner hvilke tags som skal vises i headeren på personkortet, i den rekkefølgen de skal vises.
  *
@@ -99,105 +95,98 @@ export function usePersonkortHeaderTags(): {
     ? erSykmeldingUtenArbeidsgiver(nyligsteSendtEllerBekreftetSykmelding)
     : false;
 
-  const candidates: PersonkortTagCandidate[] = [
-    {
-      key: "kode6",
-      label: texts.kode6,
-      color: "warning",
-      isVisible: diskresjonskode === "6",
-    },
-    {
-      key: "kode7",
-      label: texts.kode7,
-      color: "warning",
-      isVisible: diskresjonskode === "7",
-    },
-    {
-      key: "egenansatt",
-      label: texts.egenansatt,
-      color: "warning",
-      isVisible: !!isEgenAnsatt,
-    },
-    {
+  const tags: PersonkortTag[] = [];
+
+  if (diskresjonskode === "6") {
+    tags.push({ key: "kode6", label: texts.kode6, color: "warning" });
+  }
+  if (diskresjonskode === "7") {
+    tags.push({ key: "kode7", label: texts.kode7, color: "warning" });
+  }
+  if (isEgenAnsatt) {
+    tags.push({ key: "egenansatt", label: texts.egenansatt, color: "warning" });
+  }
+  if (hasGjentakendeSykefravar) {
+    tags.push({
       key: "gjentakendeSykefravar",
       label: texts.gjentakendeSykefravar,
       color: "warning",
       icon: <ArrowsCirclepathIcon aria-hidden />,
-      isVisible: hasGjentakendeSykefravar,
-    },
-    {
+    });
+  }
+  if (arbeidsrettetOppfolging?.underOppfolging) {
+    tags.push({
       key: "arbeidsrettetOppfolging",
       label: texts.ao,
       color: "info",
-      isVisible: !!arbeidsrettetOppfolging?.underOppfolging,
-    },
-    {
+    });
+  }
+  if (hasActiveFriskmeldingVedtak) {
+    tags.push({
       key: "friskmeldingTilArbeidsformidling",
       label: texts.friskmeldingTilArbeidsformidling,
       color: "info",
-      isVisible: hasActiveFriskmeldingVedtak,
-    },
-    {
+    });
+  }
+  if (uforegradData?.uforegrad) {
+    tags.push({
       key: "uforegrad",
-      label: texts.uforegrad(uforegradData?.uforegrad ?? 0),
+      label: texts.uforegrad(uforegradData.uforegrad),
       color: "info",
-      isVisible: !!uforegradData?.uforegrad,
-    },
-    {
+    });
+  }
+  if (talesprakTolkSprakkode) {
+    tags.push({
       key: "talesprakTolk",
       label: `${texts.talesprakTolk}: ${talesprakTolkSprakkode}`,
       color: "warning",
-      isVisible: !!talesprakTolkSprakkode,
-    },
-    {
+    });
+  }
+  if (tegnsprakTolkSprakkode) {
+    tags.push({
       key: "tegnsprakTolk",
       label: `${texts.tegnsprakTolk}: ${tegnsprakTolkSprakkode}`,
       color: "warning",
-      isVisible: !!tegnsprakTolkSprakkode,
-    },
-    {
+    });
+  }
+  if (dodsdato) {
+    tags.push({
       key: "dod",
       label: `${texts.dod} ${formatNumericDate(dodsdato)}`,
       color: "danger",
-      isVisible: !!dodsdato,
-    },
-    ...sikkerhetstiltak.map(
-      ({ beskrivelse }, index): PersonkortTagCandidate => ({
-        key: `sikkerhetstiltak-${index}`,
-        label: `${texts.sikkerhetstiltak}: ${beskrivelse}`,
-        color: "danger",
-        isVisible: true,
-      }),
-    ),
-    {
+    });
+  }
+  sikkerhetstiltak.forEach(({ beskrivelse }, index) => {
+    tags.push({
+      key: `sikkerhetstiltak-${index}`,
+      label: `${texts.sikkerhetstiltak}: ${beskrivelse}`,
+      color: "danger",
+    });
+  });
+  if (brukerKanIkkeVarslesDigitalt) {
+    tags.push({
       key: "reservertKRR",
       label: texts.reservertKRR,
       color: "warning",
-      isVisible: brukerKanIkkeVarslesDigitalt,
-    },
-    {
+    });
+  }
+  if (harIkkeArbeidsgiver) {
+    tags.push({
       key: "harIkkeArbeidsgiver",
       label: texts.harIkkeArbeidsgiver,
       color: "warning",
-      isVisible: harIkkeArbeidsgiver,
-    },
-    {
-      key: "aap",
-      label: aapTagText ?? "",
-      color: "info",
-      isVisible: !!aapTagText,
-    },
-    {
+    });
+  }
+  if (aapTagText) {
+    tags.push({ key: "aap", label: aapTagText, color: "info" });
+  }
+  if (underVergemal) {
+    tags.push({
       key: "underVergemal",
       label: texts.underVergemal,
       color: "warning",
-      isVisible: !!underVergemal,
-    },
-  ];
-
-  const tags = candidates
-    .filter(({ isVisible }) => isVisible)
-    .map(({ key, label, color, icon }) => ({ key, label, color, icon }));
+    });
+  }
 
   return { tags, diskresjonskodeError };
 }
