@@ -3,7 +3,7 @@ import { Events, trackEvent } from "@/utils/umami";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
 
 const LINK_RUTINE =
-    "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Bruk-av-kartleggingssp%C3%B8rsm%C3%A5l-i-sykefrav%C3%A6rsoppf%C3%B8lgingen.aspx";
+  "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Bruk-av-kartleggingssp%C3%B8rsm%C3%A5l-i-sykefrav%C3%A6rsoppf%C3%B8lgingen.aspx";
 
 const texts = {
   kontekst: "Kartleggingsspørsmål",
@@ -14,25 +14,25 @@ const texts = {
     "Det sykmeldte svarer om forhold på arbeidsplassen er taushetsbelagt informasjon og skal ikke deles med arbeidsgiver.",
   rutine: {
     intro:
-        "Her skal du vurdere om den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging. Ta utgangspunkt i veiledningen på høyre side når du vurderer saken.",
+      "Her skal du vurdere om den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging. Ta utgangspunkt i veiledningen på høyre side når du vurderer saken.",
     senereOppfolgingspunkter:
-        "Husk at den sykmeldte fanges opp på senere oppfølgingspunkter i sykefraværet, og at arbeidsgiver har hovedansvaret for oppfølgingen.",
+      "Husk at den sykmeldte fanges opp på senere oppfølgingspunkter i sykefraværet, og at arbeidsgiver har hovedansvaret for oppfølgingen.",
     vurderRisiko: {
       heading: "Vurder om svarene indikerer risiko for langtidsfravær",
       info: "Når svarene fra den sykmeldte ikke indikerer risiko for langvarig sykefravær, skal saken som hovedregel ikke følges opp videre på dette tidspunktet.",
     },
     vurderKontakt: {
-      heading:
-          "Vurder behovet for kontakt med Nav der det indikeres risiko",
+      heading: "Vurder behovet for kontakt med Nav der det indikeres risiko",
       info: "Se på svarene og annen tilgjengelig informasjon i saken. Vurder ut fra de samlede opplysningene om det er behov for å forstå situasjonen bedre, eller om det ikke er behov for oppfølging fra Nav på nåværende tidspunkt.",
     },
     behovForOppfolging: {
-      heading: "Vurder hvordan du skal følge opp saken dersom det er behov for oppfølging fra Nav",
+      heading:
+        "Vurder hvordan du skal følge opp saken dersom det er behov for oppfølging fra Nav",
       info: "Vurder hvordan du skal følge opp saken. Dette kan innebære kontakt med den sykmeldte per telefon eller digital dialog, individuell samtale, eller dialogmøte med arbeidsgiver. Planlegg videre oppfølging før du avslutter oppgaven.",
     },
     info: "Vurderingen av svarene skal gjøres basert på ",
     linkText:
-        "rutine for bruk av kartleggingsspørsmålene i sykefraværsoppfølgingen.",
+      "rutine for bruk av kartleggingsspørsmålene i sykefraværsoppfølgingen.",
   },
   ikkeRisiko: {
     heading: "Svar fra sykmeldte som ikke indikerer risiko",
@@ -106,21 +106,27 @@ export function KartleggingssporsmalRutine() {
         <BodyShort size="small">
           {texts.rutine.info}
           <EksternLenke
-              href={LINK_RUTINE}
-              onClick={() => logLinkEvent(texts.rutine.linkText, LINK_RUTINE)}
+            href={LINK_RUTINE}
+            onClick={() => logLinkEvent(texts.rutine.linkText, LINK_RUTINE)}
           >
             {texts.rutine.linkText}
           </EksternLenke>
         </BodyShort>
-        <List as="ol" >
+        <List as="ol">
           <List.Item>
-            <BodyShort size="small">{texts.rutine.vurderRisiko.heading}</BodyShort>
+            <BodyShort size="small">
+              {texts.rutine.vurderRisiko.heading}
+            </BodyShort>
           </List.Item>
           <List.Item>
-            <BodyShort size="small">{texts.rutine.vurderKontakt.heading}</BodyShort>
+            <BodyShort size="small">
+              {texts.rutine.vurderKontakt.heading}
+            </BodyShort>
           </List.Item>
           <List.Item>
-            <BodyShort size="small">{texts.rutine.behovForOppfolging.heading}</BodyShort>
+            <BodyShort size="small">
+              {texts.rutine.behovForOppfolging.heading}
+            </BodyShort>
           </List.Item>
         </List>
       </div>

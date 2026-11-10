@@ -1,9 +1,4 @@
-import {
-  BodyShort,
-  List,
-  ReadMore,
-  Link, InfoCard,
-} from "@navikt/ds-react";
+import { BodyShort, List, ReadMore, Link, InfoCard } from "@navikt/ds-react";
 
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 import { ArrowsCirclepathIcon, BulletListIcon } from "@navikt/aksel-icons";
@@ -48,62 +43,64 @@ export function KartleggingInfo() {
   const relevanteSykmeldinger = handleOppgaver(oppgaver ?? [], sykmeldinger);
 
   return (
-      <InfoCard data-color="info" size="small" className="mt-4">
-        <InfoCard.Header icon={<BulletListIcon aria-hidden />}>
-          <InfoCard.Title as="h3">{texts.heading}</InfoCard.Title>
-        </InfoCard.Header>
-        <InfoCard.Content>
-          <List as="ul" size="small">
-            <List.Item>
-              <div className="flex flex-col">
-                <div className="flex items-center">
-              <span>
-                {hasGjentakendeSykefravar
+    <InfoCard data-color="info" size="small" className="mt-4">
+      <InfoCard.Header icon={<BulletListIcon aria-hidden />}>
+        <InfoCard.Title as="h3">{texts.heading}</InfoCard.Title>
+      </InfoCard.Header>
+      <InfoCard.Content>
+        <List as="ul" size="small">
+          <List.Item>
+            <div className="flex flex-col">
+              <div className="flex items-center">
+                <span>
+                  {hasGjentakendeSykefravar
                     ? texts.list.hasGjentakendeSykefravar
                     : boldRegex(texts.list.noGjentakendeSykefravar, "ikke")}
-              </span>
-                  <ArrowsCirclepathIcon className="ml-2" />
-                </div>
-                <ReadMore header="Hva er gjentakende sykefravær?" size="small">
-                  <BodyShort size="small">{texts.gjentakende.definisjon}</BodyShort>
-                  <List size="small" className="mb-2">
-                    <List.Item>{texts.gjentakende.hyppigeFravar}</List.Item>
-                    <List.Item>{texts.gjentakende.langeFravar}</List.Item>
-                  </List>
-                  <BodyShort size="small">
-                    {texts.gjentakende.korteFravar}
-                  </BodyShort>
-                </ReadMore>
+                </span>
+                <ArrowsCirclepathIcon className="ml-2" />
               </div>
-            </List.Item>
-            <List.Item>
-              <div className="flex flex-col">
-                <div className="flex items-center">
-              <span>
-                {relevanteSykmeldinger.length > 0
+              <ReadMore header="Hva er gjentakende sykefravær?" size="small">
+                <BodyShort size="small">
+                  {texts.gjentakende.definisjon}
+                </BodyShort>
+                <List size="small" className="mb-2">
+                  <List.Item>{texts.gjentakende.hyppigeFravar}</List.Item>
+                  <List.Item>{texts.gjentakende.langeFravar}</List.Item>
+                </List>
+                <BodyShort size="small">
+                  {texts.gjentakende.korteFravar}
+                </BodyShort>
+              </ReadMore>
+            </div>
+          </List.Item>
+          <List.Item>
+            <div className="flex flex-col">
+              <div className="flex items-center">
+                <span>
+                  {relevanteSykmeldinger.length > 0
                     ? texts.list.hasBedtOmBistand
                     : boldRegex(texts.list.notBedtOmBistand, "ikke")}
-              </span>
-                </div>
-                {relevanteSykmeldinger.length > 0 && (
-                    <ReadMore header={texts.bistand.readMore} size="small">
-                      <List>
-                        {relevanteSykmeldinger.map((sykmelding, index) => (
-                            <List.Item key={`relatert-sykmelding-${index}`}>
-                              <Link
-                                  as={RouterLink}
-                                  to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
-                              >{`Utstedt ${dayjs(sykmelding.bekreftelse.utstedelsesdato).format("DD.MM.YYYY")}, av ${sykmelding.bekreftelse.sykmelder}`}</Link>
-                            </List.Item>
-                        ))}
-                      </List>
-                    </ReadMore>
-                )}
+                </span>
               </div>
-            </List.Item>
-          </List>
-        </InfoCard.Content>
-      </InfoCard>
+              {relevanteSykmeldinger.length > 0 && (
+                <ReadMore header={texts.bistand.readMore} size="small">
+                  <List>
+                    {relevanteSykmeldinger.map((sykmelding, index) => (
+                      <List.Item key={`relatert-sykmelding-${index}`}>
+                        <Link
+                          as={RouterLink}
+                          to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
+                        >{`Utstedt ${dayjs(sykmelding.bekreftelse.utstedelsesdato).format("DD.MM.YYYY")}, av ${sykmelding.bekreftelse.sykmelder}`}</Link>
+                      </List.Item>
+                    ))}
+                  </List>
+                </ReadMore>
+              )}
+            </div>
+          </List.Item>
+        </List>
+      </InfoCard.Content>
+    </InfoCard>
   );
 }
 

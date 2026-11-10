@@ -124,9 +124,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
                       {`${texts.svart} ${formatDateWithYear(
                         answeredQuestions.createdAt,
                       )}`}
-                      <br/>
+                      <br />
                       {`${texts.kandidat} ${formatDateWithYear(
-                          nyesteKandidat.varsletAt,
+                        nyesteKandidat.varsletAt,
                       )}`}
                     </BodyShort>
                     <EksternLenke href={texts.demoUrl} className="text-[16px]">
