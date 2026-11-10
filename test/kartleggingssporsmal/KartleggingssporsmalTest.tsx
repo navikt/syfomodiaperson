@@ -38,6 +38,7 @@ import {
   stubVurderSvarError,
 } from "../stubs/stubIsmeroppfolging";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { draftQueryKeys } from "@/hooks/useDraftQuery";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { generateUUID } from "@/utils/utils";
 import { mockServer } from "../setup";
@@ -629,6 +630,30 @@ describe("Kartleggingssporsmal", () => {
       renderKartleggingssporsmal();
 
       expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
+    });
+
+    it("Begrunnelse is prefilled from saved draft", () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1LowRiskAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
+      queryClient.setQueryData(
+        draftQueryKeys.draft(
+          "kartleggingssporsmal-vurdering",
+          ARBEIDSTAKER_DEFAULT.personIdent,
+        ),
+        () => ({ begrunnelse: "Mellomlagret tekst" }),
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(
+        (getTextInput("Begrunnelse (valgfritt)") as HTMLTextAreaElement).value,
+      ).to.equal("Mellomlagret tekst");
     });
 
     it("Begrunnelse is optional, and submitting without one succeeds", async () => {

@@ -20,7 +20,7 @@ import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { KartleggingssporsmalHistorikk } from "@/sider/kartleggingssporsmal/historikk/KartleggingssporsmalHistorikk";
-import { KartleggingVurdering } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurdering.tsx";
+import { KartleggingVurderingContainer } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurderingContainer.tsx";
 import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
 import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsmalSurvey.ts";
@@ -180,7 +180,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
               {!behandletWithoutVurdering &&
                 answeredQuestions &&
                 nyesteKandidat.status !== KandidatStatus.KANDIDAT && (
-                  <KartleggingVurdering nyesteKandidat={nyesteKandidat} />
+                  <KartleggingVurderingContainer
+                    nyesteKandidat={nyesteKandidat}
+                  />
                 )}
               <KartleggingssporsmalHistorikk
                 tidligereKandidater={kandidater.slice(1)}

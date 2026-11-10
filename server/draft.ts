@@ -12,6 +12,7 @@ enum Draft {
   ARBEIDSUFORHET_AVSLAG_UTEN_FORHANDSVARSEL = "arbeidsuforhet-avslag-uten-forhandsvarsel",
   ARBEIDSUFORHET_AVSLAG = "arbeidsuforhet-avslag",
   ARBEIDSUFORHET_OPPFYLT = "arbeidsuforhet-oppfylt",
+  KARTLEGGINGSSPORSMAL_VURDERING = "kartleggingssporsmal-vurdering",
   MANGLENDEMEDVIRKNING_FORHANDSVARSEL = "manglendemedvirkning-forhandsvarsel",
   AKTIVITETSKRAV_FORHANDSVARSEL = "aktivitetskrav-forhandsvarsel",
   AKTIVITETSKRAV_UNNTAK = "aktivitetskrav-unntak",
@@ -43,6 +44,8 @@ function toDraftCachekey(
       return `draft:arbeidsuforhet:avslag:${veilederIdent}:${personident}`;
     case Draft.ARBEIDSUFORHET_OPPFYLT:
       return `draft:arbeidsuforhet:oppfylt:${veilederIdent}:${personident}`;
+    case Draft.KARTLEGGINGSSPORSMAL_VURDERING:
+      return `draft:kartleggingssporsmal:vurdering:${veilederIdent}:${personident}`;
     case Draft.MANGLENDEMEDVIRKNING_FORHANDSVARSEL:
       return `draft:manglendemedvirkning:forhandsvarsel:${veilederIdent}:${personident}`;
     case Draft.AKTIVITETSKRAV_FORHANDSVARSEL:
