@@ -24,6 +24,15 @@ import { EksternLenke } from "@/components/EksternLenke.tsx";
 import { Events, trackEvent } from "@/utils/umami.ts";
 import { KartleggingInfo } from "@/sider/kartleggingssporsmal/info/KartleggingInfo.tsx";
 import { useKartleggingssporsmalVurderSvar } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
+
+const DRAFT_CATEGORY = "kartleggingssporsmal-vurdering";
 
 const VURDERING_MAX_LENGTH = 200;
 const LINK_14A = `https://veilarbpersonflate${finnNaisUrlIntern()}/vedtaksstotte`;
@@ -88,18 +97,39 @@ function logLinkEvent(tekst: string, href: string) {
 
 interface Props {
   nyesteKandidat: KartleggingssporsmalKandidatResponseDTO;
+  begrunnelseUtkast?: string;
 }
 
-export function KartleggingVurdering({ nyesteKandidat }: Props) {
+export function KartleggingVurdering({
+  nyesteKandidat,
+  begrunnelseUtkast,
+}: Props) {
   const vurderSvar = useKartleggingssporsmalVurderSvar();
   const [isSuccessAlertDismissed, setIsSuccessAlertDismissed] = useState(false);
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
+  const saveDraft = useSaveDraft<DraftTextDTO>(DRAFT_CATEGORY);
+  const deleteDraft = useDeleteDraft(DRAFT_CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) {
+      return;
+    }
+    saveDraft.mutate(
+      { begrunnelse: tekst },
+      {
+        onSuccess: () => setUtkastSavedTime(new Date()),
+        onError: () => setUtkastSavedTime(undefined),
+      },
+    );
+  }, 750);
 
   const [vurdering, setVurdering] = useState<{
     vurderingAlternativ: VurderingAlternativ | null;
     vurderingFritekst: string | null;
   }>({
     vurderingAlternativ: nyesteKandidat.vurdering?.vurderingAlternativ ?? null,
-    vurderingFritekst: nyesteKandidat.vurdering?.vurderingFritekst ?? null,
+    vurderingFritekst:
+      nyesteKandidat.vurdering?.vurderingFritekst ?? begrunnelseUtkast ?? null,
   });
 
   const [vurderingError, setVurderingError] = useState<{
@@ -186,13 +216,20 @@ export function KartleggingVurdering({ nyesteKandidat }: Props) {
         maxLength={VURDERING_MAX_LENGTH}
         readOnly={isFerdigbehandlet}
         error={vurderingError.vurderingFritekstError}
-        onChange={(e) =>
+        onChange={(e) => {
           setVurdering((vurderingParam) => ({
             ...vurderingParam,
             vurderingFritekst: e.target.value,
-          }))
-        }
+          }));
+          debouncedAutoSaveDraft(e.target.value);
+        }}
       />
+      {!isFerdigbehandlet && (
+        <DraftSaveStatus
+          isSaveError={saveDraft.isError}
+          savedTime={utkastSavedTime}
+        />
+      )}
 
       {nyesteKandidat.status === KandidatStatus.SVAR_MOTTATT && (
         <Button
@@ -222,11 +259,20 @@ export function KartleggingVurdering({ nyesteKandidat }: Props) {
               return;
             }
 
-            vurderSvar.mutate({
-              kandidatUuid: nyesteKandidat.kandidatUuid,
-              vurderingAlternativ: vurdering.vurderingAlternativ,
-              vurderingFritekst: vurdering.vurderingFritekst ?? undefined,
-            });
+            vurderSvar.mutate(
+              {
+                kandidatUuid: nyesteKandidat.kandidatUuid,
+                vurderingAlternativ: vurdering.vurderingAlternativ,
+                vurderingFritekst: vurdering.vurderingFritekst ?? undefined,
+              },
+              {
+                onSuccess: () => {
+                  setUtkastSavedTime(undefined);
+                  debouncedAutoSaveDraft.cancel();
+                  deleteDraft.mutate(undefined);
+                },
+              },
+            );
           }}
           loading={vurderSvar.isPending}
         >
