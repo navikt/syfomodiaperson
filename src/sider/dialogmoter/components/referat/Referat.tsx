@@ -313,11 +313,27 @@ export default function Referat({ dialogmote, mode }: Props): ReactElement {
     });
   };
 
+  const avbrytBekreftModal = () => {
+    trackEvent({
+      name: Events.KNAPP_KLIKKET,
+      properties: {
+        tekst: bekreftTexts.avbryt,
+        variant: "secondary",
+        kontekst: bekreftTexts.heading,
+      },
+    });
+    lukkBekreftModal("handlings-knapp");
+  };
+
   const bekreftSendReferat = () => {
     if (!referatTilBekreftelse) return;
     trackEvent({
       name: Events.KNAPP_KLIKKET,
-      properties: { tekst: bekreftTexts.bekreft, variant: "primary" },
+      properties: {
+        tekst: bekreftTexts.bekreft,
+        variant: "primary",
+        kontekst: bekreftTexts.heading,
+      },
     });
     submit(referatTilBekreftelse);
     lukkBekreftModal("handlings-knapp");
@@ -736,7 +752,7 @@ export default function Referat({ dialogmote, mode }: Props): ReactElement {
           behandlerMottarReferat={referatTilBekreftelse.behandlerMottarReferat}
           isPending={isSendingReferat()}
           onBekreft={bekreftSendReferat}
-          onAvbryt={() => lukkBekreftModal("handlings-knapp")}
+          onAvbryt={avbrytBekreftModal}
           onClose={lukkBekreftModal}
         />
       )}

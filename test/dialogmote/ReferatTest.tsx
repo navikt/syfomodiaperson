@@ -397,6 +397,16 @@ describe("ReferatTest", () => {
           }),
         );
 
+        expectKnappKlikket(bekreftTexts.avbryt, "secondary");
+        expectModalLukket("handlings-knapp");
+      });
+
+      it("sporer klikk på bekreft-knappen når veileder sender referatet", async () => {
+        await apneBekreftModal();
+
+        await bekreftSendReferat();
+
+        expectKnappKlikket(bekreftTexts.bekreft, "primary");
         expectModalLukket("handlings-knapp");
       });
     });
@@ -423,6 +433,13 @@ const expectModalLukket = (lukkMetode: string) => {
       .mocked(trackEvent)
       .mock.calls.filter(([event]) => event.name === Events.MODAL_LUKKET),
   ).to.have.length(1);
+};
+
+const expectKnappKlikket = (tekst: string, variant: string) => {
+  expect(trackEvent).toHaveBeenCalledWith({
+    name: Events.KNAPP_KLIKKET,
+    properties: { tekst, variant, kontekst: bekreftTexts.heading },
+  });
 };
 
 const bekreftSendReferat = async () => {
