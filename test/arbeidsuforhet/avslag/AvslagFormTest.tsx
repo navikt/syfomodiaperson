@@ -23,10 +23,13 @@ const sisteForhandsvarsel = createForhandsvarsel({
   svarfrist: new Date(),
 });
 
-const renderAvslagForm = () => {
+const renderAvslagForm = (begrunnelseUtkast?: string) => {
   renderArbeidsuforhetSide(
     queryClient,
-    <AvslagForm sisteVurdering={sisteForhandsvarsel} />,
+    <AvslagForm
+      sisteVurdering={sisteForhandsvarsel}
+      begrunnelseUtkast={begrunnelseUtkast}
+    />,
     arbeidsuforhetOppfyltPath,
     [arbeidsuforhetOppfyltPath],
   );
@@ -82,6 +85,19 @@ describe("AvslagForm", () => {
       expect(screen.getByRole("button", { name: "Send" })).to.exist;
       expect(screen.getByRole("button", { name: "Avbryt" })).to.exist;
       expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
+    });
+  });
+
+  describe("Mellomlagring", () => {
+    it("prefills begrunnelse from draft", () => {
+      const utkast = "Mellomlagret begrunnelse";
+
+      renderAvslagForm(utkast);
+
+      expect(getTextInput("Begrunnelse (obligatorisk)")).to.have.property(
+        "value",
+        utkast,
+      );
     });
   });
 

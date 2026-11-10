@@ -184,6 +184,7 @@ export const queryClientWithMockData = (): QueryClient => {
     "aktivitetskrav-innstilling-om-stans",
     "arbeidsuforhet-forhandsvarsel",
     "arbeidsuforhet-avslag-uten-forhandsvarsel",
+    "arbeidsuforhet-avslag",
     "arbeidsuforhet-oppfylt",
     "manglendemedvirkning-forhandsvarsel",
     "utenlandsopphold-innvilget",
