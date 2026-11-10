@@ -1,4 +1,3 @@
-import { Tag } from "@navikt/ds-react";
 import { AapStatusDTO } from "@/data/aap/aapTypes";
 
 import dayjs from "dayjs";
@@ -9,7 +8,10 @@ const texts = {
   tidligereVedtak: "Vedtak AAP siste 12mnd",
 };
 
-function getAapTagText(aapStatus: AapStatusDTO): string | undefined {
+/**
+ * Finner teksten som skal vises i AAP-taggen, eller undefined hvis taggen ikke skal vises.
+ */
+export function getAapTagText(aapStatus: AapStatusDTO): string | undefined {
   const hasAktivtVedtak = aapStatus.vedtak.some((vedtak) => vedtak.erAktivt);
   if (hasAktivtVedtak) {
     return texts.aktivtVedtak;
@@ -33,18 +35,4 @@ function getAapTagText(aapStatus: AapStatusDTO): string | undefined {
   if (hasTidligereVedtak) {
     return texts.tidligereVedtak;
   }
-}
-
-interface Props {
-  aapStatus: AapStatusDTO;
-}
-
-export function AapTag({ aapStatus }: Props) {
-  const tagText = getAapTagText(aapStatus);
-
-  return tagText ? (
-    <Tag data-color="info" variant="outline" size="small">
-      {tagText}
-    </Tag>
-  ) : null;
 }
