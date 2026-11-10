@@ -1,11 +1,11 @@
 import {
-  LocalAlert,
   BodyLong,
   Box,
   Button,
   Heading,
   InfoCard,
   List,
+  LocalAlert,
   Radio,
   RadioGroup,
   ReadMore,
@@ -193,11 +193,11 @@ export default function BeOmOppfolgingsplan({
   return (
     <form onSubmit={handleSubmit(submit)}>
       {isAktivForesporsel && (
-        <LocalAlert status="warning" className="mb-2">
-          <LocalAlert.Header>
-            <LocalAlert.Title>{aktivForesporselTekst}</LocalAlert.Title>
-          </LocalAlert.Header>
-        </LocalAlert>
+        <InfoCard data-color="info" className="mb-2">
+          <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+            {aktivForesporselTekst}
+          </InfoCard.Message>
+        </InfoCard>
       )}
       <Box background="default" className="mb-4 flex flex-col p-4 gap-4">
         <Heading size="small" level="3">

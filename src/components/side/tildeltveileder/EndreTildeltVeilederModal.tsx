@@ -9,12 +9,14 @@ import {
   VeilederIdent,
 } from "@/data/veilederbrukerknytning/useTildelVeileder";
 import {
-  LocalAlert,
   BodyShort,
   Button,
+  InfoCard,
+  LocalAlert,
   Modal,
   UNSAFE_Combobox,
 } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Veileder } from "@/data/veilederinfo/types/Veileder";
 
@@ -146,11 +148,11 @@ export default function EndreTildeltVeilederModal({
             </LocalAlert.Header>
           </LocalAlert>
         )}
-        <LocalAlert status="warning" size="small">
-          <LocalAlert.Header>
-            <LocalAlert.Title>{texts.alert}</LocalAlert.Title>
-          </LocalAlert.Header>
-        </LocalAlert>
+        <InfoCard data-color="info" size="small">
+          <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+            {texts.alert}
+          </InfoCard.Message>
+        </InfoCard>
         <UNSAFE_Combobox
           className="[&_.aksel-combobox__list]:max-h-60"
           shouldAutocomplete

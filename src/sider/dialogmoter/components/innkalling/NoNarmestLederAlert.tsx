@@ -1,4 +1,5 @@
-import { LocalAlert } from "@navikt/ds-react";
+import { InfoCard } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const texts = {
   noNarmesteleder:
@@ -7,9 +8,9 @@ const texts = {
 };
 
 export const NoNarmesteLederAlert = () => (
-  <LocalAlert status="warning" size="small" className="mb-4">
-    <LocalAlert.Header>
-      <LocalAlert.Title>{texts.noNarmesteleder}</LocalAlert.Title>
-    </LocalAlert.Header>
-  </LocalAlert>
+  <InfoCard data-color="warning" size="small" className="mb-4">
+    <InfoCard.Message icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+      {texts.noNarmesteleder}
+    </InfoCard.Message>
+  </InfoCard>
 );
