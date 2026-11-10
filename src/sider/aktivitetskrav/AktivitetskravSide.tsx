@@ -4,11 +4,13 @@ import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQuer
 import { AktivitetskravHistorikk } from "@/sider/aktivitetskrav/historikk/AktivitetskravHistorikk";
 import { StartNyVurdering } from "./vurdering/StartNyVurdering";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { LocalAlert } from "@navikt/ds-react";
+import { BodyShort, InfoCard } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const texts = {
-  noTilfelle:
-    "Vi finner ingen aktiv sykmelding på denne personen. Du kan likevel vurdere aktivitetskravet hvis det er behov for det.",
+  noTilfelleTitle: "Vi finner ingen aktiv sykmelding på denne personen",
+  noTilfelleBody:
+    "Du kan likevel vurdere aktivitetskravet hvis det er behov for det.",
 };
 
 export const AktivitetskravSide = () => {
@@ -25,11 +27,14 @@ export const AktivitetskravSide = () => {
   return (
     <div className="w-full">
       {!hasActiveOppfolgingstilfelle && (
-        <LocalAlert status="warning" size="small" className="mb-4">
-          <LocalAlert.Header>
-            <LocalAlert.Title>{texts.noTilfelle}</LocalAlert.Title>
-          </LocalAlert.Header>
-        </LocalAlert>
+        <InfoCard data-color="warning" size="small" className="mb-4">
+          <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+            <InfoCard.Title>{texts.noTilfelleTitle}</InfoCard.Title>
+          </InfoCard.Header>
+          <InfoCard.Content>
+            <BodyShort size="small">{texts.noTilfelleBody}</BodyShort>
+          </InfoCard.Content>
+        </InfoCard>
       )}
       {showStartNyVurdering ? (
         <StartNyVurdering aktivitetskrav={aktivitetskrav} />

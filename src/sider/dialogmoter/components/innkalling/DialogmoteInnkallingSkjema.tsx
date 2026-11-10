@@ -18,7 +18,8 @@ import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { LocalAlert, Box, Button } from "@navikt/ds-react";
+import { Box, Button, InfoCard } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 import MalformRadioGroup from "@/components/MalformRadioGroup";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import DialogmoteDato from "@/sider/dialogmoter/components/DialogmoteDato";
@@ -180,11 +181,13 @@ export default function DialogmoteInnkallingSkjema() {
             />
           </div>
           {brukerKanIkkeVarslesDigitalt && (
-            <LocalAlert status="warning" size="small">
-              <LocalAlert.Header>
-                <LocalAlert.Title>{texts.reservertAlert}</LocalAlert.Title>
-              </LocalAlert.Header>
-            </LocalAlert>
+            <InfoCard data-color="warning" size="small">
+              <InfoCard.Message
+                icon={<ExclamationmarkTriangleIcon aria-hidden />}
+              >
+                {texts.reservertAlert}
+              </InfoCard.Message>
+            </InfoCard>
           )}
           <div>
             <TextareaField
@@ -247,13 +250,13 @@ export default function DialogmoteInnkallingSkjema() {
             </div>
           )}
           {!hasActiveOppfolgingstilfelle && (
-            <LocalAlert status="warning" size="small">
-              <LocalAlert.Header>
-                <LocalAlert.Title>
-                  {texts.arbeidsgiverBlirIkkeVarsletAlert}
-                </LocalAlert.Title>
-              </LocalAlert.Header>
-            </LocalAlert>
+            <InfoCard data-color="warning" size="small">
+              <InfoCard.Message
+                icon={<ExclamationmarkTriangleIcon aria-hidden />}
+              >
+                {texts.arbeidsgiverBlirIkkeVarsletAlert}
+              </InfoCard.Message>
+            </InfoCard>
           )}
           {opprettInnkalling.isError && (
             <SkjemaInnsendingFeil error={opprettInnkalling.error} />

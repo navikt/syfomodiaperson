@@ -3,7 +3,8 @@ import {
   AktivitetskravStatus,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { VurderAktivitetskravTabs } from "@/sider/aktivitetskrav/vurdering/VurderAktivitetskravTabs";
-import { Box, Heading } from "@navikt/ds-react";
+import { Box, Heading, LocalAlert } from "@navikt/ds-react";
+import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
 import { VurderAktivitetskravButtons } from "@/sider/aktivitetskrav/vurdering/VurderAktivitetskravButtons";
 import { GjelderOppfolgingstilfelle } from "@/sider/aktivitetskrav/GjelderOppfolgingstilfelle";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
@@ -40,12 +41,22 @@ export function VurderAktivitetskrav({
     tilfellerDescendingStart,
   );
   const currentVurdering = aktivitetskrav.vurderinger[0];
+  const { notification, clearNotification } =
+    useAktivitetskravNotificationAlert();
   const showVurderAktivitetskravAlert =
     currentVurdering?.status === AktivitetskravStatus.AVVENT ||
     currentVurdering?.status === AktivitetskravStatus.FORHANDSVARSEL;
 
   return (
     <>
+      {notification && (
+        <LocalAlert status="success" size="small" className="mb-2">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+            <LocalAlert.CloseButton onClick={clearNotification} />
+          </LocalAlert.Header>
+        </LocalAlert>
+      )}
       {showVurderAktivitetskravAlert && (
         <AktivitetskravVurderingAlert vurdering={currentVurdering} />
       )}

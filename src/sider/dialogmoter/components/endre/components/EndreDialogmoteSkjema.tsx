@@ -1,4 +1,5 @@
 import { Link, Navigate } from "react-router-dom";
+import { NoNarmesteLederAlert } from "@/sider/dialogmoter/components/innkalling/NoNarmestLederAlert";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { validerKlokkeslett, validerVideoLink } from "@/utils/valideringUtils";
 import { useEndreDocument } from "@/hooks/dialogmote/document/useEndreDocument";
@@ -11,7 +12,7 @@ import { useEndreDialogmote } from "@/sider/dialogmoter/hooks/useEndreDialogmote
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { LocalAlert, Box, Button, Label, VStack } from "@navikt/ds-react";
+import { Box, Button, Label, VStack } from "@navikt/ds-react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
@@ -49,9 +50,6 @@ export const texts = {
   forhandsvisningBehandlerTitle: "Brev til behandler",
   forhandsvisningBehandlerContentLabel:
     "Forhåndsvis endring av dialogmøte behandler",
-  noNarmesteleder:
-    "Det er ikke registrert en nærmeste leder fra denne arbeidsgiveren, derfor sender vi dette brevet automatisk til " +
-    "Altinn. Lederen må registrere seg som nærmeste leder i Altinn for å kunne gi svar på Nav.no.",
   stedMissing: "Vennligst angi møtested",
   begrunnelseArbeidstakerMissing:
     "Vennligst angi begrunnelse til arbeidstakeren",
@@ -231,13 +229,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               label={texts.begrunnelseArbeidsgiver}
               maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
             />
-            {!narmesteLeder && (
-              <LocalAlert status="warning" size="small" className="mb-4">
-                <LocalAlert.Header>
-                  <LocalAlert.Title>{texts.noNarmesteleder}</LocalAlert.Title>
-                </LocalAlert.Header>
-              </LocalAlert>
-            )}
+            {!narmesteLeder && <NoNarmesteLederAlert />}
             <Forhandsvisning
               contentLabel={texts.forhandsvisningArbeidsgiverContentLabel}
               getDocumentComponents={() =>

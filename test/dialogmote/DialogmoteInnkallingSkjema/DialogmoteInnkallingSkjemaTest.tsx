@@ -110,12 +110,6 @@ describe("DialogmoteInnkallingSkjema", () => {
     );
     renderDialogmoteInnkallingSkjema();
 
-    expect(
-      screen.getByRole("heading", {
-        name: (name) => name.endsWith(texts.reservertAlert),
-        level: 2,
-      }),
-    ).to.exist;
     expect(screen.getByText(texts.reservertAlert)).to.exist;
   });
   it("viser ikke advarsel om papirpost når bruker kan varsles digitalt", () => {

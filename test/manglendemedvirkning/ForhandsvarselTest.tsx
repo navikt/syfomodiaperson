@@ -142,10 +142,12 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
       renderForhandsvarselSendt(defaultForhandsvarselVurdering);
 
       expect(
-        screen.getByText(
-          `Forhåndsvarselet er sendt ${formatNumericDate(new Date())}.`,
-        ),
+        screen.getByRole("heading", {
+          name: `Forhåndsvarselet er sendt ${formatNumericDate(new Date())}`,
+        }),
       ).to.exist;
+      expect(screen.queryByText("Forhåndsvarselet er sendt til bruker.")).to.not
+        .exist;
       expect(screen.getByText("Venter på svar fra bruker")).to.exist;
       expect(screen.getByText("Fristen går ut:")).to.exist;
       expect(

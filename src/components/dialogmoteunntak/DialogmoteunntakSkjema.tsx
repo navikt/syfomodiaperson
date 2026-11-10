@@ -11,7 +11,7 @@ import { useSettDialogmoteunntak } from "@/data/dialogmotekandidat/useSettDialog
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
-  LocalAlert,
+  InfoCard,
   BodyLong,
   Box,
   Button,
@@ -19,6 +19,7 @@ import {
   RadioGroup,
   Textarea,
 } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 
 export const texts = {
   noBrev: "Det blir ikke sendt ut varsel eller brev til den sykmeldte.",
@@ -63,11 +64,11 @@ export default function DialogmoteunntakSkjema() {
 
   return (
     <Box background="default" padding="space-24">
-      <LocalAlert status="announcement" size="small" className="p-4 mb-4">
-        <LocalAlert.Header>
-          <LocalAlert.Title>{texts.noBrev}</LocalAlert.Title>
-        </LocalAlert.Header>
-      </LocalAlert>
+      <InfoCard data-color="info" size="small" className="mb-4">
+        <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+          {texts.noBrev}
+        </InfoCard.Message>
+      </InfoCard>
       <BodyLong size="small" spacing>
         {texts.unntakInfo}
       </BodyLong>

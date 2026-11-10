@@ -17,7 +17,8 @@ import { MalformProvider } from "@/context/malform/MalformContext";
 import DialogmoteInnkallingSkjema from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
-import { LocalAlert } from "@navikt/ds-react";
+import { InfoCard } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const texts = {
   title: "Innkalling til dialogmøte",
@@ -50,12 +51,14 @@ export default function DialogmoteInnkallingContainer(): ReactElement {
     isError: hentingOppfolgingstilfellerFeilet,
   } = useOppfolgingstilfellePersonQuery();
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+  const { isLoading: henterKontaktinfo } = useKontaktinfoQuery();
 
   if (aktivtDialogmote) {
     return <Navigate to={moteoversiktRoutePath} />;
   }
 
-  const henter = henterLedere || henterOppfolgingstilfeller;
+  const henter =
+    henterLedere || henterOppfolgingstilfeller || henterKontaktinfo;
   const hentingFeilet =
     hentingLedereFeilet || hentingOppfolgingstilfellerFeilet;
 
@@ -65,11 +68,13 @@ export default function DialogmoteInnkallingContainer(): ReactElement {
         <Sidetopp tittel={texts.title} />
 
         {!hasActiveOppfolgingstilfelle && (
-          <LocalAlert status="warning" size="small" className="mb-4">
-            <LocalAlert.Header>
-              <LocalAlert.Title>{texts.ikkeSykmeldtAlert}</LocalAlert.Title>
-            </LocalAlert.Header>
-          </LocalAlert>
+          <InfoCard data-color="warning" size="small" className="mb-4">
+            <InfoCard.Message
+              icon={<ExclamationmarkTriangleIcon aria-hidden />}
+            >
+              {texts.ikkeSykmeldtAlert}
+            </InfoCard.Message>
+          </InfoCard>
         )}
 
         <Tredelt.Container>

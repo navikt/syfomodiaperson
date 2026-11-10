@@ -53,7 +53,7 @@ describe("MeldingTilBehandler", () => {
     queryClient = queryClientWithMockData();
   });
 
-  it("Viser overskrift og warning-alert for kopi til bruker dersom ikke aktivt oppfølgingstilfelle", () => {
+  it("Viser overskrift og advarsel for kopi til bruker dersom ikke aktivt oppfølgingstilfelle", () => {
     const emptyOppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
       ...oppfolgingstilfellePersonMock,
       oppfolgingstilfelleList: [],
@@ -67,18 +67,19 @@ describe("MeldingTilBehandler", () => {
 
     renderMeldingTilBehandler();
 
-    const alertText =
-      "Personen har ikke et aktivt oppfølgingstilfelle. Du kan likevel sende en dialogmelding til behandler så lenge henvendelsen gjelder sykefraværsoppfølging. Meldingen blir synlig for innbyggeren på innloggede sider.";
-
     expect(screen.getByRole("heading", { name: "Dialogmelding til behandler" }))
       .to.exist;
     expect(
       screen.getByRole("heading", {
-        name: new RegExp(alertText),
-        level: 2,
+        name: "Personen har ikke et aktivt oppfølgingstilfelle",
+        level: 3,
       }),
     ).to.exist;
-    expect(screen.getByText(alertText)).to.exist;
+    expect(
+      screen.getByText(
+        "Du kan likevel sende en dialogmelding til behandler så lenge henvendelsen gjelder sykefraværsoppfølging. Meldingen blir synlig for innbyggeren på innloggede sider.",
+      ),
+    ).to.exist;
   });
 
   const selectLabel = "Hvilken meldingstype ønsker du å sende?";

@@ -1,7 +1,8 @@
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { Alert, BodyShort, Box, Heading, List } from "@navikt/ds-react";
+import { BodyShort, Box, InfoCard, List } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
 import {
@@ -20,7 +21,7 @@ import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skj
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { KartleggingssporsmalHistorikk } from "@/sider/kartleggingssporsmal/historikk/KartleggingssporsmalHistorikk";
 import { KartleggingVurdering } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurdering.tsx";
-import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
+import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
 import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsmalSurvey.ts";
 import { ReactElement } from "react";
@@ -67,7 +68,8 @@ export default function KartleggingssporsmalSide(): ReactElement {
     useKartleggingssporsmalSvarQuery(nyesteKandidat);
   const answeredQuestions = getKartleggingssporsmalSvar.data;
 
-  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
+  const { brukerKanIkkeVarslesDigitalt, isLoading: henterKontaktinfo } =
+    useKontaktinfoQuery();
 
   const isSurveyVisible =
     toggles.isFlexjarKartleggingssporsmalEnabled &&
@@ -89,7 +91,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
   ) : null;
 
   const isPending =
-    getKandidater.isPending || getKartleggingssporsmalSvar.isLoading;
+    getKandidater.isPending ||
+    getKartleggingssporsmalSvar.isLoading ||
+    henterKontaktinfo;
   const isError = getKandidater.isError || getKartleggingssporsmalSvar.isError;
 
   const behandletWithoutVurdering =
@@ -129,23 +133,31 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     />
 
                     {behandletWithoutVurdering && (
-                      <SuccessAlert nyesteKandidat={nyesteKandidat} />
+                      <FerdigbehandletInfoCard
+                        nyesteKandidat={nyesteKandidat}
+                      />
                     )}
                   </>
                 ) : (
                   <>
                     {brukerKanIkkeVarslesDigitalt && (
-                      <Alert variant="warning" size="small">
-                        <Heading size="xsmall">
-                          {texts.reservertWarning.header}
-                        </Heading>
-                        <BodyShort size="small" spacing>
-                          {texts.reservertWarning.info1}
-                        </BodyShort>
-                        <BodyShort size="small" spacing>
-                          {texts.reservertWarning.info2}
-                        </BodyShort>
-                      </Alert>
+                      <InfoCard data-color="warning" size="small">
+                        <InfoCard.Header
+                          icon={<ExclamationmarkTriangleIcon aria-hidden />}
+                        >
+                          <InfoCard.Title>
+                            {texts.reservertWarning.header}
+                          </InfoCard.Title>
+                        </InfoCard.Header>
+                        <InfoCard.Content>
+                          <BodyShort size="small" spacing>
+                            {texts.reservertWarning.info1}
+                          </BodyShort>
+                          <BodyShort size="small">
+                            {texts.reservertWarning.info2}
+                          </BodyShort>
+                        </InfoCard.Content>
+                      </InfoCard>
                     )}
                     <BodyShort size="small" weight="semibold">
                       {texts.ikkeSvart}

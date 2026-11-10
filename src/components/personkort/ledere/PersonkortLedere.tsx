@@ -7,7 +7,8 @@ import { PersonKortVirksomhetHeader } from "./PersonKortVirksomhetHeader";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
-import { LocalAlert } from "@navikt/ds-react";
+import { InfoCard } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 import { PersonKortVirksomhetLedere } from "@/components/personkort/ledere/PersonKortVirksomhetLedere";
 import AppSpinner from "@/components/AppSpinner";
 
@@ -53,11 +54,11 @@ export function PersonkortLedere() {
   return getLedereQuery.isLoading || getSykmeldingerQuery.isLoading ? (
     <AppSpinner />
   ) : hasNoLeaders ? (
-    <LocalAlert status="announcement" size="small">
-      <LocalAlert.Header>
-        <LocalAlert.Title>{texts.noLeader}</LocalAlert.Title>
-      </LocalAlert.Header>
-    </LocalAlert>
+    <InfoCard data-color="info" size="small">
+      <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+        {texts.noLeader}
+      </InfoCard.Message>
+    </InfoCard>
   ) : (
     <div>
       {Object.keys(virksomhetLederMap).map((virksomhetsnummer, idx) => {

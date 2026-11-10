@@ -42,7 +42,7 @@ const tildelOppfolgingsenhetFailed = (
   enhet: string,
 ): TildeltNotification => {
   return {
-    variant: "error",
+    status: "error",
     message: `Tildeling av ${navn} til ${enhet} feilet.`,
   };
 };
@@ -52,7 +52,7 @@ const tildelOppfolgingsenhetSuccess = (
   enhet: string,
 ): TildeltNotification => {
   return {
-    variant: "success",
+    status: "success",
     header: "Bruker tildelt",
     message: `${navn} tildelt til ${enhet}.`,
   };

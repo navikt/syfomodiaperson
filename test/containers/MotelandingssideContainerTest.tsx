@@ -17,7 +17,10 @@ import { queryClientWithAktivBruker } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { dialogmoteunntakQueryKeys } from "@/data/dialogmotekandidat/useGetDialogmoteunntakQuery";
-import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
+import {
+  brukerinfoMock,
+  kontaktinformasjonMock,
+} from "@/mocks/syfoperson/persondataMock";
 import {
   MotebehovInnmelder,
   MotebehovSkjemaType,
@@ -65,6 +68,10 @@ describe("MotelandingssideSide", () => {
     queryClient.setQueryData(
       brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => brukerinfoMock,
+    );
+    queryClient.setQueryData(
+      brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => kontaktinformasjonMock,
     );
     queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
     queryClient.setQueryData(

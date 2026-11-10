@@ -41,6 +41,7 @@ interface Props {
   isKandidat: boolean;
   isOpen: boolean;
   onClose: () => void;
+  onSaved: () => void;
 }
 
 interface SkjemaValues {
@@ -52,6 +53,7 @@ export function DialogmoteAvventModal({
   isKandidat,
   isOpen,
   onClose,
+  onSaved,
 }: Props): ReactElement {
   const avventMutation = useAvventDialogmoteMutation();
 
@@ -108,6 +110,7 @@ export function DialogmoteAvventModal({
       },
       {
         onSuccess: () => {
+          onSaved();
           onClose();
         },
       },

@@ -53,7 +53,7 @@ export function PersonkortEnhet() {
           </div>
         </PersonkortElement>
       ) : (
-        <LocalAlert status="announcement" size="small">
+        <LocalAlert status="warning" size="small">
           <LocalAlert.Header>
             <LocalAlert.Title>{texts.notFound}</LocalAlert.Title>
           </LocalAlert.Header>

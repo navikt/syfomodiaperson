@@ -23,7 +23,8 @@ export default function EndreDialogmote() {
     dialogmoteUuid: string;
   }>();
   const { isLoading, isError, data: dialogmoter } = useDialogmoterQuery();
-  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
+  const { brukerKanIkkeVarslesDigitalt, isLoading: henterKontaktinfo } =
+    useKontaktinfoQuery();
 
   const dialogmote = dialogmoter.find(
     (dialogmote) => dialogmote.uuid === dialogmoteUuid,
@@ -31,7 +32,7 @@ export default function EndreDialogmote() {
 
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
-      <SideLaster isLoading={isLoading} isError={isError}>
+      <SideLaster isLoading={isLoading || henterKontaktinfo} isError={isError}>
         <Sidetopp tittel={texts.pageHeader} />
         {dialogmote ? (
           <Tredelt.Container>

@@ -6,7 +6,8 @@ import { formatDateRangeWithYear } from "@/utils/datoUtils";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import SyketilfelleRadioList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleRadioList.tsx";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { LocalAlert, BodyShort, Box, Heading } from "@navikt/ds-react";
+import { InfoCard, BodyShort, Box, Heading } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import {
@@ -83,17 +84,17 @@ export default function Sykmeldingsgrad({
           )}
         </BodyShort>
       )}
-      {harOpplystOmJobbetIOppfolgingstilfelle(
-        sykmeldingerIOppfolgingstilfelle,
-      ) && (
-        <LocalAlert status="announcement" size="small" className="mt-2 w-fit">
-          <LocalAlert.Header>
-            <LocalAlert.Title>
+      <div role="status">
+        {harOpplystOmJobbetIOppfolgingstilfelle(
+          sykmeldingerIOppfolgingstilfelle,
+        ) && (
+          <InfoCard data-color="info" size="small" className="mt-2 w-fit">
+            <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
               {texts.harJobbetUtoverSykmeldingsgrad}
-            </LocalAlert.Title>
-          </LocalAlert.Header>
-        </LocalAlert>
-      )}
+            </InfoCard.Message>
+          </InfoCard>
+        )}
+      </div>
       <div className="flex flex-row">
         <SykmeldingsgradChart sykmeldingsperioder={sortedSykmeldingsperioder} />
 
