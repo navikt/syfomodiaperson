@@ -1,165 +1,40 @@
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { ApiErrorException } from "@/api/errors";
 import { Tag } from "@navikt/ds-react";
-import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
-import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
-import { formatNumericDate } from "@/utils/datoUtils";
-import { useUnderArbeidsrettetOppfolgingQuery } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
-import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
-import { useUforegradQuery } from "@/data/uforegrad/uforegradQueryHooks";
-import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
-import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
-import {
-  erAvvistSykmelding,
-  erSykmeldingUtenArbeidsgiver,
-  sykmeldingerSortertNyestTilEldstPeriode,
-  SykmeldingStatus,
-} from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
-import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
-import { useAapStatusQuery } from "@/data/aap/aapQueryHooks.ts";
-import { AapTag } from "@/components/personkort/PersonkortHeader/AapTag.tsx";
+import { usePersonkortHeaderTags } from "@/components/personkort/PersonkortHeader/hooks/usePersonkortHeaderTags";
 
 const texts = {
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
-  dod: "Død",
-  kode6: "Kode 6",
-  kode7: "Kode 7",
-  egenansatt: "Egenansatt",
-  gjentakendeSykefravar: "Gjentakende sykefravær",
-  talesprakTolk: "Talespråktolk",
-  tegnsprakTolk: "Tegnspråktolk",
-  sikkerhetstiltak: "Sikkerhetstiltak",
-  ao: "Under arbeidsrettet oppfølging",
-  friskmeldingTilArbeidsformidling: "Vedtak § 8-5",
-  reservertKRR: "Reservert KRR",
-  harIkkeArbeidsgiver: "Uten arbeidsgiver",
-  underVergemal: "Under vergemål",
 };
 
 export function PersonkortHeaderTags() {
-  const { data: isEgenAnsatt } = useEgenansattQuery();
-  const {
-    dodsdato,
-    sikkerhetstiltak,
-    underVergemal,
-    tilrettelagtKommunikasjon,
-  } = useNavBrukerData();
-  const { error, data: diskresjonskode } = useDiskresjonskodeQuery();
-  const { data: arbeidsrettetOppfolging } =
-    useUnderArbeidsrettetOppfolgingQuery();
-  const { data: vedtakFriskTilArbeid } = useVedtakQuery();
-  const { data: uforegradData } = useUforegradQuery();
-  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
-  const getSykmeldingerQuery = useGetSykmeldingerQuery();
-  const { hasGjentakendeSykefravar } = useOppfolgingstilfellePersonQuery();
-  const { data: aapStatus } = useAapStatusQuery();
-
-  const isDead = !!dodsdato;
-  const dateOfDeath = formatNumericDate(dodsdato);
-  const isKode6 = diskresjonskode === "6";
-  const isKode7 = diskresjonskode === "7";
-  const talesprakTolkSprakkode =
-    tilrettelagtKommunikasjon?.talesprakTolk?.value;
-  const tegnsprakTolkSprakkode =
-    tilrettelagtKommunikasjon?.tegnsprakTolk?.value;
-  const hasActiveFriskmeldingVedtak =
-    vedtakFriskTilArbeid[0] &&
-    new Date(vedtakFriskTilArbeid[0].tom).getTime() >= new Date().getTime();
-
-  const nyligsteSendtEllerBekreftetSykmelding =
-    sykmeldingerSortertNyestTilEldstPeriode(
-      getSykmeldingerQuery.sykmeldinger,
-    ).find(
-      (sykmelding) =>
-        !erAvvistSykmelding(sykmelding) &&
-        (sykmelding.status === SykmeldingStatus.SENDT ||
-          sykmelding.status === SykmeldingStatus.BEKREFTET),
-    );
-  const harIkkeArbeidsgiver = nyligsteSendtEllerBekreftetSykmelding
-    ? erSykmeldingUtenArbeidsgiver(nyligsteSendtEllerBekreftetSykmelding)
-    : false;
+  const { tags, diskresjonskodeError } = usePersonkortHeaderTags();
 
   return (
     <ErrorBoundary
-      apiError={error instanceof ApiErrorException ? error.error : undefined}
+      apiError={
+        diskresjonskodeError instanceof ApiErrorException
+          ? diskresjonskodeError.error
+          : undefined
+      }
       errorMessage={texts.fetchDiskresjonskodeFailed}
     >
-      <div className="flex flex-1 gap-2 h-fit flex-wrap justify-end">
-        {isKode6 && (
-          <Tag data-color="warning" variant="outline" size="small">
-            {texts.kode6}
-          </Tag>
-        )}
-        {isKode7 && (
-          <Tag data-color="warning" variant="outline" size="small">
-            {texts.kode7}
-          </Tag>
-        )}
-        {isEgenAnsatt && (
-          <Tag data-color="warning" variant="outline" size="small">
-            {texts.egenansatt}
-          </Tag>
-        )}
-        {hasGjentakendeSykefravar && (
-          <Tag data-color="warning" variant="outline" size="small">
-            <ArrowsCirclepathIcon className="mr-1" />
-            {texts.gjentakendeSykefravar}
-          </Tag>
-        )}
-        {arbeidsrettetOppfolging?.underOppfolging && (
-          <Tag data-color="warning" variant="outline" size="small">
-            {texts.ao}
-          </Tag>
-        )}
-        {hasActiveFriskmeldingVedtak && (
-          <Tag data-color="info" variant="outline" size="small">
-            {texts.friskmeldingTilArbeidsformidling}
-          </Tag>
-        )}
-        {uforegradData?.uforegrad && (
-          <Tag data-color="info" variant="outline" size="small">
-            {`Ufør ${uforegradData.uforegrad} %`}
-          </Tag>
-        )}
-        {talesprakTolkSprakkode && (
-          <Tag data-color="warning" variant="outline" size="small">
-            {texts.talesprakTolk}: {talesprakTolkSprakkode}
-          </Tag>
-        )}
-        {tegnsprakTolkSprakkode && (
-          <Tag data-color="warning" variant="outline" size="small">
-            {texts.tegnsprakTolk}: {tegnsprakTolkSprakkode}
-          </Tag>
-        )}
-        {isDead && (
-          <Tag
-            data-color="danger"
-            variant="outline"
-            size="small"
-          >{`${texts.dod} ${dateOfDeath}`}</Tag>
-        )}
-        {sikkerhetstiltak.map(({ beskrivelse }, index) => (
-          <Tag key={index} data-color="danger" variant="outline" size="small">
-            {`${texts.sikkerhetstiltak}: ${beskrivelse}`}
-          </Tag>
-        ))}
-        {brukerKanIkkeVarslesDigitalt && (
-          <Tag data-color="warning" variant="outline" size="small">
-            {texts.reservertKRR}
-          </Tag>
-        )}
-        {harIkkeArbeidsgiver && (
-          <Tag data-color="warning" variant="outline" size="small">
-            {texts.harIkkeArbeidsgiver}
-          </Tag>
-        )}
-        {aapStatus && <AapTag aapStatus={aapStatus} />}
-        {underVergemal && (
-          <Tag data-color="warning" variant="outline" size="small">
-            {texts.underVergemal}
-          </Tag>
+      <div className="flex flex-1 h-fit justify-end">
+        {tags.length > 0 && (
+          <ul className="flex gap-2 flex-wrap items-center justify-end list-none m-0 p-0">
+            {tags.map(({ key, label, color, icon }) => (
+              <li key={key} className="flex">
+                <Tag
+                  data-color={color}
+                  variant="outline"
+                  size="small"
+                  icon={icon}
+                >
+                  {label}
+                </Tag>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
     </ErrorBoundary>

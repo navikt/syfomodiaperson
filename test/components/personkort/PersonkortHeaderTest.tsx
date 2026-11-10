@@ -1,5 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 
 import { beforeEach, describe, expect, it } from "vitest";
 import {
@@ -72,6 +72,33 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.getByText("Egenansatt")).to.exist;
+  });
+
+  it("viser tags som listeelementer i fast rekkefølge", () => {
+    queryClient.setQueryData(
+      diskresjonskodeQueryKeys.diskresjonskode(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => "6",
+    );
+    queryClient.setQueryData(
+      egenansattQueryKeys.egenansatt(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => true,
+    );
+    queryClient.setQueryData(
+      brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({ ...kontaktinformasjonMock, skalHaVarsel: false }),
+    );
+
+    renderPersonkortHeader();
+
+    const tagTexts = within(screen.getByRole("list"))
+      .getAllByRole("listitem")
+      .map((listItem) => listItem.textContent);
+    const expectedOrder = ["Kode 6", "Egenansatt", "Reservert KRR"];
+    expect(
+      tagTexts.filter((text) => expectedOrder.includes(text ?? "")),
+    ).to.deep.equal(expectedOrder);
   });
 
   it("viser ikke 'Egenansatt' når isEgenansatt er false fra API", () => {
