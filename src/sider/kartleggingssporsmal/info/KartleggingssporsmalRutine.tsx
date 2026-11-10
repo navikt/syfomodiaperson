@@ -19,8 +19,7 @@ const texts = {
     behovForOppfolging:
       "Vurder hvordan du skal følge opp saken dersom det er behov for oppfølging fra Nav",
     info: "Vurderingen av svarene skal gjøres basert på ",
-    linkText:
-      "rutine for bruk av kartleggingsspørsmålene",
+    linkText: "rutine for bruk av kartleggingsspørsmålene",
   },
   ikkeRisiko: {
     heading: "Svar fra sykmeldte som ikke indikerer risiko",
