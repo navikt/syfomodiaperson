@@ -6,6 +6,7 @@ export type DraftCategory =
   | "behandlerdialog-meldingtilbehandler"
   | "arbeidsuforhet-forhandsvarsel"
   | "arbeidsuforhet-avslag-uten-forhandsvarsel"
+  | "arbeidsuforhet-avslag"
   | "arbeidsuforhet-oppfylt"
   | "manglendemedvirkning-forhandsvarsel"
   | "aktivitetskrav-forhandsvarsel"
