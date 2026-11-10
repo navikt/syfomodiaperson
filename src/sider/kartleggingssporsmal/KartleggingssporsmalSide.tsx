@@ -55,6 +55,8 @@ const texts = {
   behovsrettetLink: "Les mer om behovsrettet sykefraværsoppfølging på Navet",
   behovsrettetUrl:
     "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Behovsrettet-oppf%C3%B8lging.aspx?csf=1&web=1&e=e73C3c",
+  link: "Slik ser spørsmålene ut for den sykmeldte",
+  demoUrl: "https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal",
 };
 
 export default function KartleggingssporsmalSide(): ReactElement {
@@ -122,12 +124,14 @@ export default function KartleggingssporsmalSide(): ReactElement {
                       {`${texts.svart} ${formatDateWithYear(
                         answeredQuestions.createdAt,
                       )}`}
-                    </BodyShort>
-                    <BodyShort size="small" weight="semibold">
+                      <br/>
                       {`${texts.kandidat} ${formatDateWithYear(
-                        nyesteKandidat.varsletAt,
+                          nyesteKandidat.varsletAt,
                       )}`}
                     </BodyShort>
+                    <EksternLenke href={texts.demoUrl} className="text-[16px]">
+                      {texts.link}
+                    </EksternLenke>
                     <KartleggingssporsmalSkjemasvar
                       formSnapshot={answeredQuestions.formSnapshot}
                     />
