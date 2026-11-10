@@ -61,6 +61,12 @@ import { DeltakerArbeidsgiverHeading } from "@/sider/dialogmoter/components/refe
 import { ExpansionCardFormField } from "@/components/ExpansionCardFormField";
 import { PlusIcon, TrashIcon } from "@navikt/aksel-icons";
 import { EksternLenke } from "@/components/EksternLenke";
+import {
+  BekreftSendReferatModal,
+  LukkMetode,
+  texts as bekreftTexts,
+} from "@/sider/dialogmoter/components/referat/BekreftSendReferatModal";
+import { Events, trackEvent } from "@/utils/umami";
 
 export const MAX_LENGTH_SITUASJON = 10000;
 export const MAX_LENGTH_KONKLUSJON = 2500;
@@ -195,7 +201,7 @@ export interface ReferatSkjemaValues {
   behandlerMottarReferat?: boolean;
 }
 
-interface ReferatProps {
+interface Props {
   dialogmote: DialogmoteDTO;
   mode: ReferatMode;
 }
@@ -229,11 +235,14 @@ const toNewReferat = (
   andreDeltakere: values.andreDeltakere || [],
 });
 
-const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
+export default function Referat({ dialogmote, mode }: Props): ReactElement {
   const navbruker = useNavBrukerData();
   const ferdigstillDialogmote = useFerdigstillDialogmote(dialogmote.uuid);
   const mellomlagreReferat = useMellomlagreReferat(dialogmote.uuid);
   const endreReferat = useEndreReferat(dialogmote.uuid);
+  const [referatTilBekreftelse, setReferatTilBekreftelse] = useState<
+    ReferatSkjemaValues | undefined
+  >();
 
   const [showToast, setShowToast] = useState<boolean>(false);
   const [lastSavedTime, setLastSavedTime] = useState<Dayjs>(dayjs());
@@ -286,6 +295,48 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
     } else {
       ferdigstillDialogmote.mutate(newDialogmoteReferatDTO);
     }
+  };
+
+  const apneBekreftModal = (values: ReferatSkjemaValues) => {
+    setReferatTilBekreftelse(values);
+    trackEvent({
+      name: Events.MODAL_APNET,
+      properties: { tittel: bekreftTexts.heading },
+    });
+  };
+
+  const lukkBekreftModal = (lukkMetode: LukkMetode) => {
+    setReferatTilBekreftelse(undefined);
+    trackEvent({
+      name: Events.MODAL_LUKKET,
+      properties: { tittel: bekreftTexts.heading, lukkMetode },
+    });
+  };
+
+  const avbrytBekreftModal = () => {
+    trackEvent({
+      name: Events.KNAPP_KLIKKET,
+      properties: {
+        tekst: bekreftTexts.avbryt,
+        variant: "secondary",
+        kontekst: bekreftTexts.heading,
+      },
+    });
+    lukkBekreftModal("handlings-knapp");
+  };
+
+  const bekreftSendReferat = () => {
+    if (!referatTilBekreftelse) return;
+    trackEvent({
+      name: Events.KNAPP_KLIKKET,
+      properties: {
+        tekst: bekreftTexts.bekreft,
+        variant: "primary",
+        kontekst: bekreftTexts.heading,
+      },
+    });
+    submit(referatTilBekreftelse);
+    lukkBekreftModal("handlings-knapp");
   };
 
   const isNullOrEmpty = (value?: string | undefined) => {
@@ -363,7 +414,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
     <Box background="default" padding="space-16">
       <FormProvider {...formMethods}>
         <form
-          onSubmit={handleSubmit(submit)}
+          onSubmit={handleSubmit(apneBekreftModal)}
           onChange={() => {
             setUendretSidenMellomlagring(false);
             debouncedAutoSave(getValues());
@@ -695,8 +746,16 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
           </HStack>
         </form>
       </FormProvider>
+      {referatTilBekreftelse && (
+        <BekreftSendReferatModal
+          dialogmote={dialogmote}
+          behandlerMottarReferat={referatTilBekreftelse.behandlerMottarReferat}
+          isPending={isSendingReferat()}
+          onBekreft={bekreftSendReferat}
+          onAvbryt={avbrytBekreftModal}
+          onClose={lukkBekreftModal}
+        />
+      )}
     </Box>
   );
-};
-
-export default Referat;
+}

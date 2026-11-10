@@ -13,7 +13,8 @@ import {
   moteTekster,
   narmesteLederNavn,
 } from "./testData";
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { expectedEndretReferatDocument } from "./testDataDocuments";
 import { queryClientWithMockData } from "../testQueryClient";
 import { getReferatTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
@@ -25,6 +26,7 @@ import Referat, {
   ReferatMode,
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "@/sider/dialogmoter/components/referat/Referat";
+import { texts as bekreftTexts } from "@/sider/dialogmoter/components/referat/BekreftSendReferatModal";
 
 let queryClient: QueryClient;
 
@@ -101,11 +103,10 @@ describe("ReferatEndreTest", () => {
     await passSkjemaInput();
     const expectedSendtDato = new Date();
     await clickButton("Lagre og send");
+    await userEvent.click(
+      screen.getByRole("button", { name: bekreftTexts.bekreft, hidden: true }),
+    );
 
-    const endringFerdigstillMutation = queryClient
-      .getMutationCache()
-      .getAll()
-      .pop();
     const expectedEndringFerdigstilling = {
       narmesteLederNavn: narmesteLederNavn,
       situasjon: moteTekster.situasjonTekst,
@@ -117,9 +118,14 @@ describe("ReferatEndreTest", () => {
       document: expectedEndretReferatDocument(expectedSendtDato),
       andreDeltakere: [],
     };
-    expect(endringFerdigstillMutation?.state.variables).to.deep.equal(
-      expectedEndringFerdigstilling,
-    );
+    await waitFor(() => {
+      const endretReferat = queryClient
+        .getMutationCache()
+        .getAll()
+        .map((mutation) => mutation.state.variables)
+        .find((variables) => typeof variables === "object");
+      expect(endretReferat).to.deep.equal(expectedEndringFerdigstilling);
+    });
   });
 });
 
