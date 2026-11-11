@@ -46,6 +46,8 @@ import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks.ts";
 import { aapQueryKeys } from "@/data/aap/aapQueryHooks";
 import { createAapStatusMock } from "@/mocks/aap/mockAapSaker";
+import { tiltakQueryKeys } from "@/data/tiltak/tiltakQueryHooks";
+import { createTiltakMock } from "@/mocks/tiltak/mockTiltak";
 
 let queryClient: any;
 
@@ -919,5 +921,56 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.queryByText("Under vergemål")).not.to.exist;
+  });
+
+  describe("Tiltak", () => {
+    it("viser én tag per aktivt tiltak", () => {
+      queryClient.setQueryData(
+        tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({
+          tiltak: [
+            createTiltakMock({ id: "1", tittel: "Oppfølging hos Arrangør AS" }),
+            createTiltakMock({
+              id: "2",
+              tittel: "Arbeidstrening hos Bedrift AS",
+            }),
+          ],
+        }),
+      );
+
+      renderPersonkortHeader();
+
+      expect(screen.getByText("Oppfølging hos Arrangør AS")).to.exist;
+      expect(screen.getByText("Arbeidstrening hos Bedrift AS")).to.exist;
+    });
+
+    it("viser bare én tag når flere tiltak har lik tittel", () => {
+      queryClient.setQueryData(
+        tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({
+          tiltak: [
+            createTiltakMock({ id: "1", tittel: "Oppfølging hos Arrangør AS" }),
+            createTiltakMock({ id: "2", tittel: "Oppfølging hos Arrangør AS" }),
+          ],
+        }),
+      );
+
+      renderPersonkortHeader();
+
+      expect(screen.getAllByText("Oppfølging hos Arrangør AS")).to.have.length(
+        1,
+      );
+    });
+
+    it("viser ingen tiltak-tag når personen ikke har aktive tiltak", () => {
+      queryClient.setQueryData(
+        tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({ tiltak: [] }),
+      );
+
+      renderPersonkortHeader();
+
+      expect(screen.queryByText("Oppfølging hos Arrangør AS")).to.not.exist;
+    });
   });
 });

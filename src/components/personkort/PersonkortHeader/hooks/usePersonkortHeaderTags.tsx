@@ -17,6 +17,7 @@ import {
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 import { useAapStatusQuery } from "@/data/aap/aapQueryHooks.ts";
+import { useAktiveTiltakQuery } from "@/data/tiltak/tiltakQueryHooks";
 import { getAapTagText } from "@/components/personkort/PersonkortHeader/utils/aapTagText.ts";
 
 const texts = {
@@ -34,6 +35,7 @@ const texts = {
   reservertKRR: "Reservert KRR",
   harIkkeArbeidsgiver: "Uten arbeidsgiver",
   underVergemal: "Under vergemål",
+  tiltak: "Tiltak",
 };
 
 /**
@@ -72,6 +74,7 @@ export function usePersonkortHeaderTags(): {
   const getSykmeldingerQuery = useGetSykmeldingerQuery();
   const { hasGjentakendeSykefravar } = useOppfolgingstilfellePersonQuery();
   const { data: aapStatus } = useAapStatusQuery();
+  const { data: aktiveTiltak } = useAktiveTiltakQuery();
 
   const talesprakTolkSprakkode =
     tilrettelagtKommunikasjon?.talesprakTolk?.value;
@@ -94,6 +97,11 @@ export function usePersonkortHeaderTags(): {
   const harIkkeArbeidsgiver = nyligsteSendtEllerBekreftetSykmelding
     ? erSykmeldingUtenArbeidsgiver(nyligsteSendtEllerBekreftetSykmelding)
     : false;
+
+  const tiltak = [
+    { beskrivelse: "AFT" },
+    { beskrivelse: "Norskopplæring, grunnleggende ferdigheter og FOV" },
+  ];
 
   const tags: PersonkortTag[] = [];
 
@@ -180,6 +188,13 @@ export function usePersonkortHeaderTags(): {
   if (aapTagText) {
     tags.push({ key: "aap", label: aapTagText, color: "info" });
   }
+  aktiveTiltak?.forEach(({ id, tittel }) => {
+    tags.push({
+      key: `tiltak-${id}`,
+      label: `${texts.tiltak}: ${tittel}`,
+      color: "info",
+    });
+  });
   if (underVergemal) {
     tags.push({
       key: "underVergemal",

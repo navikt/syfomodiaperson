@@ -40,6 +40,7 @@ import { mockSyfooppfolgingsplanbackend } from "@/mocks/syfooppfolgingsplanbacke
 import { mockBehandlerdialogDraft } from "@/mocks/draft/mockBehandlerdialogDraft";
 import { mockDraftText } from "@/mocks/draft/mockDraftText";
 import { mockAapSaker } from "@/mocks/aap/mockAapSaker";
+import { mockTiltak } from "@/mocks/tiltak/mockTiltak";
 
 const handlers = [
   http.post("https://umami.nav.no/api/send", () => {
@@ -90,6 +91,7 @@ const handlers = [
   mockVeilarboppfolging,
   mockPensjonPenUforegrad,
   mockAapSaker,
+  mockTiltak,
 ];
 
 export default handlers;
