@@ -447,22 +447,20 @@ describe("Kartleggingssporsmal", () => {
       .exist;
 
     expect(
-      screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}`),
+      screen.queryByText(
+        `Oppgaven er behandlet av ${VEILEDER_DEFAULT.fulltNavn()}`,
+      ),
     ).to.exist;
     expect(screen.queryByText("Vurderingen er lagret")).to.not.exist;
 
     expect(
       screen.queryByText(
-        `Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging`,
+        `Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging`,
       ),
     ).to.exist;
 
-    expect(screen.getByDisplayValue("Dette er en begrunnelse for vurderingen."))
-      .to.exist;
-    expect(getTextInput("Begrunnelse (valgfritt)")).to.have.property(
-      "readOnly",
-      true,
-    );
+    expect(screen.queryByText(`Dette er en begrunnelse for vurderingen.`)).to
+      .exist;
   });
 
   describe("§ 14a-vurdering text", () => {
@@ -562,8 +560,8 @@ describe("Kartleggingssporsmal", () => {
         "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
       );
       await clickButton("Lagre vurdering, fjern oppgaven");
-      expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
-        .exist;
+      expect(await screen.findByText("Oppgaven er behandlet av Vetle Veileder"))
+        .to.exist;
       expect(
         screen.getByRole("heading", {
           name: (name) => name.endsWith("Vurderingen er lagret"),
@@ -586,12 +584,13 @@ describe("Kartleggingssporsmal", () => {
         "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
       );
       await clickButton("Lagre vurdering, fjern oppgaven");
-      await screen.findByText("Oppgaven er behandlet av Z990000");
+      await screen.findByText("Oppgaven er behandlet av Vetle Veileder");
 
       await clickButton("Lukk");
 
       expect(screen.queryByText("Vurderingen er lagret")).to.not.exist;
-      expect(screen.getByText("Oppgaven er behandlet av Z990000")).to.exist;
+      expect(screen.getByText("Oppgaven er behandlet av Vetle Veileder")).to
+        .exist;
     });
 
     it("API returning error will show error message", async () => {
@@ -677,8 +676,8 @@ describe("Kartleggingssporsmal", () => {
         (getTextInput("Begrunnelse (valgfritt)") as HTMLTextAreaElement).value,
       ).to.equal("");
       await clickButton("Lagre vurdering, fjern oppgaven");
-      expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
-        .exist;
+      expect(await screen.findByText("Oppgaven er behandlet av Vetle Veileder"))
+        .to.exist;
     });
 
     it("Submitting a begrunnelse longer than 200 characters shows error message", async () => {

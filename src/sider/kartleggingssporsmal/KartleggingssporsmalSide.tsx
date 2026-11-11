@@ -7,6 +7,7 @@ import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
 import {
   hasMottattKartleggingssporsmal,
+  isFerdigbehandlet,
   KandidatStatus,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import {
@@ -21,13 +22,13 @@ import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { KartleggingssporsmalHistorikk } from "@/sider/kartleggingssporsmal/historikk/KartleggingssporsmalHistorikk";
-import { KartleggingVurderingContainer } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurderingContainer.tsx";
-import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
-import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsmalSurvey.ts";
 import { ReactElement } from "react";
 import { SyketilfelleList } from "@/components/syketilfelleList/SyketilfelleList.tsx";
 import { KartleggingssporsmalRutine } from "@/sider/kartleggingssporsmal/info/KartleggingssporsmalRutine.tsx";
+import { KartleggingVurderingContainer } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurderingContainer.tsx";
+import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
+import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -100,8 +101,8 @@ export default function KartleggingssporsmalSide(): ReactElement {
   const isError = getKandidater.isError || getKartleggingssporsmalSvar.isError;
 
   const behandletWithoutVurdering =
-    nyesteKandidat?.status === KandidatStatus.FERDIGBEHANDLET &&
-    !nyesteKandidat?.vurdering?.vurderingAlternativ;
+    isFerdigbehandlet(nyesteKandidat) &&
+    !nyesteKandidat.vurdering.vurderingAlternativ;
 
   return (
     <Side
@@ -144,9 +145,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     />
 
                     {behandletWithoutVurdering && (
-                      <FerdigbehandletInfoCard
-                        nyesteKandidat={nyesteKandidat}
-                      />
+                      <FerdigbehandletInfoCard kandidat={nyesteKandidat} />
                     )}
                   </>
                 ) : (
