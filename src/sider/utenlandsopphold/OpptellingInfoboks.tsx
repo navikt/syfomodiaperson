@@ -15,8 +15,7 @@ const texts = {
     "Antall dager utenfor EU/EØS i året frem til slutten av hver søkte periode, dersom søknaden innvilges.",
   vindu: "Periode som telles",
   brukt: "Dager brukt",
-  potensieltBrukt:
-    "Dager brukt inkl. andre ubehandlede søknader og Infotrygd",
+  potensieltBrukt: "Dager brukt inkl. andre ubehandlede søknader og Infotrygd",
   overskredet: "Grensen på antall dager overskrides.",
 };
 
@@ -87,7 +86,10 @@ export function OpptellingInfoboks({ infoTilBehandling }: Props) {
         <VStack gap="space-12">
           <BodyShort size="small">{texts.description}</BodyShort>
           {opptellinger.map((opptelling) => (
-            <OpptellingRad key={opptelling.tom.getTime()} opptelling={opptelling} />
+            <OpptellingRad
+              key={opptelling.tom.getTime()}
+              opptelling={opptelling}
+            />
           ))}
           {isOverskredet && (
             <BodyShort size="small" weight="semibold">

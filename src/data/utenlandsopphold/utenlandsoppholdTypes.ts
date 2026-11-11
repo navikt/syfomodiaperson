@@ -279,7 +279,8 @@ export const parseSoknad = (soknad: SoknadDTO): Soknad => ({
   behandling: soknad.behandling ? parseBehandling(soknad.behandling) : null,
   infoTilBehandling: soknad.infoTilBehandling
     ? {
-        opptellinger: soknad.infoTilBehandling.opptellinger.map(parseOpptelling),
+        opptellinger:
+          soknad.infoTilBehandling.opptellinger.map(parseOpptelling),
       }
     : null,
 });
