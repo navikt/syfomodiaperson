@@ -1,6 +1,9 @@
-import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
-import { EksternLenke } from "@/components/EksternLenke";
-import { Events, trackEvent } from "@/utils/umami";
+import { Accordion, BodyShort, Box, Heading, List } from "@navikt/ds-react";
+import { Events, trackEvent, trackLinkKlikket } from "@/utils/umami";
+import { EksternLenke } from "@/components/EksternLenke.tsx";
+
+const LINK_RUTINE =
+  "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Bruk-av-kartleggingssp%C3%B8rsm%C3%A5l-i-sykefrav%C3%A6rsoppf%C3%B8lgingen.aspx";
 
 const texts = {
   kontekst: "Kartleggingsspørsmål",
@@ -9,14 +12,23 @@ const texts = {
     "Svarene skal hjelpe deg å tidlig identifisere sykmeldte med risiko for langtidsfravær eller fare for å falle ut av arbeidslivet.",
   infoTaushetsbelagt:
     "Det sykmeldte svarer om forhold på arbeidsplassen er taushetsbelagt informasjon og skal ikke deles med arbeidsgiver.",
+  rutine: {
+    vurderRisiko: "Vurder om svarene indikerer risiko for langtidsfravær",
+    vurderKontakt:
+      "Vurder behovet for kontakt med Nav der det indikeres risiko",
+    behovForOppfolging:
+      "Vurder hvordan du skal følge opp saken dersom det er behov for oppfølging fra Nav",
+    info: "Vurderingen av svarene skal gjøres basert på ",
+    linkText: "rutine for bruk av kartleggingsspørsmålene",
+  },
   ikkeRisiko: {
     heading: "Svar fra sykmeldte som ikke indikerer risiko",
     info1:
       "Når svarene fra den sykmeldte ikke indikerer risiko for langvarig sykefravær, skal saken som hovedregel ikke følges opp videre på dette tidspunktet.",
     info2:
-      "Det er normalt ikke behov for ytterligere kartlegging eller innhenting av opplysninger. Dersom Nav allerede har mottatt opplysninger eller henvendelser som tilsier at den sykmeldte likevel kan ha behov for oppfølging, må du vurdere om saken skal følges opp på dette tidspunktet.",
+      "Se kun over opplysningene som allerede ligger tilgjengelig på siden for vurderingen. Dersom det ikke foreligger andre opplysninger eller henvendelser som tilsier behov for oppfølging, er det normalt ikke nødvendig å gjennomføre ytterligere kartlegging eller innhente flere opplysninger.",
     info3:
-      "Behov for oppfølging kan også avdekkes senere gjennom oppfølgingspunkter eller henvendelser fra aktørene i sykefraværet.",
+      "Dersom Nav allerede har mottatt informasjon som tilsier at den sykmeldte likevel kan ha behov for oppfølging, må du vurdere om saken skal følges opp på dette tidspunktet. Behov for oppfølging kan også avdekkes senere gjennom oppfølgingspunkter eller henvendelser fra aktørene i sykefraværet.",
     conclusion: "Oppgaven kan avsluttes uten videre behandling.",
   },
   risiko: {
@@ -45,8 +57,6 @@ const texts = {
     conclusion:
       "Innkall til individuell samtale eller dialogmøte, og planlegg videre oppfølging før du avslutter oppgaven.",
   },
-  link: "Slik ser spørsmålene ut for den sykmeldte",
-  demoUrl: "https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal",
 };
 
 function trackAccordionApnet(isOpen: boolean, accordionTekst: string): void {
@@ -70,9 +80,28 @@ export function KartleggingssporsmalRutine() {
       <div className="flex flex-col gap-4 mb-4">
         <BodyShort size="small">{texts.intro}</BodyShort>
         <BodyShort size="small">{texts.infoTaushetsbelagt}</BodyShort>
-        <EksternLenke href={texts.demoUrl} className="text-[16px]">
-          {texts.link}
-        </EksternLenke>
+        <BodyShort size="small">
+          {texts.rutine.info}
+          <EksternLenke
+            href={LINK_RUTINE}
+            onClick={() => trackLinkKlikket(texts.rutine.linkText, LINK_RUTINE)}
+          >
+            {texts.rutine.linkText}
+          </EksternLenke>
+        </BodyShort>
+        <List as="ol">
+          <List.Item>
+            <BodyShort size="small">{texts.rutine.vurderRisiko}</BodyShort>
+          </List.Item>
+          <List.Item>
+            <BodyShort size="small">{texts.rutine.vurderKontakt}</BodyShort>
+          </List.Item>
+          <List.Item>
+            <BodyShort size="small">
+              {texts.rutine.behovForOppfolging}
+            </BodyShort>
+          </List.Item>
+        </List>
       </div>
       <Accordion size="small">
         <Accordion.Item

@@ -105,16 +105,6 @@ const mockGjentakendeFravar = (hasGjentakendeSykefravar: boolean) =>
     },
   );
 
-const mockOppfolgingstilfellePerson = (
-  oppfolgingstilfellePerson: typeof oppfolgingstilfellePersonMock,
-) =>
-  queryClient.setQueryData(
-    oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-      ARBEIDSTAKER_DEFAULT.personIdent,
-    ),
-    () => oppfolgingstilfellePerson,
-  );
-
 const mockEnabledToggles = (enabledToggles: ToggleNames[]) =>
   queryClient.setQueryData(
     unleashQueryKeys.toggles(
@@ -179,8 +169,11 @@ describe("Kartleggingssporsmal", () => {
     expect(screen.queryByText("Den sykmeldte har ikke svart")).to.exist;
     expect(screen.queryByText("Spørsmålene ble sendt", { exact: false })).to
       .exist;
-    expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
-      .exist;
+    expect(
+      screen.queryByRole("link", {
+        name: /Slik ser spørsmålene ut for den sykmeldte/,
+      }),
+    ).to.not.exist;
     expect(
       screen.queryByText("Ved manglende svar vil vi automatisk sende", {
         exact: false,
@@ -291,8 +284,11 @@ describe("Kartleggingssporsmal", () => {
     expect(screen.getByText("Den sykmeldte har ikke svart")).to.exist;
     expect(screen.getByText("Spørsmålene ble sendt", { exact: false })).to
       .exist;
-    expect(screen.getByText("Slik ser spørsmålene ut for den sykmeldte")).to
-      .exist;
+    expect(
+      screen.queryByRole("link", {
+        name: /Slik ser spørsmålene ut for den sykmeldte/,
+      }),
+    ).to.not.exist;
     expect(
       screen.getByText(
         "Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar.",
@@ -320,8 +316,13 @@ describe("Kartleggingssporsmal", () => {
       .exist;
     expect(screen.queryByText("Spørsmålene ble sendt", { exact: false })).to
       .exist;
-    expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
-      .exist;
+    expect(
+      screen
+        .getByRole("link", {
+          name: /Slik ser spørsmålene ut for den sykmeldte/,
+        })
+        .getAttribute("href"),
+    ).to.equal("https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal");
     expect(screen.getAllByRole("radiogroup").length).toBeGreaterThan(0);
 
     expect(

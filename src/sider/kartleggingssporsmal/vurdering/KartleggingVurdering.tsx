@@ -4,11 +4,7 @@ import {
   Box,
   Button,
   Heading,
-  Label,
-  List,
   LocalAlert,
-  Radio,
-  RadioGroup,
   Textarea,
 } from "@navikt/ds-react";
 import {
@@ -21,7 +17,7 @@ import { useState } from "react";
 import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
-import { Events, trackEvent } from "@/utils/umami.ts";
+import { trackLinkKlikket } from "@/utils/umami.ts";
 import { KartleggingInfo } from "@/sider/kartleggingssporsmal/info/KartleggingInfo.tsx";
 import { useKartleggingssporsmalVurderSvar } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
 import { useDebouncedCallback } from "use-debounce";
@@ -31,39 +27,18 @@ import {
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
+import { RadioCard, RadioCardGroup } from "@navikt/ds-react/PREVIEW";
 
 const DRAFT_CATEGORY = "kartleggingssporsmal-vurdering";
 
 const VURDERING_MAX_LENGTH = 200;
 const LINK_14A = `https://veilarbpersonflate${finnNaisUrlIntern()}/vedtaksstotte`;
-const LINK_RUTINE =
-  "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Bruk-av-kartleggingssp%C3%B8rsm%C3%A5l-i-sykefrav%C3%A6rsoppf%C3%B8lgingen.aspx";
 
 const texts = {
   heading: "Vurdering",
   radioLegend: "Velg alternativet som passer",
-  rutine: {
-    intro:
-      "Her skal du vurdere om den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging. Ta utgangspunkt i veiledningen på høyre side når du vurderer saken.",
-    senereOppfolgingspunkter:
-      "Husk at den sykmeldte fanges opp på senere oppfølgingspunkter i sykefraværet, og at arbeidsgiver har hovedansvaret for oppfølgingen.",
-    vurderRisiko: {
-      heading: "Vurder om svarene indikerer risiko for langtidsfravær",
-      info: "Når svarene fra den sykmeldte ikke indikerer risiko for langvarig sykefravær, skal saken som hovedregel ikke følges opp videre på dette tidspunktet.",
-    },
-    vurderKontakt: {
-      heading:
-        "Vurder om det er behov for kontakt med Nav der det indikeres risiko",
-      info: "Se på svarene og annen tilgjengelig informasjon i saken. Vurder ut fra de samlede opplysningene om det er behov for å forstå situasjonen bedre, eller om det ikke er behov for oppfølging fra Nav på nåværende tidspunkt.",
-    },
-    behovForOppfolging: {
-      heading: "Dersom det er behov for oppfølging fra Nav",
-      info: "Vurder hvordan du skal følge opp saken. Dette kan innebære kontakt med den sykmeldte per telefon eller digital dialog, individuell samtale, eller dialogmøte med arbeidsgiver. Planlegg videre oppfølging før du avslutter oppgaven.",
-    },
-    info: "Vurderingen av svarene skal gjøres basert på ",
-    linkText:
-      "rutine for bruk av kartleggingsspørsmålene i sykefraværsoppfølgingen.",
-  },
+  intro:
+    "Her skal du vurdere om den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging. Ta utgangspunkt i veiledningen på høyre side når du vurderer saken.",
   textLegend: "Begrunnelse (valgfritt)",
   textDescription:
     "Brukes kun for å dokumentere vurderingen internt og blir ikke synlig for den sykmeldte. Den sykmeldte kan alltid be om innsyn i egen sak.",
@@ -84,16 +59,6 @@ const texts = {
     "Det er vurdert risiko for langtidsfravær. Da kan det være aktuelt å gjøre en § 14a-vurdering i ",
   lenkeTilModiaAO: "vedtaksstøtteløsningen i Modia Arbeidsrettet oppfølging.",
 };
-
-function logLinkEvent(tekst: string, href: string) {
-  trackEvent({
-    name: Events.LINK_KLIKKET,
-    properties: {
-      tekst,
-      href,
-    },
-  });
-}
 
 interface Props {
   nyesteKandidat: KartleggingssporsmalKandidatResponseDTO;
@@ -149,42 +114,12 @@ export function KartleggingVurdering({
   return (
     <Box background="default" className="flex flex-col p-6 gap-4 mb-2">
       <Heading size={"medium"}>{texts.heading}</Heading>
-      <BodyShort size="small">{texts.rutine.intro}</BodyShort>
-      <BodyShort size="small">
-        {texts.rutine.info}
-        <EksternLenke
-          href={LINK_RUTINE}
-          onClick={() => logLinkEvent(texts.rutine.linkText, LINK_RUTINE)}
-        >
-          {texts.rutine.linkText}
-        </EksternLenke>
-      </BodyShort>
-      <BodyShort size="small">
-        {texts.rutine.senereOppfolgingspunkter}
-      </BodyShort>
+      <BodyShort size="small">{texts.intro}</BodyShort>
       <KartleggingInfo />
 
-      <List as="ol" className="[&>ol]:space-y-6">
-        <List.Item>
-          <Label size="small">{texts.rutine.vurderRisiko.heading}</Label>
-          <BodyShort size="small">{texts.rutine.vurderRisiko.info}</BodyShort>
-        </List.Item>
-        <List.Item>
-          <Label size="small">{texts.rutine.vurderKontakt.heading}</Label>
-          <BodyShort size="small">{texts.rutine.vurderKontakt.info}</BodyShort>
-        </List.Item>
-
-        <List.Item>
-          <Label size="small">{texts.rutine.behovForOppfolging.heading}</Label>
-          <BodyShort size="small">
-            {texts.rutine.behovForOppfolging.info}
-          </BodyShort>
-        </List.Item>
-      </List>
-
-      <RadioGroup
+      <RadioCardGroup
         legend={texts.radioLegend}
-        className="mt-2"
+        className="mt-4"
         size="small"
         value={vurdering.vurderingAlternativ}
         readOnly={nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET}
@@ -196,21 +131,23 @@ export function KartleggingVurdering({
           }))
         }
       >
-        <Radio
+        <RadioCard
           value="RISIKO_FOR_LANGTIDSFRAVAR"
           description={texts.radioOptions.risikoDescription}
         >
           {texts.radioOptions.RISIKO_FOR_LANGTIDSFRAVAR}
-        </Radio>
-        <Radio
+        </RadioCard>
+        <RadioCard
           value="IKKE_RISIKO_FOR_LANGTIDSFRAVAR"
           description={texts.radioOptions.ikkeRisikoDescription}
         >
           {texts.radioOptions.IKKE_RISIKO_FOR_LANGTIDSFRAVAR}
-        </Radio>
-      </RadioGroup>
+        </RadioCard>
+      </RadioCardGroup>
       <Textarea
         label={texts.textLegend}
+        className="mt-4"
+        size="small"
         description={texts.textDescription}
         value={vurdering.vurderingFritekst ?? ""}
         maxLength={VURDERING_MAX_LENGTH}
@@ -301,7 +238,7 @@ export function KartleggingVurdering({
           {texts.vurdertRisikoForLangtidsfravar}
           <EksternLenke
             href={LINK_14A}
-            onClick={() => logLinkEvent(texts.lenkeTilModiaAO, LINK_14A)}
+            onClick={() => trackLinkKlikket(texts.lenkeTilModiaAO, LINK_14A)}
           >
             {texts.lenkeTilModiaAO}
           </EksternLenke>
