@@ -17,7 +17,6 @@ const texts = {
   brukt: "Dager brukt",
   potensieltBrukt:
     "Dager brukt inkl. andre ubehandlede søknader og Infotrygd",
-  igjen: "Dager igjen",
   overskredet: "Grensen på antall dager overskrides.",
 };
 
@@ -33,8 +32,6 @@ interface OpptellingProps {
 }
 
 function OpptellingRad({ opptelling }: OpptellingProps) {
-  const igjen = dagerIgjen(opptelling);
-
   return (
     <VStack>
       <BodyShort size="small" weight="semibold">
@@ -47,9 +44,6 @@ function OpptellingRad({ opptelling }: OpptellingProps) {
       <BodyShort size="small">
         {texts.potensieltBrukt}:{" "}
         {opptelling.antallDagerPotensieltBruktHvisInnvilget}
-      </BodyShort>
-      <BodyShort size="small" weight={igjen < 0 ? "semibold" : undefined}>
-        {texts.igjen}: {igjen}
       </BodyShort>
     </VStack>
   );
