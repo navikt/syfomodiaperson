@@ -79,6 +79,7 @@ function createUtenlandsoppholdSoknad(
     innsendtTidspunkt: `${UTENLANDSOPPHOLD_VARSEL_CUTOFF_DATO}T12:00:00`,
     soktePerioder: [],
     behandling: null,
+    infoTilBehandling: null,
     ...overrides,
   };
 }

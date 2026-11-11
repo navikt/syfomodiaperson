@@ -60,6 +60,7 @@ import {
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
 import { IkkeAktuellModal } from "./IkkeAktuellModal";
+import { OpptellingInfoboks } from "./OpptellingInfoboks";
 import { ikkeAktuellArsakTexts } from "./ikkeAktuellTexts";
 
 const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
@@ -469,6 +470,12 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
               </BodyShort>
             ))}
           </Box>
+
+          {utenlandsoppholdSoknad.infoTilBehandling && (
+            <OpptellingInfoboks
+              infoTilBehandling={utenlandsoppholdSoknad.infoTilBehandling}
+            />
+          )}
 
           {harPerioderUtenforTilfelle && (
             <InfoCard data-color="warning" size="small" className="w-fit">
