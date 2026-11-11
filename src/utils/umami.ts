@@ -4,6 +4,7 @@
  */
 export { Events } from "@navikt/analytics-types";
 
+import { Events } from "@navikt/analytics-types";
 import type { EventName, TaxonomyEvent } from "@navikt/analytics-types";
 
 // Holds the resolve function of identifierReady so setIdentifier() can release the gate.
@@ -48,4 +49,14 @@ export async function trackEvent<K extends EventName>(
 ): Promise<void> {
   await identifierReady;
   umami.track(event.name, { ...event.properties });
+}
+
+export function trackLinkKlikket(tekst: string, href: string): void {
+  trackEvent({
+    name: Events.LINK_KLIKKET,
+    properties: {
+      tekst,
+      href,
+    },
+  });
 }

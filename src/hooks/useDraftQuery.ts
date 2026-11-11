@@ -8,6 +8,7 @@ export type DraftCategory =
   | "arbeidsuforhet-avslag-uten-forhandsvarsel"
   | "arbeidsuforhet-avslag"
   | "arbeidsuforhet-oppfylt"
+  | "kartleggingssporsmal-vurdering"
   | "manglendemedvirkning-forhandsvarsel"
   | "aktivitetskrav-forhandsvarsel"
   | "aktivitetskrav-unntak"
