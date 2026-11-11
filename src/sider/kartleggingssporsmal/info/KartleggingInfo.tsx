@@ -90,7 +90,9 @@ export function KartleggingInfo() {
                         <Link
                           as={RouterLink}
                           to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
-                        >{`Utstedt ${dayjs(sykmelding.bekreftelse.utstedelsesdato).format("DD.MM.YYYY")}, av ${sykmelding.bekreftelse.sykmelder}`}</Link>
+                        >
+                          {`Utstedt ${dayjs(sykmelding.bekreftelse.utstedelsesdato).format("DD.MM.YYYY")}, av ${sykmelding.bekreftelse.sykmelder}`}
+                        </Link>
                       </List.Item>
                     ))}
                   </List>
