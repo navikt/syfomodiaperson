@@ -940,8 +940,9 @@ describe("PersonkortHeader", () => {
 
       renderPersonkortHeader();
 
-      expect(screen.getByText("Oppfølging hos Arrangør AS")).to.exist;
-      expect(screen.getByText("Arbeidstrening hos Bedrift AS")).to.exist;
+      expect(screen.getByText("Tiltak: Oppfølging hos Arrangør AS")).to.exist;
+      expect(screen.getByText("Tiltak: Arbeidstrening hos Bedrift AS")).to
+        .exist;
     });
 
     it("viser bare én tag når flere tiltak har lik tittel", () => {
@@ -957,9 +958,9 @@ describe("PersonkortHeader", () => {
 
       renderPersonkortHeader();
 
-      expect(screen.getAllByText("Oppfølging hos Arrangør AS")).to.have.length(
-        1,
-      );
+      expect(
+        screen.getAllByText("Tiltak: Oppfølging hos Arrangør AS"),
+      ).to.have.length(1);
     });
 
     it("viser ingen tiltak-tag når personen ikke har aktive tiltak", () => {
@@ -970,7 +971,7 @@ describe("PersonkortHeader", () => {
 
       renderPersonkortHeader();
 
-      expect(screen.queryByText("Oppfølging hos Arrangør AS")).to.not.exist;
+      expect(screen.queryByText(/^Tiltak:/)).to.not.exist;
     });
   });
 });
