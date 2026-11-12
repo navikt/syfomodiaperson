@@ -29,6 +29,33 @@ export const soknadUtenVedtakMock: SoknadDTO = {
     },
   ],
   behandling: null,
+  infoTilBehandling: {
+    opptellinger: [
+      {
+        fom: "2025-09-08",
+        tom: "2026-09-07",
+        maksAntallDager: 28,
+        antallDagerBruktHvisInnvilget: 7,
+        antallDagerPotensieltBruktHvisInnvilget: 7,
+        soktePerioderIVinduet: [{ fom: "2026-09-01", tom: "2026-09-07" }],
+        tidligereInnvilgedePerioder: [],
+        tidligereUbehandledePerioder: [],
+      },
+      {
+        fom: "2025-09-13",
+        tom: "2026-09-12",
+        maksAntallDager: 28,
+        antallDagerBruktHvisInnvilget: 10,
+        antallDagerPotensieltBruktHvisInnvilget: 10,
+        soktePerioderIVinduet: [
+          { fom: "2026-09-01", tom: "2026-09-07" },
+          { fom: "2026-09-10", tom: "2026-09-12" },
+        ],
+        tidligereInnvilgedePerioder: [],
+        tidligereUbehandledePerioder: [],
+      },
+    ],
+  },
 };
 
 export const soknadMedVedtakMock: SoknadDTO = {
@@ -54,6 +81,7 @@ export const soknadMedVedtakMock: SoknadDTO = {
     behandletTidspunkt: "2026-03-02T11:00:00",
     begrunnelse: "Vedtar bare de dagene det er meldt regn på Bali",
   },
+  infoTilBehandling: null,
 };
 
 export const soknadIkkeAktuellMock: SoknadDTO = {
@@ -73,6 +101,7 @@ export const soknadIkkeAktuellMock: SoknadDTO = {
     behandletAv: "Z990000",
     behandletTidspunkt: "2026-08-11T09:00:00",
   },
+  infoTilBehandling: null,
 };
 
 export const gammelSoknadMock: SoknadDTO = {
@@ -91,6 +120,33 @@ export const gammelSoknadMock: SoknadDTO = {
     },
   ],
   behandling: null,
+  infoTilBehandling: {
+    opptellinger: [
+      {
+        fom: "2025-06-08",
+        tom: "2026-06-07",
+        maksAntallDager: 28,
+        antallDagerBruktHvisInnvilget: 7,
+        antallDagerPotensieltBruktHvisInnvilget: 7,
+        soktePerioderIVinduet: [{ fom: "2026-06-01", tom: "2026-06-07" }],
+        tidligereInnvilgedePerioder: [],
+        tidligereUbehandledePerioder: [],
+      },
+      {
+        fom: "2025-06-13",
+        tom: "2026-06-12",
+        maksAntallDager: 28,
+        antallDagerBruktHvisInnvilget: 10,
+        antallDagerPotensieltBruktHvisInnvilget: 10,
+        soktePerioderIVinduet: [
+          { fom: "2026-06-01", tom: "2026-06-07" },
+          { fom: "2026-06-10", tom: "2026-06-12" },
+        ],
+        tidligereInnvilgedePerioder: [],
+        tidligereUbehandledePerioder: [],
+      },
+    ],
+  },
 };
 
 export const mockSoknaderResponse: SoknaderResponseDTO = {
