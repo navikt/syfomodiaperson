@@ -188,10 +188,10 @@ export function usePersonkortHeaderTags(): {
   if (aapTagText) {
     tags.push({ key: "aap", label: aapTagText, color: "info" });
   }
-  aktiveTiltak?.forEach(({ id, tittel }) => {
+  aktiveTiltak?.forEach(({ id, tiltakstypeNavn }) => {
     tags.push({
       key: `tiltak-${id}`,
-      label: `${texts.tiltak}: ${tittel}`,
+      label: `${texts.tiltak}: ${tiltakstypeNavn}`,
       color: "info",
     });
   });

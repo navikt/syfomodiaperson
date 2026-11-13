@@ -12,7 +12,6 @@ export interface TiltakRequestDTO {
  */
 export interface TiltakDTO {
   id: string;
-  tittel: string;
   tiltakskode: string;
   tiltakstypeNavn: string;
   startDato: string | null;

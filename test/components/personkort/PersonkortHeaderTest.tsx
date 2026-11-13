@@ -924,15 +924,18 @@ describe("PersonkortHeader", () => {
   });
 
   describe("Tiltak", () => {
-    it("viser én tag per aktivt tiltak", () => {
+    it("viser én tag per aktivt tiltak med tiltakstype", () => {
       queryClient.setQueryData(
         tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
         () => ({
           tiltak: [
-            createTiltakMock({ id: "1", tittel: "Oppfølging hos Arrangør AS" }),
+            createTiltakMock({
+              id: "1",
+              tiltakstypeNavn: "Oppfølging",
+            }),
             createTiltakMock({
               id: "2",
-              tittel: "Arbeidstrening hos Bedrift AS",
+              tiltakstypeNavn: "Arbeidstrening",
             }),
           ],
         }),
@@ -940,27 +943,30 @@ describe("PersonkortHeader", () => {
 
       renderPersonkortHeader();
 
-      expect(screen.getByText("Tiltak: Oppfølging hos Arrangør AS")).to.exist;
-      expect(screen.getByText("Tiltak: Arbeidstrening hos Bedrift AS")).to
-        .exist;
+      expect(screen.getByText("Tiltak: Oppfølging")).to.exist;
+      expect(screen.getByText("Tiltak: Arbeidstrening")).to.exist;
     });
 
-    it("viser bare én tag når flere tiltak har lik tittel", () => {
+    it("viser bare én tag når flere tiltak har lik tiltakstype", () => {
       queryClient.setQueryData(
         tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
         () => ({
           tiltak: [
-            createTiltakMock({ id: "1", tittel: "Oppfølging hos Arrangør AS" }),
-            createTiltakMock({ id: "2", tittel: "Oppfølging hos Arrangør AS" }),
+            createTiltakMock({
+              id: "1",
+              tiltakstypeNavn: "Oppfølging",
+            }),
+            createTiltakMock({
+              id: "2",
+              tiltakstypeNavn: "Oppfølging",
+            }),
           ],
         }),
       );
 
       renderPersonkortHeader();
 
-      expect(
-        screen.getAllByText("Tiltak: Oppfølging hos Arrangør AS"),
-      ).to.have.length(1);
+      expect(screen.getAllByText("Tiltak: Oppfølging")).to.have.length(1);
     });
 
     it("viser ingen tiltak-tag når personen ikke har aktive tiltak", () => {

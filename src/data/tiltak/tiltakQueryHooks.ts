@@ -16,15 +16,15 @@ export const tiltakQueryKeys = {
 };
 
 /**
- * Fjerner tiltak med lik tittel, slik at hvert tiltak bare vises én gang.
+ * Fjerner tiltak med lik tiltakstype, slik at hver tiltakstype bare vises én gang.
  */
-export function uniqueTiltakByTittel(tiltak: TiltakDTO[]): TiltakDTO[] {
-  const seenTitler = new Set<string>();
-  return tiltak.filter(({ tittel }) => {
-    if (seenTitler.has(tittel)) {
+export function uniqueTiltakByTiltakstype(tiltak: TiltakDTO[]): TiltakDTO[] {
+  const seenTiltakstyper = new Set<string>();
+  return tiltak.filter(({ tiltakstypeNavn }) => {
+    if (seenTiltakstyper.has(tiltakstypeNavn)) {
       return false;
     }
-    seenTitler.add(tittel);
+    seenTiltakstyper.add(tiltakstypeNavn);
     return true;
   });
 }
@@ -46,6 +46,6 @@ export function useAktiveTiltakQuery() {
     queryFn: fetchAktiveTiltak,
     enabled: !!personident,
     staleTime: minutesToMillis(60 * 12),
-    select: (data) => uniqueTiltakByTittel(data.tiltak),
+    select: (data) => uniqueTiltakByTiltakstype(data.tiltak),
   });
 }
