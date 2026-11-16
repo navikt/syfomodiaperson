@@ -449,6 +449,16 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
   return (
     <Box background="default" padding="space-16" className="flex flex-col">
       <VStack gap="space-20">
+        {harPerioderUtenforTilfelle && (
+          <InfoCard data-color="warning" size="small">
+            <InfoCard.Message
+              icon={<ExclamationmarkTriangleIcon aria-hidden />}
+            >
+              {texts.perioderUtenforTilfelleWarning}
+            </InfoCard.Message>
+          </InfoCard>
+        )}
+
         {/* Nokkelinfo i soknaden */}
         <VStack gap="space-8">
           <HStack gap="space-8">
@@ -475,16 +485,6 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
             <OpptellingInfoboks
               infoTilBehandling={utenlandsoppholdSoknad.infoTilBehandling}
             />
-          )}
-
-          {harPerioderUtenforTilfelle && (
-            <InfoCard data-color="warning" size="small" className="w-fit">
-              <InfoCard.Message
-                icon={<ExclamationmarkTriangleIcon aria-hidden />}
-              >
-                {texts.perioderUtenforTilfelleWarning}
-              </InfoCard.Message>
-            </InfoCard>
           )}
         </VStack>
 

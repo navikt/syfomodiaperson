@@ -10,9 +10,9 @@ import {
 import { formatNumericDateRange } from "@/utils/datoUtils";
 
 const texts = {
-  title: "Opptelling av dager utenfor EU/EØS",
+  title: "Opptelling av dager",
   description:
-    "Antall dager utenfor EU/EØS i året frem til slutten av hver søkte periode, dersom søknaden innvilges.",
+    "Antall dager i året frem til slutten av hver søkte periode, dersom søknaden innvilges.",
   vindu: "Periode som telles",
   brukt: "Dager brukt",
   potensieltBrukt: "Dager brukt inkl. andre ubehandlede søknader og Infotrygd",
