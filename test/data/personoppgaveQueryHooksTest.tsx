@@ -3,7 +3,10 @@ import { QueryClient } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { stubPersonoppgaveApi } from "../stubs/stubIspersonoppgave";
+import {
+  stubPersonoppgaveApi,
+  stubPersonoppgaveApiNoContent,
+} from "../stubs/stubIspersonoppgave";
 import { personoppgaverMock } from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { testQueryClient } from "../testQueryClient";
 
@@ -34,5 +37,17 @@ describe("personoppgaveQueryHooks tests", () => {
           : null,
       })),
     );
+  });
+
+  it("returns empty list when backend responds with 204 No Content", async () => {
+    stubPersonoppgaveApiNoContent();
+    const wrapper = queryHookWrapper(queryClient);
+
+    const { result } = renderHook(() => usePersonoppgaverQuery(), {
+      wrapper,
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).to.equal(true));
+    expect(result.current.data).to.deep.equal([]);
   });
 });
