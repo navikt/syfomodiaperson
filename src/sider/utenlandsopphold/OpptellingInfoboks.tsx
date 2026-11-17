@@ -10,12 +10,10 @@ import {
 import { formatNumericDateRange } from "@/utils/datoUtils";
 
 const texts = {
-  title: "Opptelling av dager",
-  description:
-    "Antall dager i året frem til slutten av hver søkte periode, dersom søknaden innvilges.",
+  title: "Antall brukte dager dersom søknaden innvilges",
   vindu: "Periode som telles",
-  brukt: "Dager brukt",
-  potensieltBrukt: "Dager brukt inkl. andre ubehandlede søknader og Infotrygd",
+  brukt: "Antall dager brukt (søknader behandlet i Modia)",
+  potensieltBrukt: "Antall dager (inkludert andre søknader)",
   overskredet: "Grensen på antall dager overskrides.",
 };
 
@@ -84,7 +82,6 @@ export function OpptellingInfoboks({ infoTilBehandling }: Props) {
       </InfoCard.Header>
       <InfoCard.Content>
         <VStack gap="space-12">
-          <BodyShort size="small">{texts.description}</BodyShort>
           {opptellinger.map((opptelling) => (
             <OpptellingRad
               key={opptelling.tom.getTime()}
