@@ -85,7 +85,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
   it("sett ikke aktuell med kun med obligatorisk verdier fra skjema", async () => {
     renderDialogmoteikkeaktuellSkjema();
 
-    expect(screen.getAllByRole("radio")).to.have.length(5);
+    expect(screen.getAllByRole("radio")).to.have.length(6);
 
     await passSkjemaInput(IkkeAktuellArsak.DIALOGMOTE_AVHOLDT);
 
@@ -107,7 +107,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
   it("sett ikke aktuell med alle verdier fra skjema", async () => {
     renderDialogmoteikkeaktuellSkjema();
 
-    expect(screen.getAllByRole("radio")).to.have.length(5);
+    expect(screen.getAllByRole("radio")).to.have.length(6);
 
     const beskrivelse = "Dette er en begrunnelse";
 
