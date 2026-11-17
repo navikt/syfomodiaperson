@@ -13,7 +13,8 @@ const texts = {
   title: "Antall brukte dager dersom søknaden innvilges",
   vindu: "Periode som telles",
   brukt: "Dager brukt",
-  potensieltBrukt: "Dager brukt inkludert ubehandlede søknader og søknader i Infotrygd",
+  potensieltBrukt:
+    "Dager brukt inkludert ubehandlede søknader og søknader i Infotrygd",
   overskredet: "Grensen på antall dager overskrides.",
 };
 
