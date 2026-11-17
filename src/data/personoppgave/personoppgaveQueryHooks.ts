@@ -21,7 +21,8 @@ export function usePersonoppgaverQuery() {
     queryFn: fetchPersonoppgaver,
     enabled: !!fnr,
     staleTime: minutesToMillis(60 * 12),
-    select: (data) => parseOppgaver(data),
+    // Backend returns 204 with empty body when the person has no oppgaver
+    select: (data) => parseOppgaver(data || []),
   });
 }
 
