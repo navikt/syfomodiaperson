@@ -46,6 +46,8 @@ import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks.ts";
 import { aapQueryKeys } from "@/data/aap/aapQueryHooks";
 import { createAapStatusMock } from "@/mocks/aap/mockAapSaker";
+import { tiltakQueryKeys } from "@/data/tiltak/tiltakQueryHooks";
+import { createTiltakMock } from "@/mocks/tiltak/mockTiltak";
 
 let queryClient: any;
 
@@ -919,5 +921,63 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.queryByText("Under vergemål")).not.to.exist;
+  });
+
+  describe("Tiltak", () => {
+    it("viser én tag per aktivt tiltak med tiltakstype", () => {
+      queryClient.setQueryData(
+        tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({
+          tiltak: [
+            createTiltakMock({
+              id: "1",
+              tiltakstypeNavn: "Oppfølging",
+            }),
+            createTiltakMock({
+              id: "2",
+              tiltakstypeNavn: "Arbeidstrening",
+            }),
+          ],
+        }),
+      );
+
+      renderPersonkortHeader();
+
+      expect(screen.getByText("Tiltak: Oppfølging")).to.exist;
+      expect(screen.getByText("Tiltak: Arbeidstrening")).to.exist;
+    });
+
+    it("viser bare én tag når flere tiltak har lik tiltakstype", () => {
+      queryClient.setQueryData(
+        tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({
+          tiltak: [
+            createTiltakMock({
+              id: "1",
+              tiltakstypeNavn: "Oppfølging",
+            }),
+            createTiltakMock({
+              id: "2",
+              tiltakstypeNavn: "Oppfølging",
+            }),
+          ],
+        }),
+      );
+
+      renderPersonkortHeader();
+
+      expect(screen.getAllByText("Tiltak: Oppfølging")).to.have.length(1);
+    });
+
+    it("viser ingen tiltak-tag når personen ikke har aktive tiltak", () => {
+      queryClient.setQueryData(
+        tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({ tiltak: [] }),
+      );
+
+      renderPersonkortHeader();
+
+      expect(screen.queryByText(/^Tiltak:/)).to.not.exist;
+    });
   });
 });
