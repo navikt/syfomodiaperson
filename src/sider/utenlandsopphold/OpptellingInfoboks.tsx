@@ -38,10 +38,13 @@ function OpptellingRad({ opptelling }: OpptellingProps) {
         {texts.brukt}: {opptelling.antallDagerBruktHvisInnvilget} av{" "}
         {opptelling.maksAntallDager}
       </BodyShort>
-      <BodyShort size="small">
-        {texts.potensieltBrukt}:{" "}
-        {opptelling.antallDagerPotensieltBruktHvisInnvilget}
-      </BodyShort>
+      {opptelling.antallDagerPotensieltBruktHvisInnvilget !==
+        opptelling.antallDagerBruktHvisInnvilget && (
+        <BodyShort size="small">
+          {texts.potensieltBrukt}:{" "}
+          {opptelling.antallDagerPotensieltBruktHvisInnvilget}
+        </BodyShort>
+      )}
     </VStack>
   );
 }
