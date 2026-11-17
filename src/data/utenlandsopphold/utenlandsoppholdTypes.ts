@@ -58,6 +58,33 @@ export interface SoknadDTO {
   innsendtTidspunkt: string;
   soktePerioder: PeriodeDTO[];
   behandling: BehandlingDTO | null;
+  infoTilBehandling: InfoTilBehandlingDTO | null;
+}
+
+/**
+ * Informasjon veileder trenger for å behandle en søknad. Settes kun for
+ * søknader som ikke er behandlet.
+ */
+export interface InfoTilBehandlingDTO {
+  opptellinger: OpptellingDTO[];
+}
+
+/**
+ * Opptelling av dager utenfor EØS i et vindu på ett år som slutter på `tom`,
+ * én per søkte periode. Tallene svarer på hva resultatet blir dersom søknaden
+ * innvilges. "Potensielt" tar i tillegg med dager fra andre ubehandlede
+ * søknader og søknader behandlet i Infotrygd. Dager igjen er `maksAntallDager`
+ * minus brukt, og kan være negativt hvis grensen overskrides.
+ */
+export interface OpptellingDTO {
+  fom: string;
+  tom: string;
+  maksAntallDager: number;
+  antallDagerBruktHvisInnvilget: number;
+  antallDagerPotensieltBruktHvisInnvilget: number;
+  soktePerioderIVinduet: PeriodeDTO[];
+  tidligereInnvilgedePerioder: PeriodeDTO[];
+  tidligereUbehandledePerioder: PeriodeDTO[];
 }
 
 export interface PeriodeDTO {
@@ -130,11 +157,31 @@ export type BehandlingUtfall = Utfall | "IKKE_AKTUELL";
 
 export interface Soknad extends Omit<
   SoknadDTO,
-  "innsendtTidspunkt" | "soktePerioder" | "behandling"
+  "innsendtTidspunkt" | "soktePerioder" | "behandling" | "infoTilBehandling"
 > {
   innsendtTidspunkt: Date;
   soktePerioder: Periode[];
   behandling: Behandling | null;
+  infoTilBehandling: InfoTilBehandling | null;
+}
+
+export interface InfoTilBehandling {
+  opptellinger: Opptelling[];
+}
+
+export interface Opptelling extends Omit<
+  OpptellingDTO,
+  | "fom"
+  | "tom"
+  | "soktePerioderIVinduet"
+  | "tidligereInnvilgedePerioder"
+  | "tidligereUbehandledePerioder"
+> {
+  fom: Date;
+  tom: Date;
+  soktePerioderIVinduet: Periode[];
+  tidligereInnvilgedePerioder: Periode[];
+  tidligereUbehandledePerioder: Periode[];
 }
 
 interface BehandlingBase {
@@ -214,11 +261,28 @@ export function parseBehandling(behandling: BehandlingDTO): Behandling {
   };
 }
 
+const parseOpptelling = (opptelling: OpptellingDTO): Opptelling => ({
+  ...opptelling,
+  fom: dayjs(opptelling.fom).toDate(),
+  tom: dayjs(opptelling.tom).toDate(),
+  soktePerioderIVinduet: opptelling.soktePerioderIVinduet.map(parsePeriode),
+  tidligereInnvilgedePerioder:
+    opptelling.tidligereInnvilgedePerioder.map(parsePeriode),
+  tidligereUbehandledePerioder:
+    opptelling.tidligereUbehandledePerioder.map(parsePeriode),
+});
+
 export const parseSoknad = (soknad: SoknadDTO): Soknad => ({
   ...soknad,
   innsendtTidspunkt: new Date(soknad.innsendtTidspunkt),
   soktePerioder: soknad.soktePerioder.map(parsePeriode),
   behandling: soknad.behandling ? parseBehandling(soknad.behandling) : null,
+  infoTilBehandling: soknad.infoTilBehandling
+    ? {
+        opptellinger:
+          soknad.infoTilBehandling.opptellinger.map(parseOpptelling),
+      }
+    : null,
 });
 
 export const antallDagerIPeriode = (periode: Periode): number =>
