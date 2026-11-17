@@ -12,8 +12,8 @@ import { formatNumericDateRange } from "@/utils/datoUtils";
 const texts = {
   title: "Antall brukte dager dersom søknaden innvilges",
   vindu: "Periode som telles",
-  brukt: "Antall dager brukt (søknader behandlet i Modia)",
-  potensieltBrukt: "Antall dager (inkludert andre søknader)",
+  brukt: "Dager brukt",
+  potensieltBrukt: "Dager brukt inkludert ubehandlede søknader og søknader i Infotrygd",
   overskredet: "Grensen på antall dager overskrides.",
 };
 
