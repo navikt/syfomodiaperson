@@ -9,3 +9,11 @@ export const stubPersonoppgaveApi = () =>
       HttpResponse.json(personoppgaverMock()),
     ),
   );
+
+export const stubPersonoppgaveApiNoContent = () =>
+  mockServer.use(
+    http.get(
+      `*${ISPERSONOPPGAVE_ROOT}/personoppgave/personident`,
+      () => new HttpResponse(null, { status: 204 }),
+    ),
+  );
