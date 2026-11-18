@@ -4,6 +4,7 @@ export enum IkkeAktuellArsak {
   DIALOGMOTE_AVHOLDT = "DIALOGMOTE_AVHOLDT",
   FRISKMELDT = "FRISKMELDT",
   ARBEIDSFORHOLD_OPPHORT = "ARBEIDSFORHOLD_OPPHORT",
+  ANSATT_I_EGET_AS = "ANSATT_I_EGET_AS",
 }
 
 export interface CreateIkkeAktuellDTO {
@@ -18,4 +19,5 @@ export const ikkeAktuellArsakTexts: Record<IkkeAktuellArsak, string> = {
   [IkkeAktuellArsak.DIALOGMOTE_AVHOLDT]: "Dialogmøte avholdt",
   [IkkeAktuellArsak.FRISKMELDT]: "Friskmeldt",
   [IkkeAktuellArsak.ARBEIDSFORHOLD_OPPHORT]: "Arbeidsforholdet er opphørt",
+  [IkkeAktuellArsak.ANSATT_I_EGET_AS]: "Ansatt i egen AS",
 };
