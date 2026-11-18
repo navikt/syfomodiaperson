@@ -1,7 +1,7 @@
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { BodyShort, Box, InfoCard, List } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, InfoCard, List } from "@navikt/ds-react";
 import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
@@ -31,7 +31,8 @@ import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbeha
 import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 
 const texts = {
-  title: "Kartleggingsspørsmål",
+  title: "Vurder tidlig oppfølging",
+  heading: "Kartleggingsspørsmål",
   kandidat: "Spørsmålene ble sendt",
   svart: "Den sykmeldte svarte",
   ikkeSvart: "Den sykmeldte har ikke svart",
@@ -120,6 +121,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 background="default"
                 className="flex flex-col p-6 gap-4 mb-2"
               >
+                <Heading size={"medium"}>{texts.heading}</Heading>
                 {answeredQuestions ? (
                   <>
                     <BodyShort size="small" weight="semibold">
