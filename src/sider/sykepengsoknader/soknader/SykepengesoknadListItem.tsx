@@ -168,15 +168,17 @@ export default function SykepengesoknadListItem({
             </Tag>
           )}
         </div>
-        <div className="flex flex-col justify-end">
-          <Link
-            className="flex flex-row h-fit"
-            to={`/sykefravaer/sykepengesoknader/${soknad.id}`}
-          >
-            {texts.tilSoknad}
-            <ChevronRightIcon className="h-5 w-5" />
-          </Link>
-        </div>
+        {soknad.status != Soknadstatus.NY && (
+          <div className="flex flex-col justify-end">
+            <Link
+              className="flex flex-row items-center"
+              to={`/sykefravaer/sykepengesoknader/${soknad.id}`}
+            >
+              {texts.tilSoknad}
+              <ChevronRightIcon className="h-5 w-5" />
+            </Link>
+          </div>
+        )}
       </div>
     </Box>
   );
