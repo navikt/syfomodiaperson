@@ -23,7 +23,7 @@ const texts = {
   linkDuplicate: "Gå til tidligere sykmelding med duplikate felter",
   behandleOppgaveText: "Jeg har vurdert behovet, fjern oppgaven.",
   annetArbeidPaSikt:
-    "Felt 5.2.2 (Prognose): Jeg antar at pasienten på sikt kan komme i arbeid hos annen arbeidsgiver",
+    "Pasienten kan være aktuell for friskmelding til arbeidsformidling.",
 };
 
 interface Props {
