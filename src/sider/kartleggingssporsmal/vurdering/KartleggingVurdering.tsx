@@ -222,7 +222,16 @@ export function KartleggingVurdering({
                         vurdering.vurderingFritekst ?? undefined,
                     },
                     {
-                      onSuccess: () => {
+                      onSuccess: (_, { vurderingAlternativ }) => {
+                        trackEvent({
+                          name: Events.SKJEMA_SPORSMAL_BESVART,
+                          properties: {
+                            skjemanavn: texts.heading,
+                            spørsmål: texts.radioLegend,
+                            svar: vurderingAlternativ,
+                            kontekst: texts.kontekst,
+                          },
+                        });
                         setUtkastSavedTime(undefined);
                         debouncedAutoSaveDraft.cancel();
                         deleteDraft.mutate(undefined);
