@@ -1,12 +1,12 @@
 import { Accordion, BodyShort, Box, Heading, List } from "@navikt/ds-react";
 import { Events, trackEvent, trackLinkKlikket } from "@/utils/umami";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
+import { KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST } from "@/sider/kartleggingssporsmal/umamiKontekst.ts";
 
 const LINK_RUTINE =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Bruk-av-kartleggingssp%C3%B8rsm%C3%A5l-i-sykefrav%C3%A6rsoppf%C3%B8lgingen.aspx";
 
 const texts = {
-  kontekst: "Kartleggingsspørsmål",
   heading: "Veiledning",
   intro:
     "Svarene skal hjelpe deg å tidlig identifisere sykmeldte med risiko for langtidsfravær eller fare for å falle ut av arbeidslivet.",
@@ -65,7 +65,7 @@ function trackAccordionApnet(isOpen: boolean, accordionTekst: string): void {
       name: Events.ACCORDION_APNET,
       properties: {
         tittel: accordionTekst,
-        kontekst: texts.kontekst,
+        kontekst: KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST,
       },
     });
   }

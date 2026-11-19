@@ -19,6 +19,7 @@ import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbeha
 import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
 import { Events, trackEvent, trackLinkKlikket } from "@/utils/umami.ts";
+import { KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST } from "@/sider/kartleggingssporsmal/umamiKontekst.ts";
 import { KartleggingInfo } from "@/sider/kartleggingssporsmal/info/KartleggingInfo.tsx";
 import { useKartleggingssporsmalVurderSvar } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
 import { useDebouncedCallback } from "use-debounce";
@@ -60,7 +61,6 @@ const texts = {
   vurdertRisikoForLangtidsfravar:
     "Det er vurdert risiko for langtidsfravær. Da kan det være aktuelt å gjøre en § 14a-vurdering i ",
   lenkeTilModiaAO: "vedtaksstøtteløsningen i Modia Arbeidsrettet oppfølging.",
-  kontekst: "Kartleggingsspørsmål",
 };
 
 interface Props {
@@ -119,7 +119,7 @@ export function KartleggingVurdering({
         valgtAlternativ: valgt,
         forrigeAlternativ: vurdering.vurderingAlternativ ?? undefined,
         antallAlternativer: 2,
-        kontekst: texts.kontekst,
+        kontekst: KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST,
       },
     });
     setVurdering((vurderingParam) => ({
@@ -210,7 +210,7 @@ export function KartleggingVurdering({
                     properties: {
                       tekst: texts.button,
                       variant: "primary",
-                      kontekst: texts.kontekst,
+                      kontekst: KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST,
                     },
                   });
 
@@ -229,7 +229,7 @@ export function KartleggingVurdering({
                             skjemanavn: texts.heading,
                             spørsmål: texts.radioLegend,
                             svar: vurderingAlternativ,
-                            kontekst: texts.kontekst,
+                            kontekst: KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST,
                           },
                         });
                         setUtkastSavedTime(undefined);
