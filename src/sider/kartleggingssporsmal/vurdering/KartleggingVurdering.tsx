@@ -18,7 +18,8 @@ import { useState } from "react";
 import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
-import { trackLinkKlikket } from "@/utils/umami.ts";
+import { Events, trackEvent, trackLinkKlikket } from "@/utils/umami.ts";
+import { KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST } from "@/sider/kartleggingssporsmal/umamiKontekst.ts";
 import { KartleggingInfo } from "@/sider/kartleggingssporsmal/info/KartleggingInfo.tsx";
 import { useKartleggingssporsmalVurderSvar } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
 import { useDebouncedCallback } from "use-debounce";
@@ -111,6 +112,22 @@ export function KartleggingVurdering({
     nyesteKandidat.vurdering?.vurderingAlternativ ===
     "RISIKO_FOR_LANGTIDSFRAVAR";
 
+  function handleVurderingAlternativChange(valgt: VurderingAlternativ) {
+    trackEvent({
+      name: Events.RADIO_VALG_ENDRET,
+      properties: {
+        valgtAlternativ: valgt,
+        forrigeAlternativ: vurdering.vurderingAlternativ ?? undefined,
+        antallAlternativer: 2,
+        kontekst: KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST,
+      },
+    });
+    setVurdering((vurderingParam) => ({
+      ...vurderingParam,
+      vurderingAlternativ: valgt,
+    }));
+  }
+
   return (
     <Box background="default" className="flex flex-col p-6 gap-4 mb-2">
       <Heading size={"medium"}>{texts.heading}</Heading>
@@ -126,12 +143,7 @@ export function KartleggingVurdering({
             value={vurdering.vurderingAlternativ}
             readOnly={nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET}
             error={vurderingError.vurderingAlternativError}
-            onChange={(e: VurderingAlternativ) =>
-              setVurdering((vurderingParam) => ({
-                ...vurderingParam,
-                vurderingAlternativ: e,
-              }))
-            }
+            onChange={handleVurderingAlternativChange}
           >
             <RadioCard
               value="RISIKO_FOR_LANGTIDSFRAVAR"
@@ -193,6 +205,15 @@ export function KartleggingVurdering({
                     return;
                   }
 
+                  trackEvent({
+                    name: Events.KNAPP_KLIKKET,
+                    properties: {
+                      tekst: texts.button,
+                      variant: "primary",
+                      kontekst: KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST,
+                    },
+                  });
+
                   vurderSvar.mutate(
                     {
                       kandidatUuid: nyesteKandidat.kandidatUuid,
@@ -201,7 +222,16 @@ export function KartleggingVurdering({
                         vurdering.vurderingFritekst ?? undefined,
                     },
                     {
-                      onSuccess: () => {
+                      onSuccess: (_, { vurderingAlternativ }) => {
+                        trackEvent({
+                          name: Events.SKJEMA_SPORSMAL_BESVART,
+                          properties: {
+                            skjemanavn: texts.heading,
+                            spørsmål: texts.radioLegend,
+                            svar: vurderingAlternativ,
+                            kontekst: KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST,
+                          },
+                        });
                         setUtkastSavedTime(undefined);
                         debouncedAutoSaveDraft.cancel();
                         deleteDraft.mutate(undefined);
