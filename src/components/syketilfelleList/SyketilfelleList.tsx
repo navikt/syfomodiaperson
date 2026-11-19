@@ -1,9 +1,9 @@
 import {
-  LocalAlert,
   BodyShort,
   Box,
   Button,
   Heading,
+  LocalAlert,
   Tooltip,
 } from "@navikt/ds-react";
 import { MedisinskrinImage } from "../../../img/ImageComponents.ts";

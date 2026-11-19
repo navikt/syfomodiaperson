@@ -4,17 +4,20 @@ import {
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { formatDateRangeWithYear } from "@/utils/datoUtils";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
-import SyketilfelleRadioList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleRadioList.tsx";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { InfoCard, BodyShort, Box, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, InfoCard } from "@navikt/ds-react";
 import { InformationSquareIcon } from "@navikt/aksel-icons";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
-import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import {
+  SykmeldingOldFormat,
+  SykmeldingPeriodeDTO,
+} from "@/data/sykmelding/types/SykmeldingOldFormat";
 import {
   harJobbet,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import SykmeldingsgradChart from "@/sider/nokkelinformasjon/sykmeldingsgrad/SykmeldingsgradChart";
+import SyketilfelleRadioList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleRadioList.tsx";
 
 const texts = {
   title: "Sykmeldingsgrad",
@@ -67,7 +70,9 @@ export default function Sykmeldingsgrad({
 
   const sortedSykmeldingsperioder = sykmeldingerIOppfolgingstilfelle
     .flatMap((sykmelding) => sykmelding.mulighetForArbeid.perioder)
-    .sort((a, b) => a.fom.getTime() - b.fom.getTime());
+    .sort((a: SykmeldingPeriodeDTO, b: SykmeldingPeriodeDTO) => {
+      return a.fom.getTime() - b.fom.getTime();
+    });
 
   return (
     <Box background="default" padding="space-16" className="mb-4">
@@ -75,6 +80,7 @@ export default function Sykmeldingsgrad({
         {texts.title}
       </Heading>
       <BodyShort size="small">{texts.subtitle}</BodyShort>
+
       {selectedOppfolgingstilfelle && sortedSykmeldingsperioder.length > 0 && (
         <BodyShort size="small">
           {tilfelleVarighetText(
@@ -84,6 +90,7 @@ export default function Sykmeldingsgrad({
           )}
         </BodyShort>
       )}
+
       <div role="status">
         {harOpplystOmJobbetIOppfolgingstilfelle(
           sykmeldingerIOppfolgingstilfelle,
@@ -95,15 +102,23 @@ export default function Sykmeldingsgrad({
           </InfoCard>
         )}
       </div>
-      <div className="flex flex-row">
-        <SykmeldingsgradChart sykmeldingsperioder={sortedSykmeldingsperioder} />
 
-        <SyketilfelleRadioList
-          setSelectedTilfelle={setSelectedOppfolgingstilfelle}
-        />
+      <div className="flex flex-row gap-8">
+        <div className="w-full">
+          <SykmeldingsgradChart
+            sykmeldingsperioder={sortedSykmeldingsperioder}
+          />
+          <BodyShort size="small">{texts.yAxis}</BodyShort>
+          <BodyShort size="small">{texts.xAxis}</BodyShort>
+        </div>
+
+        <div className="min-w-max">
+          <SyketilfelleRadioList
+            selectedTilfelle={selectedOppfolgingstilfelle}
+            setSelectedTilfelle={setSelectedOppfolgingstilfelle}
+          />
+        </div>
       </div>
-      <BodyShort size="small">{texts.yAxis}</BodyShort>
-      <BodyShort size="small">{texts.xAxis}</BodyShort>
     </Box>
   );
 }
