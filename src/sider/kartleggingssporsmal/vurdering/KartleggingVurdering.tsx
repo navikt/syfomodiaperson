@@ -60,7 +60,7 @@ const texts = {
   vurdertRisikoForLangtidsfravar:
     "Det er vurdert risiko for langtidsfravær. Da kan det være aktuelt å gjøre en § 14a-vurdering i ",
   lenkeTilModiaAO: "vedtaksstøtteløsningen i Modia Arbeidsrettet oppfølging.",
-  kontekst: "Kartleggingsspørsmål"
+  kontekst: "Kartleggingsspørsmål",
 };
 
 interface Props {
