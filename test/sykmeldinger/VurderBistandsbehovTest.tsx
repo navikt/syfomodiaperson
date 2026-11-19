@@ -51,7 +51,7 @@ describe("VurderBistandsbehov", () => {
   const behandlePersonoppgaveKnappText =
     "Jeg har vurdert behovet, fjern oppgaven.";
   const annetArbeidPaSiktText =
-    "Felt 5.2.2 (Prognose): Jeg antar at pasienten på sikt kan komme i arbeid hos annen arbeidsgiver";
+    "Pasienten kan være aktuell for friskmelding til arbeidsformidling.";
 
   const sykmeldinger = sykmeldingerMock as unknown as SykmeldingNewFormatDTO[];
 
@@ -181,7 +181,7 @@ describe("VurderBistandsbehov", () => {
   });
 
   describe("annetArbeidPaSikt", () => {
-    it("Viser kun felt 5.2.2 når sykmeldingen bare har annetArbeidPaSikt", () => {
+    it("Viser kun tekst om friskmelding til arbeidsformidling når sykmeldingen bare har annetArbeidPaSikt", () => {
       const sykmelding = withAnnetArbeidPaSikt(getSykmeldingForOppgave(), true);
       setSykmeldingForOppgave({
         ...sykmelding,
@@ -198,7 +198,7 @@ describe("VurderBistandsbehov", () => {
       expect(screen.queryByText(/Felt 8.2/)).to.not.exist;
     });
 
-    it("Viser ikke felt 5.2.2 når annetArbeidPaSikt er false", () => {
+    it("Viser ikke tekst om friskmelding til arbeidsformidling når annetArbeidPaSikt er false", () => {
       setSykmeldingForOppgave(
         withAnnetArbeidPaSikt(getSykmeldingForOppgave(), false),
       );

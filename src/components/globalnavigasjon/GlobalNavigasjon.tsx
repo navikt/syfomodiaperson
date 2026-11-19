@@ -64,7 +64,7 @@ const allMenypunkter: {
     sti: "moteoversikt",
   },
   [Menypunkter.KARTLEGGINGSSPORSMAL]: {
-    navn: "Kartleggingsspørsmål",
+    navn: "Vurder tidlig oppfølging",
     sti: "kartleggingssporsmal",
   },
   [Menypunkter.AKTIVITETSKRAV]: {

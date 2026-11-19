@@ -142,7 +142,7 @@ describe("GlobalNavigasjon", () => {
       "Vedtak",
     ];
     const menypunkterNotShown = [
-      "Kartleggingsspørsmål",
+      "Vurder tidlig oppfølging",
       "§ 8-9 Søknad om utenlandsopphold",
     ];
 
@@ -166,7 +166,7 @@ describe("GlobalNavigasjon", () => {
       "Dialog med behandler",
       "Oppfølgingsplaner",
       "Dialogmøter",
-      "Kartleggingsspørsmål",
+      "Vurder tidlig oppfølging",
       "§ 8-8 Aktivitetskrav",
       "§ 8-8 Manglende medvirkning",
       "§ 8-4 Arbeidsuførhet",
@@ -542,7 +542,7 @@ describe("GlobalNavigasjon", () => {
     ).to.exist;
   });
 
-  it("viser én rød prikk for menypunkt Kartleggingsspørsmål når siste kandidat finnes med svar", () => {
+  it("viser én rød prikk for menypunkt Vurder tidlig oppfølging når siste kandidat finnes med svar", () => {
     mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
@@ -550,11 +550,11 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("button", { name: "Kartleggingsspørsmål 1" })).to
-      .exist;
+    expect(screen.getByRole("button", { name: "Vurder tidlig oppfølging 1" }))
+      .to.exist;
   });
 
-  it("viser ikke rød prikk for menypunkt Kartleggingsspørsmål når siste kandidat finnes uten svar", () => {
+  it("viser ikke rød prikk for menypunkt Vurder tidlig oppfølging når siste kandidat finnes uten svar", () => {
     mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
@@ -562,11 +562,11 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("button", { name: "Kartleggingsspørsmål" })).to
+    expect(screen.getByRole("button", { name: "Vurder tidlig oppfølging" })).to
       .exist;
   });
 
-  it("viser ikke rød prikk for menypunkt Kartleggingsspørsmål når siste kandidat finnes med svar og er vurdert", () => {
+  it("viser ikke rød prikk for menypunkt Vurder tidlig oppfølging når siste kandidat finnes med svar og er vurdert", () => {
     mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
@@ -580,7 +580,7 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("button", { name: "Kartleggingsspørsmål" })).to
+    expect(screen.getByRole("button", { name: "Vurder tidlig oppfølging" })).to
       .exist;
   });
 
