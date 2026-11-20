@@ -1,5 +1,4 @@
-import { Alert, Heading } from "@navikt/ds-react";
-
+import { LocalAlert } from "@navikt/ds-react";
 import { TildeltNotification } from "@/components/oppfolgingsenhet/Oppfolgingsenhet";
 
 interface Props {
@@ -9,14 +8,14 @@ interface Props {
 export default function TildeltOppfolgingsenhetAlert({
   tildeltNotification,
 }: Props) {
+  const { status, header, message } = tildeltNotification;
+
   return (
-    <Alert variant={tildeltNotification.variant} className="mb-2">
-      {!!tildeltNotification.header && (
-        <Heading size="xsmall" level="3">
-          {tildeltNotification.header}
-        </Heading>
-      )}
-      {tildeltNotification.message}
-    </Alert>
+    <LocalAlert status={status} className="mb-2">
+      <LocalAlert.Header>
+        <LocalAlert.Title>{header ?? message}</LocalAlert.Title>
+      </LocalAlert.Header>
+      {!!header && <LocalAlert.Content>{message}</LocalAlert.Content>}
+    </LocalAlert>
   );
 }

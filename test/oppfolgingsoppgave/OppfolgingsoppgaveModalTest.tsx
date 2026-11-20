@@ -22,7 +22,7 @@ import userEvent from "@testing-library/user-event";
 import Oppfolgingsoppgave from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { changeTextInput } from "../testUtils";
 import dayjs from "dayjs";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { stubOppfolgingsoppgaveApi } from "../stubs/stubIshuskelapp";
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 
@@ -93,13 +93,11 @@ describe("Oppfolgingsoppgave", () => {
       renderOppfolgingsoppgave();
 
       expect(
-        await screen.findByText(
-          `Opprettet: ${tilLesbarDatoMedArUtenManedNavn(new Date())}`,
-        ),
+        await screen.findByText(`Opprettet: ${formatNumericDate(new Date())}`),
       ).to.exist;
       expect(
         await screen.findByText(
-          `Sist oppdatert: ${tilLesbarDatoMedArUtenManedNavn(new Date())}`,
+          `Sist oppdatert: ${formatNumericDate(new Date())}`,
         ),
       ).to.exist;
       expect(
@@ -186,7 +184,7 @@ describe("Oppfolgingsoppgave", () => {
         name: "Frist (obligatorisk)",
       });
       const fristDate = dayjs();
-      changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
+      await changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
 
       const lagreButton = screen.getByRole("button", {
         hidden: true,
@@ -218,7 +216,7 @@ describe("Oppfolgingsoppgave", () => {
         name: "Frist (obligatorisk)",
       });
       const fristDate = dayjs();
-      changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
+      await changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
 
       const lagreButton = screen.getByRole("button", {
         hidden: true,
@@ -318,14 +316,14 @@ describe("Oppfolgingsoppgave", () => {
         target: { value: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE },
       });
       const beskrivelseInput = screen.getByLabelText("Beskrivelse");
-      changeTextInput(beskrivelseInput, oppfolgingsoppgaveTekst);
+      await changeTextInput(beskrivelseInput, oppfolgingsoppgaveTekst);
 
       const fristDateInput = screen.getByRole("textbox", {
         hidden: true,
         name: "Frist (obligatorisk)",
       });
       const fristDate = dayjs();
-      changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
+      await changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
       const lagreButton = screen.getByRole("button", {
         hidden: true,
         name: "Lagre",
@@ -402,7 +400,7 @@ describe("Oppfolgingsoppgave", () => {
       expect(screen.queryByText(lengthBeskrivelseAlert)).to.not.exist;
 
       const beskrivelseInput = screen.getByLabelText("Beskrivelse");
-      changeTextInput(
+      await changeTextInput(
         beskrivelseInput,
         "Dette var en veldig god grunn for å lage oppfølgingsoppgave. Faktisk så god grunn at jeg ønsker å skrive så mye som 200 tegn for å sjekke om det kommer opp et varsel med beskrivelse hvis jeg skriver så mange tegn.",
       );

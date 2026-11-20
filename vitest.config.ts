@@ -2,6 +2,9 @@ import { defineConfig } from "vitest/config";
 import svgr from "vite-plugin-svgr";
 import path from "path";
 
+// Locks the timezone so date tests behave the same locally and in CI.
+process.env.TZ = "Europe/Oslo";
+
 export default defineConfig({
   resolve: {
     tsconfigPaths: true,
@@ -13,16 +16,23 @@ export default defineConfig({
     environment: "jsdom",
     include: ["test/**/*{test,Test}.*"],
     setupFiles: ["test/setup.ts"],
-    server: {
-      deps: {
-        inline: ["@navikt/analytics-types"],
-      },
-    },
+    execArgv: ["--no-webstorage"],
     deps: {
       web: {
         transformAssets: false,
         transformCss: false,
       },
+    },
+    onConsoleLog(log) {
+      // Fixes noisy warnings from Accordion in @navikt/ds-react
+      if (
+        log.includes(
+          "Do not put multiple accordions directly after each other.",
+        ) ||
+        log.includes("Accordions should have more than one item.")
+      ) {
+        return false;
+      }
     },
   },
 });

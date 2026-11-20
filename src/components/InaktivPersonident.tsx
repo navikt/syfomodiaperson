@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Button, Link, Modal } from "@navikt/ds-react";
+import { BodyShort, Button, Link, LocalAlert, Modal } from "@navikt/ds-react";
 import { ReactNode, useState } from "react";
 import { usePostAktivBruker } from "@/data/modiacontext/usePostAktivBruker";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
@@ -32,7 +32,7 @@ function ChangeAktivBrukerLink({
 }
 
 const texts = {
-  intro: "Personen har byttet fødselsnummer/d-nummer. ",
+  intro: "Personen har byttet fødselsnummer/d-nummer.",
   link: (personident: string) =>
     `Klikk her for å åpne person på aktivt f.nr/d.nr ${personident}.`,
   label: "Inaktivt fødselsnummer/d-nummer",
@@ -47,12 +47,16 @@ export function InaktivPersonident() {
 
   return (
     <>
-      <Alert variant="error" contentMaxWidth={false}>
-        {texts.intro}
-        <ChangeAktivBrukerLink personident={aktivPersonident}>
-          {texts.link(aktivPersonident)}
-        </ChangeAktivBrukerLink>
-      </Alert>
+      <LocalAlert status="error">
+        <LocalAlert.Header>
+          <LocalAlert.Title>{texts.intro}</LocalAlert.Title>
+        </LocalAlert.Header>
+        <LocalAlert.Content>
+          <ChangeAktivBrukerLink personident={aktivPersonident}>
+            {texts.link(aktivPersonident)}
+          </ChangeAktivBrukerLink>
+        </LocalAlert.Content>
+      </LocalAlert>
       <Modal
         closeOnBackdropClick
         open={modalOpen}

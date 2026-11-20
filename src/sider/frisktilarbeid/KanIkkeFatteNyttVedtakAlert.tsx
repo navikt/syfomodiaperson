@@ -1,4 +1,5 @@
-import { Alert } from "@navikt/ds-react";
+import { InfoCard } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const texts = {
   activeVedtakAlert:
@@ -20,16 +21,20 @@ export default function KanIkkeFatteNyttVedtakAlert({
 }: Props) {
   if (isActiveVedtak) {
     return (
-      <Alert variant="warning" size="small" className="max-w-fit">
-        {texts.activeVedtakAlert}
-      </Alert>
+      <InfoCard data-color="warning" size="small" className="max-w-fit">
+        <InfoCard.Message icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+          {texts.activeVedtakAlert}
+        </InfoCard.Message>
+      </InfoCard>
     );
   }
   if (!isRegisteredArbeidssoker || !hasArbeidssokerFom) {
     return (
-      <Alert variant="warning" size="small" className="max-w-fit">
-        {texts.arbeidssokerAlert}
-      </Alert>
+      <InfoCard data-color="warning" size="small" className="max-w-fit">
+        <InfoCard.Message icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+          {texts.arbeidssokerAlert}
+        </InfoCard.Message>
+      </InfoCard>
     );
   }
 }

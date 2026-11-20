@@ -1,4 +1,4 @@
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 
 import { SvarResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
@@ -13,7 +13,7 @@ interface KandidatSvarProps {
 }
 
 export function KandidatSvar({ svar }: KandidatSvarProps) {
-  const svardato = svar && tilLesbarDatoMedArUtenManedNavn(svar.svarAt);
+  const svardato = svar && formatNumericDate(svar.svarAt);
 
   return (
     <Box

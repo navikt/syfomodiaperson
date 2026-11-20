@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { useNotification } from "@/context/notification/NotificationContext";
-import { Alert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { LocalAlert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
+import { formatNumericDate } from "@/utils/datoUtils";
 import {
   typeTexts,
   VurderingResponseDTO,
@@ -26,9 +26,9 @@ const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
   const lastVurderingType =
     typeTexts[lastVurdering.vurderingType].toLowerCase();
 
-  return `Forrige forhåndsvarsel på § 8-8 ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
+  return `Forrige forhåndsvarsel på § 8-8 ble sendt ut ${formatNumericDate(
     lastForhandsvarsel?.createdAt,
-  )} og det ble vurdert ${lastVurderingType} ${tilLesbarDatoMedArUtenManedNavn(
+  )} og det ble vurdert ${lastVurderingType} ${formatNumericDate(
     lastVurdering?.createdAt,
   )}.`;
 };
@@ -46,9 +46,11 @@ export default function ManglendeMedvirkningNyVurdering({
   return (
     <>
       {notification && (
-        <Alert variant="success" className="mb-2">
-          {notification.message}
-        </Alert>
+        <LocalAlert status="success" className="mb-2">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       <Box background="default" padding="space-24">
         <Heading className="mb-4" level="2" size="medium">

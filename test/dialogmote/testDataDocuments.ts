@@ -13,13 +13,13 @@ import {
 import {
   getAvlysningTexts,
   getCommonTexts,
-  getEndreTidStedTexts,
+  getEndreTexts,
   getInnkallingTexts,
   getReferatTexts,
 } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import {
-  tilDatoMedManedNavnOgKlokkeslettWithComma,
-  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
+  formatDateTimeWithComma,
+  formatDateTimeWithWeekday,
 } from "@/utils/datoUtils";
 import { genererDato } from "@/sider/dialogmoter/utils";
 import {
@@ -33,7 +33,7 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 const innkallingTextsBokmal = getInnkallingTexts(Malform.BOKMAL);
 const referatTextsBokmal = getReferatTexts(Malform.BOKMAL);
 const commonTextsBokmal = getCommonTexts(Malform.BOKMAL);
-const endreTidStedTextsBokmal = getEndreTidStedTexts(Malform.BOKMAL);
+const endreTidStedTextsBokmal = getEndreTexts(Malform.BOKMAL);
 const avlysningTextsBokmal = getAvlysningTexts(Malform.BOKMAL);
 
 const expectedArbeidstakerInnkalling = (
@@ -46,7 +46,7 @@ const expectedArbeidstakerInnkalling = (
   },
   {
     texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+      formatDateTimeWithWeekday(
         genererDato(mote.datoAsISODateString, mote.klokkeslett),
       ),
     ],
@@ -122,9 +122,7 @@ const expectedArbeidstakerInnkalling = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -140,7 +138,7 @@ const expectedArbeidsgiverInnkalling = (
   },
   {
     texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+      formatDateTimeWithWeekday(
         genererDato(mote.datoAsISODateString, mote.klokkeslett),
       ),
     ],
@@ -208,9 +206,7 @@ const expectedArbeidsgiverInnkalling = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -236,7 +232,7 @@ const expectedBehandlerInnkalling = (
   },
   {
     texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+      formatDateTimeWithWeekday(
         genererDato(mote.datoAsISODateString, mote.klokkeslett),
       ),
     ],
@@ -281,9 +277,7 @@ const expectedBehandlerInnkalling = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -302,20 +296,25 @@ const expectedArbeidsgiverEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTextsBokmal.intro],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
-      `${
-        endreTidStedTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}.`,
+      endreTidStedTextsBokmal.endretTidspunkt.replace(
+        "{tidspunkt}",
+        formatDateTimeWithComma(dialogmote.tid),
+      ),
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTextsBokmal.intro2],
+    texts: [endreTidStedTextsBokmal.endretSted],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+      formatDateTimeWithWeekday(
         genererDato(endretMote.datoAsISODateString, endretMote.klokkeslett),
       ),
     ],
@@ -382,9 +381,7 @@ const expectedArbeidsgiverEndringsdokument = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -407,20 +404,25 @@ const expectedArbeidstakerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTextsBokmal.intro],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
-      `${
-        endreTidStedTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}.`,
+      endreTidStedTextsBokmal.endretTidspunkt.replace(
+        "{tidspunkt}",
+        formatDateTimeWithComma(dialogmote.tid),
+      ),
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTextsBokmal.intro2],
+    texts: [endreTidStedTextsBokmal.endretSted],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+      formatDateTimeWithWeekday(
         genererDato(endretMote.datoAsISODateString, endretMote.klokkeslett),
       ),
     ],
@@ -487,9 +489,7 @@ const expectedArbeidstakerEndringsdokument = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -511,20 +511,25 @@ const expectedBehandlerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTextsBokmal.intro],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
-      `${
-        endreTidStedTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}.`,
+      endreTidStedTextsBokmal.endretTidspunkt.replace(
+        "{tidspunkt}",
+        formatDateTimeWithComma(dialogmote.tid),
+      ),
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTextsBokmal.intro2],
+    texts: [endreTidStedTextsBokmal.endretSted],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+      formatDateTimeWithWeekday(
         genererDato(endretMote.datoAsISODateString, endretMote.klokkeslett),
       ),
     ],
@@ -564,9 +569,7 @@ const expectedBehandlerEndringsdokument = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -587,7 +590,7 @@ const expectedAvlysningArbeidsgiver = (
     texts: [
       `${
         avlysningTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}. ${
+      } ${formatDateTimeWithComma(dialogmote.tid)}. ${
         avlysningTextsBokmal.intro2
       }`,
     ],
@@ -608,9 +611,7 @@ const expectedAvlysningArbeidsgiver = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -631,7 +632,7 @@ const expectedAvlysningArbeidstaker = (
     texts: [
       `${
         avlysningTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}. ${
+      } ${formatDateTimeWithComma(dialogmote.tid)}. ${
         avlysningTextsBokmal.intro2
       }`,
     ],
@@ -652,9 +653,7 @@ const expectedAvlysningArbeidstaker = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -675,7 +674,7 @@ const expectedAvlysningBehandler = (
     texts: [
       `${
         avlysningTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}. ${
+      } ${formatDateTimeWithComma(dialogmote.tid)}. ${
         avlysningTextsBokmal.intro2
       }`,
     ],
@@ -696,9 +695,7 @@ const expectedAvlysningBehandler = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -720,7 +717,7 @@ export const expectedReferatDocument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)],
+    texts: [formatDateTimeWithWeekday(dialogmote.tid)],
     title: commonTextsBokmal.moteTidTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -793,9 +790,7 @@ export const expectedReferatDocument = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -826,7 +821,7 @@ export const expectedEndretReferatDocument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)],
+    texts: [formatDateTimeWithWeekday(dialogmote.tid)],
     title: commonTextsBokmal.moteTidTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -892,9 +887,7 @@ export const expectedEndretReferatDocument = (
       veileder.fulltNavn(),
       "Nav",
       "---",
-      `${
-        commonTextsBokmal.brevSendt
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+      `${commonTextsBokmal.brevSendt} ${formatDateTimeWithComma(sendtDato)}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },

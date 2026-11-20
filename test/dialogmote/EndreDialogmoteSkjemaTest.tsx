@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import EndreDialogmoteSkjema, {
   MAX_LENGTH_ENDRE_BEGRUNNELSE,
   texts,
-} from "@/sider/dialogmoter/components/endre/EndreDialogmoteSkjema";
+} from "@/sider/dialogmoter/components/endre/components/EndreDialogmoteSkjema";
 import {
   changeTextInput,
   clickButton,
@@ -12,7 +12,7 @@ import {
   getTooLongText,
 } from "../testUtils";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { stubEndreApi } from "../stubs/stubIsdialogmote";
+import { stubDialogmoterApi, stubEndreApi } from "../stubs/stubIsdialogmote";
 import {
   dialogmote,
   dialogmoteMedBehandler,
@@ -22,7 +22,7 @@ import {
 } from "./testData";
 import {
   DialogmoteDTO,
-  EndreTidStedDialogmoteDTO,
+  EndreDialogmoteDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -33,14 +33,24 @@ import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
 import { queryClientWithMockData } from "../testQueryClient";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
-import { getEndreTidStedTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
+import { getEndreTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { StoreKey } from "@/hooks/useLocalStorageState";
+import {
+  behandlerLegoLasLegesen,
+  behandlerSokDialogmeldingMock,
+} from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
+import { formatDateTimeWithComma } from "@/utils/datoUtils";
+import { ISDIALOGMELDING_ROOT, ISDIALOGMOTE_ROOT } from "@/apiConstants";
+import { defaultErrorTexts } from "@/api/errors";
 
 let queryClient: QueryClient;
 
 describe("EndreDialogmoteSkjemaTest", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
+    stubDialogmoterApi();
   });
 
   afterEach(() => {
@@ -87,15 +97,15 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const begrunnelseArbeidsgiverInput = getTextInput(
       "Begrunnelse til nærmeste leder",
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidstakerInput,
       moteTekster.fritekstTilArbeidstaker,
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidsgiverInput,
       moteTekster.fritekstTilArbeidsgiver,
     );
-    changeTextInput(datoInput, endretMote.dato);
+    await changeTextInput(datoInput, endretMote.dato);
     await clickButton("Send");
 
     // Feilmeldinger forsvinner
@@ -112,8 +122,8 @@ describe("EndreDialogmoteSkjemaTest", () => {
     });
 
     // Fjern begrunnelser
-    changeTextInput(begrunnelseArbeidstakerInput, "");
-    changeTextInput(begrunnelseArbeidsgiverInput, "");
+    await changeTextInput(begrunnelseArbeidstakerInput, "");
+    await changeTextInput(begrunnelseArbeidsgiverInput, "");
 
     // Feilmeldinger vises
     expect(await screen.findByText(texts.begrunnelseArbeidstakerMissing)).to
@@ -132,9 +142,9 @@ describe("EndreDialogmoteSkjemaTest", () => {
     );
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
     const tooLongFritekst = getTooLongText(MAX_LENGTH_ENDRE_BEGRUNNELSE);
-    changeTextInput(begrunnelseArbeidstakerInput, tooLongFritekst);
-    changeTextInput(begrunnelseArbeidsgiverInput, tooLongFritekst);
-    changeTextInput(begrunnelseBehandlerInput, tooLongFritekst);
+    await changeTextInput(begrunnelseArbeidstakerInput, tooLongFritekst);
+    await changeTextInput(begrunnelseArbeidsgiverInput, tooLongFritekst);
+    await changeTextInput(begrunnelseBehandlerInput, tooLongFritekst);
 
     await clickButton("Send");
 
@@ -144,7 +154,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   it("endrer møte ved submit", async () => {
     stubEndreApi(dialogmote.uuid);
     renderEndreDialogmoteSkjema(dialogmote);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const expectedSendtDato = new Date();
     await clickButton("Send");
@@ -171,29 +181,30 @@ describe("EndreDialogmoteSkjemaTest", () => {
         tid: endretMote.datoTid,
       };
       expect(endreMutation.state.variables).to.deep.equal(expectedEndring);
+      expect(endreMutation.state.status).to.equal("success");
     });
   });
 
   it("trimmer videolenke i endring som sendes til api", async () => {
     stubEndreApi(dialogmote.uuid);
     renderEndreDialogmoteSkjema(dialogmote);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const link = "https://video.nav.no/abc";
     const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
     const linkWithWhitespace = `   ${link}  `;
-    changeTextInput(videoLinkInput, linkWithWhitespace);
+    await changeTextInput(videoLinkInput, linkWithWhitespace);
 
     await clickButton("Send");
 
     let endreMutation;
     await waitFor(() => {
       endreMutation = queryClient.getMutationCache().getAll()[0];
-      expect(endreMutation).to.exist;
+      expect(endreMutation?.state.status).to.equal("success");
     });
 
     const { videoLink, arbeidsgiver, arbeidstaker } = endreMutation.state
-      .variables as unknown as EndreTidStedDialogmoteDTO;
+      .variables as unknown as EndreDialogmoteDTO;
 
     const linkDocumentComponents = [
       ...arbeidsgiver.endringsdokument,
@@ -211,9 +222,9 @@ describe("EndreDialogmoteSkjemaTest", () => {
     stubEndreApi(dialogmote.uuid);
     stubFeatureTogglesApi();
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
-    passSkjemaInput();
+    await passSkjemaInput();
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
-    changeTextInput(
+    await changeTextInput(
       begrunnelseBehandlerInput,
       moteTekster.fritekstTilBehandler,
     );
@@ -239,20 +250,260 @@ describe("EndreDialogmoteSkjemaTest", () => {
           ),
         },
         behandler: {
-          begrunnelse: moteTekster.fritekstTilBehandler,
-          endringsdokument:
-            expectedEndringDocuments.behandler(expectedSendtDato),
+          fritekst: moteTekster.fritekstTilBehandler,
+          moteDokument: expectedEndringDocuments.behandler(expectedSendtDato),
         },
         videoLink: endretMote.videolink,
         sted: endretMote.sted,
         tid: endretMote.datoTid,
       };
       expect(endreMutation.state.variables).to.deep.equal(expectedEndring);
+      expect(endreMutation.state.status).to.equal("success");
     });
   });
+  describe("ny behandler", () => {
+    it("legger til valgt behandler i endring som sendes til api", async () => {
+      stubEndreApi(dialogmote.uuid);
+      renderEndreDialogmoteSkjema(dialogmote);
+      await passSkjemaInput();
+
+      await userEvent.click(
+        screen.getByRole("radio", { name: /Lego Las Legesen/ }),
+      );
+      await changeTextInput(
+        getTextInput(texts.fritekstBehandler),
+        moteTekster.fritekstTilBehandler,
+      );
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const endreMutation = queryClient.getMutationCache().getAll()[0];
+        const { behandler, arbeidstaker, arbeidsgiver } = endreMutation.state
+          .variables as unknown as EndreDialogmoteDTO;
+        expect(JSON.stringify(arbeidstaker.endringsdokument)).to.contain(
+          "Lego Las Legesen",
+        );
+        expect(JSON.stringify(arbeidsgiver.endringsdokument)).to.contain(
+          "Lego Las Legesen",
+        );
+        [arbeidstaker.endringsdokument, arbeidsgiver.endringsdokument].forEach(
+          (document) => {
+            const paragraphs = document.flatMap((component) => component.texts);
+            expect(paragraphs).toContain(
+              getEndreTexts(Malform.BOKMAL).lagtTilBehandler,
+            );
+            expect(paragraphs).toContain(
+              getEndreTexts(Malform.BOKMAL).endretTidspunkt.replace(
+                "{tidspunkt}",
+                formatDateTimeWithComma(dialogmote.tid),
+              ),
+            );
+          },
+        );
+        expect(behandler?.deltaker).to.deep.equal({
+          personIdent: behandlerLegoLasLegesen.fnr,
+          behandlerRef: behandlerLegoLasLegesen.behandlerRef,
+          behandlerNavn: "Lego Las Legesen",
+          behandlerKontor: behandlerLegoLasLegesen.kontor,
+        });
+        expect(behandler?.fritekst).to.equal(moteTekster.fritekstTilBehandler);
+        expect(behandler?.moteDokument).to.not.be.empty;
+        expect(endreMutation.state.status).to.equal("success");
+      });
+    });
+
+    it("does not describe rescheduling when only adding a behandler", async () => {
+      stubEndreApi(dialogmote.uuid);
+      renderEndreDialogmoteSkjema({
+        ...dialogmote,
+        tid: endretMote.datoTid,
+      });
+      await passSkjemaInput();
+      await userEvent.click(
+        screen.getByRole("radio", { name: /Lego Las Legesen/ }),
+      );
+
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const mutation = queryClient.getMutationCache().getAll()[0];
+        expect(mutation?.state.variables).toMatchObject({
+          arbeidstaker: {
+            endringsdokument: expect.arrayContaining([
+              expect.objectContaining({
+                texts: [getEndreTexts(Malform.BOKMAL).lagtTilBehandler],
+              }),
+            ]),
+          },
+          arbeidsgiver: {
+            endringsdokument: expect.arrayContaining([
+              expect.objectContaining({
+                texts: [getEndreTexts(Malform.BOKMAL).lagtTilBehandler],
+              }),
+            ]),
+          },
+          behandler: {
+            moteDokument: expect.arrayContaining([
+              expect.objectContaining({
+                texts: ["Innkalling til dialogmøte, svar ønskes"],
+              }),
+            ]),
+          },
+        });
+        expect(JSON.stringify(mutation.state.variables)).not.toContain(
+          getEndreTexts(Malform.BOKMAL).endretTidspunkt.replace(
+            "{tidspunkt}",
+            formatDateTimeWithComma(endretMote.datoTid),
+          ),
+        );
+        expect(mutation.state.status).to.equal("success");
+      });
+    });
+
+    it("submits a new behandler without optional fritekst", async () => {
+      stubEndreApi(dialogmote.uuid);
+      renderEndreDialogmoteSkjema(dialogmote);
+      await passSkjemaInput();
+      await userEvent.click(
+        screen.getByRole("radio", { name: /Lego Las Legesen/ }),
+      );
+
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const endreMutation = queryClient.getMutationCache().getAll()[0];
+        expect(endreMutation?.state.variables).toMatchObject({
+          behandler: {
+            fritekst: undefined,
+            deltaker: {
+              behandlerRef: behandlerLegoLasLegesen.behandlerRef,
+            },
+            moteDokument: expect.arrayContaining([
+              expect.objectContaining({
+                type: DocumentComponentType.HEADER_H1,
+              }),
+            ]),
+          },
+        });
+        expect(JSON.stringify(endreMutation.state.variables)).not.toContain(
+          '"fritekst":',
+        );
+        expect(endreMutation.state.status).to.equal("success");
+      });
+    });
+
+    it("validerer at behandler er valgt når søk er valgt", async () => {
+      renderEndreDialogmoteSkjema(dialogmote);
+      await passSkjemaInput();
+
+      await userEvent.click(
+        screen.getByRole("radio", { name: "Legg til en behandler" }),
+      );
+      await clickButton("Send");
+
+      expect(await screen.findByText("Vennligst velg behandler")).to.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
+    it("viser begrunnelse til behandler når behandler velges fra søk", async () => {
+      mockServer.use(
+        http.get(`*${ISDIALOGMELDING_ROOT}/behandler/search`, () =>
+          HttpResponse.json(behandlerSokDialogmeldingMock),
+        ),
+      );
+      renderEndreDialogmoteSkjema(dialogmote);
+      await userEvent.click(
+        screen.getByRole("radio", { name: "Legg til en behandler" }),
+      );
+      expect(screen.queryByLabelText(texts.fritekstBehandler)).to.not.exist;
+
+      await changeTextInput(screen.getByRole("searchbox"), "Baker");
+      await userEvent.click(
+        await screen.findByRole("button", { name: /Baker/ }),
+      );
+
+      expect(screen.getByLabelText(texts.fritekstBehandler)).to.exist;
+    });
+  });
+
+  describe("ingen endring", () => {
+    const uendretDialogmote: DialogmoteDTO = {
+      ...dialogmote,
+      tid: endretMote.datoTid,
+    };
+
+    beforeEach(() => {
+      renderEndreDialogmoteSkjema(uendretDialogmote);
+    });
+
+    it("viser feilmelding og sender ikke endring når ingenting er endret", async () => {
+      await fillBegrunnelser();
+
+      await clickButton("Send");
+
+      expect(await screen.findByText(texts.ingenEndring)).to.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
+    it("sender endring når kun sted er endret", async () => {
+      stubEndreApi(dialogmote.uuid);
+      await fillBegrunnelser();
+      await changeTextInput(getTextInput("Sted"), endretMote.sted);
+
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const endreMutation = queryClient.getMutationCache().getAll()[0];
+        expect(endreMutation?.state.status).to.equal("success");
+      });
+      expect(screen.queryByText(texts.ingenEndring)).to.not.exist;
+    });
+
+    it("sender endring når kun videolenke er endret", async () => {
+      stubEndreApi(dialogmote.uuid);
+      await fillBegrunnelser();
+      await changeTextInput(
+        getTextInput("Lenke til videomøte (valgfritt)"),
+        endretMote.videolink,
+      );
+
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const endreMutation = queryClient.getMutationCache().getAll()[0];
+        expect(endreMutation?.state.status).to.equal("success");
+      });
+    });
+  });
+
+  describe("feil fra api", () => {
+    beforeEach(() => {
+      renderEndreDialogmoteSkjema(dialogmote);
+    });
+
+    it("viser melding om manglende endring når api svarer 400", async () => {
+      stubEndreApiWithStatus(400);
+      await passSkjemaInput();
+
+      await clickButton("Send");
+
+      expect(await screen.findByText(texts.ingenEndring)).to.exist;
+    });
+
+    it("viser generell feilmelding når api svarer 500", async () => {
+      stubEndreApiWithStatus(500);
+      await passSkjemaInput();
+
+      await clickButton("Send");
+
+      expect(await screen.findByText(defaultErrorTexts.generalError)).to.exist;
+      expect(screen.queryByText(texts.ingenEndring)).to.not.exist;
+    });
+  });
+
   it("forhåndsviser endret tid og sted til arbeidstaker", async () => {
     renderEndreDialogmoteSkjema(dialogmote);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const previewButtons = screen.getAllByRole("button", {
       name: "Forhåndsvisning",
@@ -288,7 +539,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
   it("forhåndsviser endret tid og sted til arbeidsgiver", async () => {
     renderEndreDialogmoteSkjema(dialogmote);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const previewButtons = screen.getAllByRole("button", {
       name: "Forhåndsvisning",
@@ -325,9 +576,9 @@ describe("EndreDialogmoteSkjemaTest", () => {
   it("forhåndsviser endret tid og sted til behandler når behandler er med", async () => {
     stubFeatureTogglesApi();
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
-    passSkjemaInput();
+    await passSkjemaInput();
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
-    changeTextInput(
+    await changeTextInput(
       begrunnelseBehandlerInput,
       moteTekster.fritekstTilBehandler,
     );
@@ -362,7 +613,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
 
   it("forhåndsviser endring med nynorsktekster hvis dette er valgt", async () => {
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const malformRadioNynorsk = screen.getByRole("radio", {
       name: "Nynorsk",
@@ -374,8 +625,14 @@ describe("EndreDialogmoteSkjemaTest", () => {
     })[0];
     await userEvent.click(forhandsvisningButton);
 
-    expect(screen.getByText(getEndreTidStedTexts(Malform.NYNORSK).intro2)).to
-      .exist;
+    expect(
+      screen.getByText(
+        getEndreTexts(Malform.NYNORSK).endretTidspunkt.replace(
+          "{tidspunkt}",
+          formatDateTimeWithComma(dialogmoteMedBehandler.tid),
+        ),
+      ),
+    ).to.exist;
   });
 });
 
@@ -395,7 +652,27 @@ const renderEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
   );
 };
 
-const passSkjemaInput = () => {
+const fillBegrunnelser = async () => {
+  await changeTextInput(
+    getTextInput("Begrunnelse til arbeidstakeren"),
+    moteTekster.fritekstTilArbeidstaker,
+  );
+  await changeTextInput(
+    getTextInput("Begrunnelse til nærmeste leder"),
+    moteTekster.fritekstTilArbeidsgiver,
+  );
+};
+
+const stubEndreApiWithStatus = (status: number) =>
+  mockServer.use(
+    http.post(`*${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmote.uuid}/endre`, () =>
+      HttpResponse.text("Failed to change dialogmote: nothing changed", {
+        status,
+      }),
+    ),
+  );
+
+const passSkjemaInput = async () => {
   const datoInput = getTextInput("Dato");
   const klokkeslettInput = screen.getByLabelText("Klokkeslett");
   const stedInput = getTextInput("Sted");
@@ -406,16 +683,16 @@ const passSkjemaInput = () => {
   const begrunnelseArbeidsgiverInput = getTextInput(
     "Begrunnelse til nærmeste leder",
   );
-  changeTextInput(datoInput, endretMote.dato);
+  await changeTextInput(datoInput, endretMote.dato);
   fireEvent.blur(datoInput);
-  changeTextInput(klokkeslettInput, endretMote.klokkeslett);
-  changeTextInput(stedInput, endretMote.sted);
-  changeTextInput(videoLinkInput, endretMote.videolink);
-  changeTextInput(
+  await changeTextInput(klokkeslettInput, endretMote.klokkeslett);
+  await changeTextInput(stedInput, endretMote.sted);
+  await changeTextInput(videoLinkInput, endretMote.videolink);
+  await changeTextInput(
     begrunnelseArbeidstakerInput,
     moteTekster.fritekstTilArbeidstaker,
   );
-  changeTextInput(
+  await changeTextInput(
     begrunnelseArbeidsgiverInput,
     moteTekster.fritekstTilArbeidsgiver,
   );

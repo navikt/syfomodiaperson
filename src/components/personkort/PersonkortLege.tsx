@@ -1,10 +1,11 @@
 import { ReactElement } from "react";
-import { restdatoTilLesbarDato } from "@/utils/datoUtils";
+import { formatReadableDate } from "@/utils/datoUtils";
 import { Adresse, Fastlege } from "@/data/fastlege/types/Fastlege";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
 import PersonkortInformasjon from "@/components/personkort/PersonkortInformasjon";
 import { FlexColumn, FlexRow } from "@/components/Layout";
-import { Alert, Detail, Heading } from "@navikt/ds-react";
+import { InfoCard, Detail, Heading } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 import { formatPhonenumber } from "@/utils/stringUtils";
 
 const texts = {
@@ -22,7 +23,7 @@ function hentTekstFastlegeNavn(fastlege?: Fastlege) {
 }
 
 function hentTekstFastlegePeriode(fastlege: Fastlege): string {
-  return `Fastlege: ${restdatoTilLesbarDato(fastlege.pasientforhold.fom)} - nå`;
+  return `Fastlege: ${formatReadableDate(fastlege.pasientforhold.fom)} - nå`;
 }
 
 function hentTekstFastlegeBesoeksadresse(besoeksadresse: Adresse): string {
@@ -39,9 +40,9 @@ function hentTekstFastlegePostadresse(postadresse: Adresse): string {
 
 function fastlegeVikarTekst(fastlegeVikar: Fastlege) {
   const vikarlegeNavn = hentTekstFastlegeNavn(fastlegeVikar);
-  const periodeTekst = `${restdatoTilLesbarDato(
+  const periodeTekst = `${formatReadableDate(
     fastlegeVikar.gyldighet.fom,
-  )} - ${restdatoTilLesbarDato(fastlegeVikar.gyldighet.tom)}`;
+  )} - ${formatReadableDate(fastlegeVikar.gyldighet.tom)}`;
   const stillingsprosentTekst =
     fastlegeVikar.stillingsprosent && `${fastlegeVikar.stillingsprosent}%`;
   return (
@@ -118,9 +119,11 @@ export function PersonkortLege() {
   };
 
   return ikkeFunnet ? (
-    <Alert variant="info" size="small">
-      {texts.error}
-    </Alert>
+    <InfoCard data-color="info" size="small">
+      <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+        {texts.error}
+      </InfoCard.Message>
+    </InfoCard>
   ) : (
     <>
       {fastlege && (

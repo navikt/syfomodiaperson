@@ -4,7 +4,14 @@ import {
   InnstillingOmStansVurderingDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
-import { Alert, Box, Button, Heading, List, Textarea } from "@navikt/ds-react";
+import {
+  LocalAlert,
+  Box,
+  Button,
+  Heading,
+  List,
+  Textarea,
+} from "@navikt/ds-react";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
 import { FormProvider, useForm } from "react-hook-form";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
@@ -192,9 +199,13 @@ export default function InnstillingOmStansSkjema({
         />
 
         {vurderAktivitetskrav.isError && (
-          <Alert variant="error" size="small">
-            {defaultErrorTexts.generalError}
-          </Alert>
+          <LocalAlert status="error" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                {defaultErrorTexts.generalError}
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         )}
         <ButtonRow>
           <Button loading={vurderAktivitetskrav.isPending} type="submit">

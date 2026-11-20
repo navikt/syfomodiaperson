@@ -2,7 +2,7 @@ import {
   PersonOppgave,
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 import { Button, Detail } from "@navikt/ds-react";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
@@ -26,7 +26,7 @@ const getFerdigbehandletText = (
   return `
     ${ferdigbehandletPrefixText} 
     ${veilederNavn} 
-    ${toDatePrettyPrint(personOppgave.behandletTidspunkt)}
+    ${formatShortDateOrUndefined(personOppgave.behandletTidspunkt)}
   `;
 };
 

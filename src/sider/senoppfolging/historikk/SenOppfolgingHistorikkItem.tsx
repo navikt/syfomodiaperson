@@ -6,7 +6,7 @@ import {
   SenOppfolgingVurderingType,
   SvarResponseDTO,
 } from "@/data/senoppfolging/senOppfolgingTypes";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 import VurdertAv from "@/sider/senoppfolging/VurdertAv";
 
 const texts = {
@@ -44,11 +44,11 @@ interface Props {
 
 function headerText(kandidat: SenOppfolgingKandidatResponseDTO): string {
   return kandidat.varselAt
-    ? `Sykmeldte fikk varsel ${toDatePrettyPrint(kandidat.varselAt)}`
-    : `Sykmeldte svarte ${toDatePrettyPrint(kandidat.svar?.svarAt)}`;
+    ? `Sykmeldte fikk varsel ${formatShortDateOrUndefined(kandidat.varselAt)}`
+    : `Sykmeldte svarte ${formatShortDateOrUndefined(kandidat.svar?.svarAt)}`;
 }
 function svarTekst(svar: SvarResponseDTO) {
-  return `Sykmeldte svarte ${toDatePrettyPrint(svar.svarAt)}: ${
+  return `Sykmeldte svarte ${formatShortDateOrUndefined(svar.svarAt)}: ${
     svar.onskerOppfolging ? "Ønsker oppfølging" : "Ønsker ikke oppfølging"
   }`;
 }

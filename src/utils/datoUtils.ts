@@ -1,319 +1,230 @@
+import dayjs, { Dayjs } from "dayjs";
+import nb from "dayjs/locale/nb";
+import nn from "dayjs/locale/nn";
 import { firstLetterToUpperCase } from "./stringUtils";
-import dayjs from "dayjs";
 import { Malform } from "../context/malform/MalformContext";
 
-const maneder = [
-  "januar",
-  "februar",
-  "mars",
-  "april",
-  "mai",
-  "juni",
-  "juli",
-  "august",
-  "september",
-  "oktober",
-  "november",
-  "desember",
-];
-const dager = [
-  "Søndag",
-  "Mandag",
-  "Tirsdag",
-  "Onsdag",
-  "Torsdag",
-  "Fredag",
-  "Lørdag",
-];
+export type DateInput = Date | Dayjs | string | number;
 
-const nynorskDager = [
-  "Søndag",
-  "Måndag",
-  "Tysdag",
-  "Onsdag",
-  "Torsdag",
-  "Fredag",
-  "Laurdag",
-];
+type OptionalDateInput = DateInput | null | undefined;
 
-const SKILLETEGN_PERIODE = "–";
+const DATE_RANGE_SEPARATOR = "–";
+const SHORT_DATE_FORMAT = "DD.MM.YYYY";
+const ISO_DATE_PREFIX = /^(\d{4})-(\d{2})-(\d{2})/;
 
-export const ANTALL_MS_DAG = 1000 * 60 * 60 * 24;
+export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
-const pad = (int: number): string | number => {
-  if (int < 10) {
-    return `0${int}`;
-  }
-  return int;
-};
-
-export const tilLesbarDatoUtenArstall = (datoArg): string | null => {
-  if (datoArg) {
-    const dato = new Date(datoArg);
-    const dag = dato.getDate();
-    const manedIndex = dato.getMonth();
-    const maned = maneder[manedIndex];
-    return `${dag}. ${maned}`;
-  }
-  return null;
-};
-
-export const tilLesbarDatoMedArstall = (datoArg): string | undefined => {
-  return datoArg
-    ? `${tilLesbarDatoUtenArstall(new Date(datoArg))} ${new Date(
-        datoArg,
-      ).getFullYear()}`
-    : undefined;
-};
-
-export const tilLesbarPeriodeMedArstall = (fomArg, tomArg): string => {
-  const fom = new Date(fomArg);
-  const tom = new Date(tomArg);
-  const erSammeAr = fom.getUTCFullYear() === tom.getUTCFullYear();
-  const erSammeManed = fom.getUTCMonth() === tom.getUTCMonth();
-  return erSammeAr && erSammeManed
-    ? `${fom.getUTCDate()}. ${SKILLETEGN_PERIODE} ${tilLesbarDatoMedArstall(
-        tom,
-      )}`
-    : erSammeAr
-      ? `${tilLesbarDatoUtenArstall(
-          fom,
-        )} ${SKILLETEGN_PERIODE} ${tilLesbarDatoMedArstall(tom)}`
-      : `${tilLesbarDatoMedArstall(
-          fom,
-        )} ${SKILLETEGN_PERIODE} ${tilLesbarDatoMedArstall(tom)}`;
-};
-
-export const visDato = (d: Date): string => {
-  const maned = maneder[d.getMonth()];
-  return `${dager[d.getDay()]} ${d.getDate()}. ${maned} ${d.getFullYear()}`;
-};
-
-export const getManedText = (d: Date): string => {
-  return maneder[d.getMonth()];
-};
-
-export const visKlokkeslett = (d: Date): string | null => {
-  if (typeof d === "undefined" || d === null) {
-    return null;
-  }
-  const hour = pad(d.getHours());
-  const minute = pad(d.getMinutes());
-  return `${hour}.${minute}`;
-};
-
-export const showTimeIncludingSeconds = (d: Date): string | null => {
-  if (typeof d === "undefined" || d === null) {
-    return null;
-  }
-  const hour = pad(d.getHours());
-  const minute = pad(d.getMinutes());
-  const second = pad(d.getSeconds());
-  return `${hour}:${minute}:${second}`;
-};
-
-export const restdatoTildato = (restdato) => {
-  const dato = restdato.split("T")[0];
-  return dato.split("-").reverse().join(".");
-};
-
-export const restdatoTilLesbarDato = (restdato) => {
-  const dato = restdato.split("T")[0];
-  return tilLesbarDatoMedArstall(new Date(dato));
-};
-
-export const tilDatoMedManedNavn = (dato): string => {
-  const { dag, maaned, aar } = getDatoKomponenter(dato);
-  return `${dag}. ${maaned} ${aar}`;
-};
-
-export const tilDatoMedUkedagOgManedNavn = (
-  dato: Date | string,
-  malform?: Malform,
-): string => {
-  const { ukeDag, dag, maaned, aar } = getDatoKomponenter(dato, malform);
-  return `${ukeDag} ${dag}. ${maaned} ${aar}`;
-};
-
-export const getDatoKomponenter = (dato: Date | string, malform?: Malform) => {
-  const nyDato = new Date(dato);
-  const ukeDag = firstLetterToUpperCase(
-    malform !== Malform.NYNORSK
-      ? dager[nyDato.getDay()]
-      : nynorskDager[nyDato.getDay()],
-  );
-  const dag = nyDato.getDate();
-  const maaned = maneder[nyDato.getMonth()];
-  const aar = nyDato.getFullYear();
-  return {
-    ukeDag,
-    dag,
-    maaned,
-    aar,
-  };
-};
-
-export const tilDatoMedManedNavnOgKlokkeslettWithComma = (dato): string => {
-  const newDate = new Date(dato);
-  const date = tilDatoMedManedNavn(newDate);
-  const time = visKlokkeslett(newDate);
-  return `${date}, kl. ${time}`;
-};
-
-export const tilDatoMedManedNavnOgKlokkeslett = (dato): string => {
-  const newDate = new Date(dato);
-  const date = tilDatoMedManedNavn(newDate);
-  const time = visKlokkeslett(newDate);
-  return `${date} kl. ${time}`;
-};
-
-export const tilDatoMedUkedagOgManedNavnOgKlokkeslett = (
-  dato: Date | string,
-  malform?: Malform,
-): string => {
-  const newDate = new Date(dato);
-  const date = tilDatoMedUkedagOgManedNavn(newDate, malform);
-  const time = visKlokkeslett(newDate);
-  return `${date} kl. ${time}`;
-};
-
-const dayOrMonthWithTwoDigits = (arg): string => {
-  return arg > 9 ? `${arg}` : `0${arg}`;
-};
-
-export const tilLesbarDatoMedArUtenManedNavn = (datoArg): string => {
-  const date = new Date(datoArg);
-  const day = dayOrMonthWithTwoDigits(date.getDate());
-  const month = dayOrMonthWithTwoDigits(date.getMonth() + 1);
-  const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
-};
-
-export const tilLesbarPeriodeMedArUtenManednavn = (fomArg, tomArg): string => {
-  return `${tilLesbarDatoMedArUtenManedNavn(
-    fomArg,
-  )} - ${tilLesbarDatoMedArUtenManedNavn(tomArg)}`;
-};
-
-export const dagerMellomDatoer = (startDato, sluttDato): number => {
-  return Math.round(
-    Math.abs(
-      (new Date(sluttDato).getTime() - new Date(startDato).getTime()) /
-        ANTALL_MS_DAG,
-    ),
-  );
-};
-
-export const dagerMellomDatoerUtenAbs = (startDato, sluttDato): number => {
-  return Math.round(
-    (sluttDato.getTime() - startDato.getTime()) / ANTALL_MS_DAG,
-  );
-};
-
-export const erIdag = (dato): boolean => {
-  const idag = new Date();
-  dato = new Date(dato);
-  return (
-    dato.getDate() === idag.getDate() &&
-    dato.getMonth() === idag.getMonth() &&
-    dato.getFullYear() === idag.getFullYear()
-  );
-};
-
-export const erIkkeIdag = (dato): boolean => {
-  return !erIdag(dato);
-};
-
-export const toDate = (dato): Date | undefined => {
-  if (typeof dato === "undefined" || dato === null) {
-    return undefined;
-  } else if (
-    typeof dato === "string" &&
-    dato.includes("T") &&
-    !dato.includes("Z")
-  ) {
-    return new Date(`${dato}Z`);
-  }
-  return new Date(dato);
-};
-
-export const toDateWithoutNullCheck = (dato): Date => {
-  if (typeof dato === "string" && dato.includes("T") && !dato.includes("Z")) {
-    return new Date(`${dato}Z`);
-  }
-  return new Date(dato);
-};
-
-export const toDatePrettyPrint = (dato): string | undefined => {
-  const _dato = toDate(dato);
-  if (typeof _dato === "undefined" || _dato === null) {
-    return undefined;
-  }
-
-  const days =
-    _dato.getUTCDate() < 10
-      ? `0${_dato.getUTCDate()}`
-      : `${_dato.getUTCDate()}`;
-  const months =
-    _dato.getUTCMonth() + 1 < 10
-      ? `0${_dato.getUTCMonth() + 1}`
-      : `${_dato.getUTCMonth() + 1}`;
-  const years = _dato.getUTCFullYear();
-
-  return `${days}.${months}.${years}`;
-};
-
-export const getDuration = (from: Date, to: Date): number => {
-  return (
-    Math.round(
-      Math.floor(
-        toDateWithoutNullCheck(to).getTime() -
-          toDateWithoutNullCheck(from).getTime(),
-      ) / ANTALL_MS_DAG,
-    ) + 1
-  );
-};
-
-export const manederMellomDatoer = (d1, d2): number => {
-  let months;
-  months = (d2.getFullYear() - d1.getFullYear()) * 12;
-  months -= d1.getMonth();
-  months += d2.getMonth();
-
-  if (d2.getDate() < d1.getDate()) {
-    months -= 1;
-  }
-  return months <= 0 ? 0 : months;
-};
-
-export const addWeeks = (date: Date, numberOfWeeks: number): Date => {
-  return dayjs(date).add(numberOfWeeks, "weeks").toDate();
-};
-
-export const addDays = (date: Date, numberOfDays: number): Date => {
-  return dayjs(date).add(numberOfDays, "days").toDate();
-};
-
-export const toDateOnly = (date: Date) => dayjs(date).startOf("day").toDate();
-
-export const getWeeksBetween = (date1, date2): number => {
-  return Math.abs(dayjs(date1).diff(date2, "week"));
-};
-
-export function isExpiredForhandsvarsel(svarfrist: Date | undefined): boolean {
-  if (svarfrist) {
-    const frist = dayjs(svarfrist);
-    const today = dayjs(new Date());
-    return frist.isBefore(today, "date");
-  } else {
-    return false;
-  }
+function getLocale(languageForm?: Malform) {
+  return languageForm === Malform.NYNORSK ? nn : nb;
 }
 
-export const daysFromToday = (days: number): Date => {
-  return dayjs(new Date()).add(days, "days").toDate();
-};
+function isValidCalendarDate(date: string): boolean {
+  const match = ISO_DATE_PREFIX.exec(date);
+  if (!match) {
+    return true;
+  }
+  const [, year, month, day] = match.map(Number);
+  const calendarDate = new Date(year, month - 1, day);
+  return (
+    calendarDate.getFullYear() === year &&
+    calendarDate.getMonth() === month - 1 &&
+    calendarDate.getDate() === day
+  );
+}
 
-export const weeksFromToday = (weeks: number): Date => {
-  return dayjs(new Date()).add(weeks, "weeks").toDate();
-};
+function parseDate(date: OptionalDateInput): Dayjs | undefined {
+  if (date === null || date === undefined || date === "") {
+    return undefined;
+  }
+  if (typeof date === "string" && !isValidCalendarDate(date)) {
+    return undefined;
+  }
+  const parsed = dayjs(date);
+  return parsed.isValid() ? parsed : undefined;
+}
+
+function formatDate(
+  date: OptionalDateInput,
+  format: string,
+  languageForm?: Malform,
+): string | undefined {
+  return parseDate(date)?.locale(getLocale(languageForm)).format(format);
+}
+
+export function formatDateWithoutYear(date: OptionalDateInput): string | null {
+  return formatDate(date, "D. MMMM") ?? null;
+}
+
+export function formatDateWithYear(
+  date: OptionalDateInput,
+): string | undefined {
+  return formatDate(date, "D. MMMM YYYY");
+}
+
+export function formatDateRangeWithYear(
+  from: OptionalDateInput,
+  to: OptionalDateInput,
+): string {
+  const parsedFrom = parseDate(from);
+  const parsedTo = parseDate(to);
+  if (!parsedFrom || !parsedTo) {
+    return "";
+  }
+  const toText = formatDateWithYear(parsedTo);
+  if (parsedFrom.isSame(parsedTo, "month")) {
+    return `${parsedFrom.date()}. ${DATE_RANGE_SEPARATOR} ${toText}`;
+  }
+  if (parsedFrom.isSame(parsedTo, "year")) {
+    return `${formatDateWithoutYear(parsedFrom)} ${DATE_RANGE_SEPARATOR} ${toText}`;
+  }
+  return `${formatDateWithYear(parsedFrom)} ${DATE_RANGE_SEPARATOR} ${toText}`;
+}
+
+export function getMonthName(date: DateInput): string {
+  return formatDate(date, "MMMM") ?? "";
+}
+
+export function formatTime(date: OptionalDateInput): string | null {
+  return formatDate(date, "HH.mm") ?? null;
+}
+
+export function showTimeIncludingSeconds(
+  date: OptionalDateInput,
+): string | null {
+  return formatDate(date, "HH:mm:ss") ?? null;
+}
+
+export function formatShortDate(date: OptionalDateInput): string {
+  return formatDate(date, SHORT_DATE_FORMAT) ?? "";
+}
+
+export function formatReadableDate(
+  date: OptionalDateInput,
+): string | undefined {
+  return formatDateWithYear(date);
+}
+
+export function formatDateWithMonthName(date: OptionalDateInput): string {
+  return formatDateWithYear(date) ?? "";
+}
+
+export function formatDateWithWeekdayAndMonthName(
+  date: OptionalDateInput,
+  languageForm?: Malform,
+): string {
+  const text = formatDate(date, "dddd D. MMMM YYYY", languageForm);
+  return text ? firstLetterToUpperCase(text) : "";
+}
+
+export function formatDateTimeWithComma(date: OptionalDateInput): string {
+  return formatDate(date, "D. MMMM YYYY, [kl.] HH.mm") ?? "";
+}
+
+export function formatDateTime(date: OptionalDateInput): string {
+  return formatDate(date, "D. MMMM YYYY [kl.] HH.mm") ?? "";
+}
+
+export function formatDateTimeWithWeekday(
+  date: OptionalDateInput,
+  languageForm?: Malform,
+): string {
+  const text = formatDate(date, "dddd D. MMMM YYYY [kl.] HH.mm", languageForm);
+  return text ? firstLetterToUpperCase(text) : "";
+}
+
+export function formatNumericDate(date: OptionalDateInput): string {
+  return formatDate(date, SHORT_DATE_FORMAT) ?? "";
+}
+
+export function formatNumericDateRange(
+  from: OptionalDateInput,
+  to: OptionalDateInput,
+): string {
+  return `${formatNumericDate(from)} - ${formatNumericDate(to)}`;
+}
+
+export function getCalendarDaysBetween(
+  startDate: DateInput,
+  endDate: DateInput,
+): number {
+  return dayjs(endDate)
+    .startOf("day")
+    .diff(dayjs(startDate).startOf("day"), "day");
+}
+
+export function getAbsoluteCalendarDaysBetween(
+  startDate: DateInput,
+  endDate: DateInput,
+): number {
+  return Math.abs(getCalendarDaysBetween(startDate, endDate));
+}
+
+export function isToday(date: OptionalDateInput): boolean {
+  return parseDate(date)?.isSame(dayjs(), "day") ?? false;
+}
+
+export function isNotToday(date: OptionalDateInput): boolean {
+  return !isToday(date);
+}
+
+export function toDate(date: OptionalDateInput): Date | undefined {
+  return parseDate(date)?.toDate();
+}
+
+export function toDateOrInvalid(date: DateInput): Date {
+  return parseDate(date)?.toDate() ?? new Date(NaN);
+}
+
+export function formatShortDateOrUndefined(
+  date: OptionalDateInput,
+): string | undefined {
+  return formatDate(date, SHORT_DATE_FORMAT);
+}
+
+export function getDuration(from: DateInput, to: DateInput): number {
+  return getCalendarDaysBetween(from, to) + 1;
+}
+
+export function getNonNegativeWholeMonthsBetween(
+  date1: OptionalDateInput,
+  date2: OptionalDateInput,
+): number {
+  const from = parseDate(date1);
+  const to = parseDate(date2);
+  if (!from || !to) {
+    return 0;
+  }
+  const months = to.startOf("day").diff(from.startOf("day"), "month");
+  return Math.max(months, 0);
+}
+
+export function addWeeks(date: DateInput, numberOfWeeks: number): Date {
+  return dayjs(date).add(numberOfWeeks, "weeks").toDate();
+}
+
+export function addDays(date: DateInput, numberOfDays: number): Date {
+  return dayjs(date).add(numberOfDays, "days").toDate();
+}
+
+export function toDateOnly(date: DateInput): Date {
+  return dayjs(date).startOf("day").toDate();
+}
+
+export function getWeeksBetween(date1: DateInput, date2: DateInput): number {
+  return Math.abs(dayjs(date1).diff(date2, "week"));
+}
+
+export function isExpired(deadline: Date | undefined): boolean {
+  if (!deadline) {
+    return false;
+  }
+  return dayjs(deadline).isBefore(dayjs(), "day");
+}
+
+export function daysFromToday(days: number): Date {
+  return dayjs().add(days, "days").toDate();
+}
+
+export function weeksFromToday(weeks: number): Date {
+  return dayjs().add(weeks, "weeks").toDate();
+}

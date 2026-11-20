@@ -4,12 +4,12 @@ import {
 } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { useState } from "react";
 import {
-  Alert,
   BodyLong,
   Box,
   Button,
   Detail,
   Heading,
+  LocalAlert,
 } from "@navikt/ds-react";
 import { useFerdigbehandleVedtak } from "@/data/frisktilarbeid/useFerdigbehandleVedtak";
 import { useNotification } from "@/context/notification/NotificationContext";
@@ -21,8 +21,9 @@ const texts = {
   button: "Fjern oppgaven fra oversikten",
   oppgaveFjernetAlert:
     "Oppgaven om vedtak er ferdigbehandlet, og er fjernet fra oversikten.",
-  infotrygdAlert:
-    "Overføring til Infotrygd feilet. Sjekk Infotrygd og registrer vedtaket manuelt om nødvendig.",
+  infotrygdAlertTitle: "Overføring til Infotrygd feilet",
+  infotrygdAlertBody:
+    "Sjekk Infotrygd og registrer vedtaket manuelt om nødvendig.",
   infotrygdRutine:
     "Registrer 'J' på 'tiltak' på SP SA, trykk F6, legg inn kode FA og periode for friskmelding til arbeidsformidling, trykk F6.",
   infotrygdDisclaimer:
@@ -66,21 +67,28 @@ export default function VedtakFattet({
   return (
     <div className="flex flex-col gap-4">
       {notification && isNotificationVisible && (
-        <Alert
-          variant="success"
-          closeButton
-          onClose={() => setIsNotificationVisible(false)}
-        >
-          {notification.message}
-        </Alert>
+        <LocalAlert status="success">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+            <LocalAlert.CloseButton
+              onClick={() => setIsNotificationVisible(false)}
+            />
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       {visInfotrygdAlert(vedtak.infotrygdStatus) && (
-        <Alert variant="warning" className="[&>*]:max-w-fit">
-          {texts.infotrygdAlert}
-          <br />
-          <i>{texts.infotrygdRutine}</i>
-          <Detail>{texts.infotrygdDisclaimer}</Detail>
-        </Alert>
+        <LocalAlert status="warning">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.infotrygdAlertTitle}</LocalAlert.Title>
+          </LocalAlert.Header>
+          <LocalAlert.Content>
+            <BodyLong spacing>{texts.infotrygdAlertBody}</BodyLong>
+            <BodyLong spacing>
+              <i>{texts.infotrygdRutine}</i>
+            </BodyLong>
+            <Detail>{texts.infotrygdDisclaimer}</Detail>
+          </LocalAlert.Content>
+        </LocalAlert>
       )}
       <VedtakInfoPanel vedtak={vedtak} />
       <Box

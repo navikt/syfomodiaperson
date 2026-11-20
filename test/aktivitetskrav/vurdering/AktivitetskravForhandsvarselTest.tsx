@@ -29,7 +29,7 @@ import {
   stubVurderAktivitetskravApi,
   stubVurderAktivitetskravForhandsvarselApi,
 } from "../../stubs/stubIsaktivitetskrav";
-import { NotificationContext } from "@/context/notification/NotificationContext";
+import { NotificationProvider } from "@/context/notification/NotificationContext";
 import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
 import {
   aktivitetskrav,
@@ -49,11 +49,9 @@ const renderVurderAktivitetskrav = (aktivitetskravDto: AktivitetskravDTO) =>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <NotificationContext.Provider
-          value={{ notification: undefined, setNotification: () => void 0 }}
-        >
+        <NotificationProvider>
           <VurderAktivitetskrav aktivitetskrav={aktivitetskravDto} />
-        </NotificationContext.Provider>
+        </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
   );
@@ -110,7 +108,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(screen.getByText("Forhåndsvisning")).to.exist;
 
       const beskrivelseInput = getTextInput(beskrivelseLabel);
-      changeTextInput(beskrivelseInput, enLangBeskrivelse);
+      await changeTextInput(beskrivelseInput, enLangBeskrivelse);
 
       await clickButton("Send");
 
@@ -133,6 +131,11 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist,
       );
+      expect(
+        await screen.findByRole("heading", {
+          name: /Forhåndsvarselet er sendt til \S+/,
+        }),
+      ).to.exist;
     });
 
     it("Send forhåndsvarsel with mal 'Uten arbeidsgiver'", async () => {
@@ -152,7 +155,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(screen.getByText("Forhåndsvisning")).to.exist;
 
       const beskrivelseInput = getTextInput(beskrivelseLabel);
-      changeTextInput(beskrivelseInput, enLangBeskrivelse);
+      await changeTextInput(beskrivelseInput, enLangBeskrivelse);
 
       const velgMalSelect = screen.getByRole("combobox");
       fireEvent.change(velgMalSelect, {
@@ -202,7 +205,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(screen.getByText("Forhåndsvisning")).to.exist;
 
       const beskrivelseInput = getTextInput(beskrivelseLabel);
-      changeTextInput(beskrivelseInput, enLangBeskrivelse);
+      await changeTextInput(beskrivelseInput, enLangBeskrivelse);
 
       const velgMalSelect = screen.getByRole("combobox");
       fireEvent.change(velgMalSelect, {
@@ -260,7 +263,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
 
       const tooLongBeskrivelse = getTooLongText(5000);
       const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(beskrivelseInput, tooLongBeskrivelse);
+      await changeTextInput(beskrivelseInput, tooLongBeskrivelse);
       await clickButton("Send");
 
       expect(await screen.findByText("1 tegn for mye")).to.exist;
@@ -270,11 +273,11 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       stubVurderAktivitetskravForhandsvarselApi(aktivitetskrav.uuid);
       await clickTab(tabTexts["FORHANDSVARSEL"]);
       const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(beskrivelseInput, enLangBeskrivelse);
+      await changeTextInput(beskrivelseInput, enLangBeskrivelse);
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
       const targetDate = daysFromToday(25);
       const formatted = dayjs(targetDate).format("DD.MM.YYYY");
-      changeTextInput(fristInput, formatted);
+      await changeTextInput(fristInput, formatted);
 
       await clickButton("Send");
 
@@ -292,7 +295,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       renderVurderAktivitetskrav(aktivitetskrav);
       await clickTab(tabTexts["FORHANDSVARSEL"]);
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
-      changeTextInput(fristInput, "2025/01/01");
+      await changeTextInput(fristInput, "2025/01/01");
 
       await clickButton("Send");
       expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
@@ -304,7 +307,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
       const tooEarly = daysFromToday(10);
       const formattedTooEarly = dayjs(tooEarly).format("DD.MM.YYYY");
-      changeTextInput(fristInput, formattedTooEarly);
+      await changeTextInput(fristInput, formattedTooEarly);
 
       await clickButton("Send");
       expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
@@ -316,7 +319,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
       const tooEarly = daysFromToday(10);
       const formattedTooEarly = dayjs(tooEarly).format("DD.MM.YYYY");
-      changeTextInput(fristInput, formattedTooEarly);
+      await changeTextInput(fristInput, formattedTooEarly);
 
       await clickButton("Forhåndsvisning");
       expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
@@ -326,7 +329,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       renderVurderAktivitetskrav(aktivitetskrav);
       await clickTab(tabTexts["FORHANDSVARSEL"]);
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
-      changeTextInput(fristInput, "");
+      await changeTextInput(fristInput, "");
 
       await clickButton("Send");
 

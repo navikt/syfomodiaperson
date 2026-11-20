@@ -1,11 +1,11 @@
 import {
-  Alert,
   BodyLong,
   Box,
   Button,
   Heading,
   InfoCard,
   List,
+  LocalAlert,
   Radio,
   RadioGroup,
   ReadMore,
@@ -19,7 +19,7 @@ import {
   useGetOppfolgingsplanForesporselQuery,
   usePostOppfolgingsplanForesporsel,
 } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import {
   isDateInOppfolgingstilfelle,
   OppfolgingstilfelleDTO,
@@ -173,7 +173,7 @@ export default function BeOmOppfolgingsplan({
   const aktivForesporselTekst = texts.aktivForesporsel(
     lastForesporsel?.veilederident ?? "",
     lastForesporselVirksomhetsnavn ?? lastForesporsel?.virksomhetsnummer ?? "",
-    tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt),
+    formatNumericDate(lastForesporselCreatedAt),
   );
 
   function submit(values: FormValues) {
@@ -193,9 +193,11 @@ export default function BeOmOppfolgingsplan({
   return (
     <form onSubmit={handleSubmit(submit)}>
       {isAktivForesporsel && (
-        <Alert variant="warning" className="mb-2">
-          {aktivForesporselTekst}
-        </Alert>
+        <InfoCard data-color="info" className="mb-2">
+          <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+            {aktivForesporselTekst}
+          </InfoCard.Message>
+        </InfoCard>
       )}
       <Box background="default" className="mb-4 flex flex-col p-4 gap-4">
         <Heading size="small" level="3">
@@ -216,7 +218,7 @@ export default function BeOmOppfolgingsplan({
                 size="small"
                 legend="Arbeidsgiver"
                 error={error?.message}
-                value={field.value?.uuid}
+                value={field.value?.uuid ?? ""}
                 onChange={(value) => {
                   const selectedNarmesteLeder =
                     activeNarmesteLedereMedUnntaksvurdering.find(
@@ -281,9 +283,11 @@ export default function BeOmOppfolgingsplan({
           </ReadMore>
         </div>
         {postOppfolgingsplanForesporsel.isSuccess ? (
-          <Alert inline variant="success">
-            {texts.foresporselSendt}
-          </Alert>
+          <LocalAlert status="success">
+            <LocalAlert.Header>
+              <LocalAlert.Title>{texts.foresporselSendt}</LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         ) : (
           <Button
             type="submit"

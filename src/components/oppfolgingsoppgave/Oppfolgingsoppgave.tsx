@@ -12,7 +12,7 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useState } from "react";
 import OpenOppfolgingsoppgaveModalButton from "@/components/oppfolgingsoppgave/OpenOppfolgingsoppgaveModalButton";
 import { useAktivOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { oppfolgingsgrunnToText } from "@/data/oppfolgingsoppgave/types";
 import OppfolgingsoppgaveModal from "@/components/oppfolgingsoppgave/OppfolgingsoppgaveModal";
@@ -46,7 +46,7 @@ export default function Oppfolgingsoppgave() {
   const beskrivelse = aktivOppfolgingsoppgaveVersjon?.tekst ?? null;
 
   const frist = aktivOppfolgingsoppgaveVersjon?.frist
-    ? tilLesbarDatoMedArUtenManedNavn(aktivOppfolgingsoppgaveVersjon?.frist)
+    ? formatNumericDate(aktivOppfolgingsoppgaveVersjon?.frist)
     : undefined;
 
   return isExistingOppfolgingsoppgave ? (
@@ -105,12 +105,10 @@ export default function Oppfolgingsoppgave() {
       )}
       <div className="mt-2">
         <Detail textColor="subtle" className="text-xs">
-          {`Opprettet: ${tilLesbarDatoMedArUtenManedNavn(
-            aktivOppfolgingsoppgave.createdAt,
-          )}`}
+          {`Opprettet: ${formatNumericDate(aktivOppfolgingsoppgave.createdAt)}`}
         </Detail>
         <Detail textColor="subtle" className="text-xs">
-          {`Sist oppdatert: ${tilLesbarDatoMedArUtenManedNavn(
+          {`Sist oppdatert: ${formatNumericDate(
             aktivOppfolgingsoppgave.updatedAt,
           )}`}
         </Detail>

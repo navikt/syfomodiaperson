@@ -1,7 +1,8 @@
 import { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import * as avvisningsregelnavn from "../../../../utils/sykmeldinger/avvisningsregelnavn";
-import { Alert, BodyShort, Box, Heading, List } from "@navikt/ds-react";
+import { BodyShort, Box, InfoCard, List } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const avvistSykmeldingFilter = (sykmelding: SykmeldingOldFormat) => {
   return sykmelding.behandlingsutfall.ruleHits.filter((rule) => {
@@ -33,13 +34,13 @@ export default function AvvistSykmeldingAlert({
   const description = "Grunnen til at sykmeldingen er avvist:";
 
   return (
-    <Box background="default" className="mb-4">
-      <Alert variant="warning" size="small">
-        <Heading level="3" size="small">
-          Sykmeldingen er avvist
-        </Heading>
+    <Box className="mb-4">
+      <InfoCard data-color="warning" size="small">
+        <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+          <InfoCard.Title>Sykmeldingen er avvist</InfoCard.Title>
+        </InfoCard.Header>
         {visBegrunnelse && (
-          <div>
+          <InfoCard.Content>
             <BodyShort size="small">{description}</BodyShort>
             {sykmelding.behandlingsutfall.ruleHits.length === 1 ? (
               <BodyShort size="small">
@@ -58,9 +59,9 @@ export default function AvvistSykmeldingAlert({
                 </List>
               </Box>
             )}
-          </div>
+          </InfoCard.Content>
         )}
-      </Alert>
+      </InfoCard>
     </Box>
   );
 }

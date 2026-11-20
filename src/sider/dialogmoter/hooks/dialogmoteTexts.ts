@@ -94,11 +94,13 @@ export const getInnkallingTexts = (malform: Malform) => {
     : innkallingTextsBokmal;
 };
 
-const endreTidStedTextsBokmal = {
+const endreTextsBokmal = {
   header: "Endret dialogmøte",
-  intro1:
-    "Du har tidligere blitt innkalt til et dialogmøte. Møtet skulle vært avholdt",
-  intro2: "Møtet må flyttes. Dette tidspunktet og møtestedet gjelder nå:",
+  intro: "Du har tidligere blitt innkalt til et dialogmøte.",
+  endretTidspunkt:
+    "Møtet skulle vært avholdt {tidspunkt}. Møtet må flyttes. Du finner det nye tidspunktet for møtet nedenfor.",
+  endretSted: "Møtestedet er endret. Du finner det nye møtestedet nedenfor.",
+  lagtTilBehandler: "En behandler er innkalt til møtet.",
   arbeidsgiver: {
     outro1:
       "I møtet vil vi høre både hva du og arbeidstakeren sier om arbeidssituasjonen og mulighetene for å jobbe. Vi blir enige om en plan som kan hjelpe arbeidstakeren videre.",
@@ -141,11 +143,13 @@ const endreTidStedTextsBokmal = {
   },
 };
 
-const endreTidStedTextsNynorsk = {
+const endreTextsNynorsk = {
   header: "Endra dialogmøte",
-  intro1:
-    "Du har tidlegare blitt kalla inn til dialogmøte. Møtet skulle etter planen ha vore",
-  intro2: "Møtet må flyttast. Følgjande tidspunkt og møtestad gjeld no:",
+  intro: "Du har tidlegare blitt kalla inn til dialogmøte.",
+  endretTidspunkt:
+    "Møtet skulle etter planen ha vore {tidspunkt}. Møtet må flyttast. Du finn det nye tidspunktet for møtet nedanfor.",
+  endretSted: "Møtestaden er endra. Du finn den nye møtestaden nedanfor.",
+  lagtTilBehandler: "Ein behandlar er lagd til møtet.",
   arbeidsgiver: {
     outro1:
       "I møtet ønskjer vi å høyre kva du og den tilsette seier om arbeidssituasjonen og moglegheitene for jobb. Vi blir einige om ein plan som kan hjelpe den tilsette vidare.",
@@ -188,10 +192,8 @@ const endreTidStedTextsNynorsk = {
   },
 };
 
-export const getEndreTidStedTexts = (malform: Malform) => {
-  return malform === Malform.NYNORSK
-    ? endreTidStedTextsNynorsk
-    : endreTidStedTextsBokmal;
+export const getEndreTexts = (malform: Malform) => {
+  return malform === Malform.NYNORSK ? endreTextsNynorsk : endreTextsBokmal;
 };
 
 const avlysningTextsBokmal = {

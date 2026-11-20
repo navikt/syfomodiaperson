@@ -4,7 +4,7 @@ import {
   ExclamationmarkTriangleIcon,
 } from "@navikt/aksel-icons";
 
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import {
   isActiveExistingVedtak,
   VedtakResponseDTO,
@@ -28,9 +28,9 @@ interface Props {
 }
 
 export default function VedtakInfoPanel({ vedtak, className }: Props) {
-  const vedtakFattetDate = tilLesbarDatoMedArUtenManedNavn(vedtak.createdAt);
-  const vedtakStartDateText = tilLesbarDatoMedArUtenManedNavn(vedtak.fom);
-  const vedtakEndDateText = tilLesbarDatoMedArUtenManedNavn(vedtak.tom);
+  const vedtakFattetDate = formatNumericDate(vedtak.createdAt);
+  const vedtakStartDateText = formatNumericDate(vedtak.fom);
+  const vedtakEndDateText = formatNumericDate(vedtak.tom);
 
   return (
     <Box

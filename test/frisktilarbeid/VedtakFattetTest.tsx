@@ -41,8 +41,11 @@ describe("VedtakFattet", () => {
 
     renderVedtakFattet(vedtakOK);
 
-    expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
-    expect(screen.queryByText(/Overføring til Infotrygd feilet/)).to.not.exist;
+    expect(
+      screen.queryByRole("heading", {
+        name: /Overføring til Infotrygd feilet/,
+      }),
+    ).to.not.exist;
   });
   it("viser advarsel-alert hvis infotrygd-status ikke ok", () => {
     const vedtakIkkeOk: VedtakResponseDTO = {
@@ -52,7 +55,8 @@ describe("VedtakFattet", () => {
 
     renderVedtakFattet(vedtakIkkeOk);
 
-    expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
-    expect(screen.getByText(/Overføring til Infotrygd feilet/)).to.exist;
+    expect(
+      screen.getByRole("heading", { name: /Overføring til Infotrygd feilet/ }),
+    ).to.exist;
   });
 });

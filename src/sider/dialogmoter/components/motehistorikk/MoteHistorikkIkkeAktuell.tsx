@@ -1,5 +1,5 @@
 import { IkkeAktuellVurdering } from "../../hooks/useGetDialogmoteIkkeAktuell";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import {
   DocumentComponentDto,
   DocumentComponentType,
@@ -60,7 +60,7 @@ export default function MoteHistorikkIkkeAktuell({
   return (
     <>
       <Accordion.Header>
-        {`${texts.ikkeAktuellLenke} ${tilDatoMedManedNavn(
+        {`${texts.ikkeAktuellLenke} ${formatDateWithMonthName(
           ikkeAktuellVurdering.createdAt,
         )}`}
       </Accordion.Header>

@@ -26,7 +26,9 @@ export function createDraftTextMock(category: DraftCategory) {
 export const mockDraftText = [
   ...createDraftTextMock("arbeidsuforhet-forhandsvarsel"),
   ...createDraftTextMock("arbeidsuforhet-avslag-uten-forhandsvarsel"),
+  ...createDraftTextMock("arbeidsuforhet-avslag"),
   ...createDraftTextMock("arbeidsuforhet-oppfylt"),
+  ...createDraftTextMock("kartleggingssporsmal-vurdering"),
   ...createDraftTextMock("manglendemedvirkning-forhandsvarsel"),
   ...createDraftTextMock("aktivitetskrav-forhandsvarsel"),
   ...createDraftTextMock("aktivitetskrav-unntak"),

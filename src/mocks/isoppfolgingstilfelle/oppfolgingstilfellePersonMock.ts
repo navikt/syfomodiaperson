@@ -19,8 +19,17 @@ export const currentOppfolgingstilfelle = {
   antallSykedager: 294,
   varighetUker: 48,
 };
+
 export const oppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
   oppfolgingstilfelleList: [
+    {
+      arbeidstakerAtTilfelleEnd: false,
+      start: new Date("2018-06-06"),
+      end: new Date("2018-06-09"),
+      virksomhetsnummerList: [VIRKSOMHET_PONTYPANDY.virksomhetsnummer],
+      antallSykedager: 3,
+      varighetUker: 0,
+    },
     {
       arbeidstakerAtTilfelleEnd: false,
       start: new Date("2019-06-06"),

@@ -13,7 +13,10 @@ import {
   sykmeldingerInnenforOppfolgingstilfelle,
   sykmeldingperioderSortertEldstTilNyest,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
-import { ANTALL_MS_DAG, dagerMellomDatoer } from "@/utils/datoUtils";
+import {
+  MILLISECONDS_PER_DAY,
+  getAbsoluteCalendarDaysBetween,
+} from "@/utils/datoUtils";
 import {
   finnAvventendeSykmeldingTekst,
   sykmeldingerSortertNyestTilEldstPeriode,
@@ -24,7 +27,8 @@ import {
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 import { SporsmalSvarDTO } from "@/data/sykmelding/types/SporsmalSvarDTO";
 import dayjs from "dayjs";
-import { getDiagnoseFromLatestSykmelding } from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
+
+import { getDiagnoseFromLatestSykmelding } from "@/utils/diagnoseUtils.ts";
 
 const baseSykmelding: SykmeldingOldFormat = {
   arbeidsevne: {},
@@ -406,7 +410,7 @@ describe("sykmeldingUtils", () => {
         arbeidstakerAtTilfelleEnd: true,
         start: startDate,
         end: endDate,
-        antallSykedager: dagerMellomDatoer(startDate, endDate) + 1,
+        antallSykedager: getAbsoluteCalendarDaysBetween(startDate, endDate) + 1,
         varighetUker: 16,
         virksomhetsnummerList: ["123", "321", "999"],
       };
@@ -430,8 +434,8 @@ describe("sykmeldingUtils", () => {
           mulighetForArbeid: {
             perioder: [
               {
-                fom: new Date(startDate.getDate() - ANTALL_MS_DAG * 10),
-                tom: new Date(startDate.getDate() - ANTALL_MS_DAG),
+                fom: new Date(startDate.getDate() - MILLISECONDS_PER_DAY * 10),
+                tom: new Date(startDate.getDate() - MILLISECONDS_PER_DAY),
               },
             ],
           },
@@ -442,8 +446,8 @@ describe("sykmeldingUtils", () => {
           mulighetForArbeid: {
             perioder: [
               {
-                fom: new Date(endDate.getDate() + ANTALL_MS_DAG),
-                tom: new Date(endDate.getDate() + ANTALL_MS_DAG * 10),
+                fom: new Date(endDate.getDate() + MILLISECONDS_PER_DAY),
+                tom: new Date(endDate.getDate() + MILLISECONDS_PER_DAY * 10),
               },
             ],
           },
@@ -467,7 +471,7 @@ describe("sykmeldingUtils", () => {
         arbeidstakerAtTilfelleEnd: true,
         start: startDate,
         end: endDate,
-        antallSykedager: dagerMellomDatoer(startDate, endDate) + 1,
+        antallSykedager: getAbsoluteCalendarDaysBetween(startDate, endDate) + 1,
         varighetUker: 16,
         virksomhetsnummerList: ["123", "321", "999"],
       };
@@ -504,8 +508,8 @@ describe("sykmeldingUtils", () => {
           mulighetForArbeid: {
             perioder: [
               {
-                fom: new Date(endDate.getDate() + ANTALL_MS_DAG),
-                tom: new Date(endDate.getDate() + ANTALL_MS_DAG * 10),
+                fom: new Date(endDate.getDate() + MILLISECONDS_PER_DAY),
+                tom: new Date(endDate.getDate() + MILLISECONDS_PER_DAY * 10),
               },
             ],
           },
@@ -532,7 +536,7 @@ describe("sykmeldingUtils", () => {
         arbeidstakerAtTilfelleEnd: true,
         start: startDate,
         end: endDate,
-        antallSykedager: dagerMellomDatoer(startDate, endDate) + 1,
+        antallSykedager: getAbsoluteCalendarDaysBetween(startDate, endDate) + 1,
         varighetUker: 16,
         virksomhetsnummerList: ["123"],
       };
@@ -569,7 +573,7 @@ describe("sykmeldingUtils", () => {
         arbeidstakerAtTilfelleEnd: true,
         start: startDate,
         end: endDate,
-        antallSykedager: dagerMellomDatoer(startDate, endDate) + 1,
+        antallSykedager: getAbsoluteCalendarDaysBetween(startDate, endDate) + 1,
         varighetUker: 16,
         virksomhetsnummerList: ["123"],
       };
@@ -606,7 +610,7 @@ describe("sykmeldingUtils", () => {
         arbeidstakerAtTilfelleEnd: true,
         start: startDate,
         end: endDate,
-        antallSykedager: dagerMellomDatoer(startDate, endDate) + 1,
+        antallSykedager: getAbsoluteCalendarDaysBetween(startDate, endDate) + 1,
         varighetUker: 16,
         virksomhetsnummerList: ["123"],
       };
@@ -643,7 +647,7 @@ describe("sykmeldingUtils", () => {
         arbeidstakerAtTilfelleEnd: true,
         start: startDate,
         end: endDate,
-        antallSykedager: dagerMellomDatoer(startDate, endDate) + 1,
+        antallSykedager: getAbsoluteCalendarDaysBetween(startDate, endDate) + 1,
         varighetUker: 16,
         virksomhetsnummerList: ["123", "321"],
       };

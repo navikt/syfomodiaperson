@@ -6,7 +6,7 @@ import {
   DialogmoteStatus,
   getDialogmoteReferat,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import { formatDateTimeWithWeekday } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/AppRouter";
 import DeltakereSvarInfo from "@/sider/dialogmoter/components/DeltakereSvarInfo";
@@ -38,7 +38,7 @@ const texts = {
 };
 
 function Subtitle(dialogmote: DialogmoteDTO): ReactNode {
-  const moteDatoTid = tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid);
+  const moteDatoTid = formatDateTimeWithWeekday(dialogmote.tid);
 
   return (
     <>
@@ -56,7 +56,8 @@ function headerText(dialogmote: DialogmoteDTO): string {
     return texts.headerMotedatoPassert;
   }
 
-  return dialogmote.status === DialogmoteStatus.NYTT_TID_STED
+  return dialogmote.status === DialogmoteStatus.ENDRET ||
+    dialogmote.status === DialogmoteStatus.NYTT_TID_STED
     ? texts.headerEndring
     : texts.headerInnkalling;
 }
@@ -82,7 +83,7 @@ export default function DialogmoteMoteStatusPanel({ dialogmote }: Props) {
     : texts.skrivReferat;
 
   const { data: personOppgaver } = usePersonoppgaverQuery();
-  const personOppgaveForMote = personOppgaver.find(
+  const personOppgaveForMote = (personOppgaver ?? []).find(
     (oppgave: PersonOppgave) => oppgave.referanseUuid === dialogmote.uuid,
   );
 

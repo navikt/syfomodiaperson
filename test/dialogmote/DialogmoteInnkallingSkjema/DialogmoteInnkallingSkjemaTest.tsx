@@ -110,7 +110,6 @@ describe("DialogmoteInnkallingSkjema", () => {
     );
     renderDialogmoteInnkallingSkjema();
 
-    expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
     expect(screen.getByText(texts.reservertAlert)).to.exist;
   });
   it("viser ikke advarsel om papirpost når bruker kan varsles digitalt", () => {
@@ -124,7 +123,12 @@ describe("DialogmoteInnkallingSkjema", () => {
     );
     renderDialogmoteInnkallingSkjema();
 
-    expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
+    expect(
+      screen.queryByRole("heading", {
+        name: (name) => name.endsWith(texts.reservertAlert),
+        level: 2,
+      }),
+    ).to.not.exist;
     expect(screen.queryByText(texts.reservertAlert)).to.not.exist;
   });
 
@@ -149,7 +153,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     expect(await screen.findByText(valideringsTexts.timeMissing)).to.exist;
     expect(await screen.findByText(texts.stedMissing)).to.exist;
 
-    passSkjemaInput();
+    await passSkjemaInput();
 
     // Feilmeldinger forsvinner
     await waitFor(() => {
@@ -170,7 +174,7 @@ describe("DialogmoteInnkallingSkjema", () => {
 
     // Tøm felt for sted
     const stedInput = getTextInput("Sted");
-    changeTextInput(stedInput, "");
+    await changeTextInput(stedInput, "");
 
     // Feilmelding vises
     expect(await screen.findByText(texts.stedMissing)).to.exist;
@@ -179,7 +183,7 @@ describe("DialogmoteInnkallingSkjema", () => {
   it("oppretter innkalling med verdier fra skjema", async () => {
     stubInnkallingApi();
     renderDialogmoteInnkallingSkjema();
-    passSkjemaInput();
+    await passSkjemaInput();
 
     expect(screen.queryByText(/Det er ikke registrert en nærmeste leder/i)).to
       .not.exist;
@@ -221,10 +225,10 @@ describe("DialogmoteInnkallingSkjema", () => {
     });
   });
 
-  it("viser alertstripe hvis valgt arbeidsgiver ikke har registrert nærmeste leder", () => {
+  it("viser alertstripe hvis valgt arbeidsgiver ikke har registrert nærmeste leder", async () => {
     stubInnkallingApi();
     renderDialogmoteInnkallingSkjema();
-    passSkjemaInput();
+    await passSkjemaInput();
     const virksomhetRadio = screen.getByRole("radio", {
       name: `Fant ikke virksomhetsnavn for ${VIRKSOMHET_UTEN_NARMESTE_LEDER.virksomhetsnummer}`,
     });
@@ -236,7 +240,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     expect(screen.queryByText("Epost")).to.not.exist;
   });
 
-  it("viser ekstra radioknapp for virksomhet hvis det ikke finnes oppfølgingstilfelle eller ledere", () => {
+  it("viser ekstra radioknapp for virksomhet hvis det ikke finnes oppfølgingstilfelle eller ledere", async () => {
     const oppfolgingstilfellePerson: OppfolgingstilfellePersonDTO = {
       personIdent: arbeidstaker.personident,
       oppfolgingstilfelleList: [],
@@ -260,7 +264,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     fireEvent.click(virksomhetRadio);
 
     const virksomhetInput = getTextInput("Oppgi virksomhetsnummer");
-    changeTextInput(virksomhetInput, "123456789");
+    await changeTextInput(virksomhetInput, "123456789");
 
     expect(screen.queryByText(/Det er ikke registrert en nærmeste leder/i)).to
       .not.exist;
@@ -305,12 +309,12 @@ describe("DialogmoteInnkallingSkjema", () => {
   it("trimmer videolenke i innkallingen som sendes til api", async () => {
     stubInnkallingApi();
     renderDialogmoteInnkallingSkjema();
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const link = "https://video.nav.no/abc";
     const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
     const linkWithWhitespace = `   ${link}  `;
-    changeTextInput(videoLinkInput, linkWithWhitespace);
+    await changeTextInput(videoLinkInput, linkWithWhitespace);
     await clickButton("Send innkallingene");
 
     let innkallingMutation;
@@ -357,7 +361,7 @@ describe("DialogmoteInnkallingSkjema", () => {
   });
 });
 
-const passSkjemaInput = () => {
+const passSkjemaInput = async () => {
   const virksomhetSelect = screen.getByRole("radio", {
     name: `Fant ikke virksomhetsnavn for ${arbeidsgiver.orgnr}`,
   });
@@ -378,16 +382,16 @@ const passSkjemaInput = () => {
 
   fireEvent.click(virksomhetSelect);
   fireEvent.click(behandlerSelect);
-  changeTextInput(datoInput, mote.dato);
+  await changeTextInput(datoInput, mote.dato);
   fireEvent.blur(datoInput);
-  changeTextInput(klokkeslettInput, mote.klokkeslett);
-  changeTextInput(stedInput, mote.sted);
-  changeTextInput(videoLinkInput, mote.videolink);
-  changeTextInput(
+  await changeTextInput(klokkeslettInput, mote.klokkeslett);
+  await changeTextInput(stedInput, mote.sted);
+  await changeTextInput(videoLinkInput, mote.videolink);
+  await changeTextInput(
     fritekstArbeidstakerInput,
     moteTekster.fritekstTilArbeidstaker,
   );
-  changeTextInput(
+  await changeTextInput(
     fritekstArbeidsgiverInput,
     moteTekster.fritekstTilArbeidsgiver,
   );

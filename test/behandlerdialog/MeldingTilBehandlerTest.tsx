@@ -53,7 +53,7 @@ describe("MeldingTilBehandler", () => {
     queryClient = queryClientWithMockData();
   });
 
-  it("Viser overskrift og warning-alert for kopi til bruker dersom ikke aktivt oppfølgingstilfelle", () => {
+  it("Viser overskrift og advarsel for kopi til bruker dersom ikke aktivt oppfølgingstilfelle", () => {
     const emptyOppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
       ...oppfolgingstilfellePersonMock,
       oppfolgingstilfelleList: [],
@@ -67,13 +67,19 @@ describe("MeldingTilBehandler", () => {
 
     renderMeldingTilBehandler();
 
-    const alertText =
-      "Personen har ikke et aktivt oppfølgingstilfelle. Du kan likevel sende en dialogmelding til behandler så lenge henvendelsen gjelder sykefraværsoppfølging. Meldingen blir synlig for innbyggeren på innloggede sider.";
-
     expect(screen.getByRole("heading", { name: "Dialogmelding til behandler" }))
       .to.exist;
-    expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
-    expect(screen.getByText(alertText)).to.exist;
+    expect(
+      screen.getByRole("heading", {
+        name: "Personen har ikke et aktivt oppfølgingstilfelle",
+        level: 3,
+      }),
+    ).to.exist;
+    expect(
+      screen.getByText(
+        "Du kan likevel sende en dialogmelding til behandler så lenge henvendelsen gjelder sykefraværsoppfølging. Meldingen blir synlig for innbyggeren på innloggede sider.",
+      ),
+    ).to.exist;
   });
 
   const selectLabel = "Hvilken meldingstype ønsker du å sende?";
@@ -157,7 +163,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, enMeldingTekst);
+      await changeTextInput(meldingInput, enMeldingTekst);
 
       const previewButton = screen.getByRole("button", {
         name: "Forhåndsvisning",
@@ -187,7 +193,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, enMeldingTekst);
+      await changeTextInput(meldingInput, enMeldingTekst);
 
       const previewButton = screen.getByRole("button", {
         name: "Forhåndsvisning",
@@ -216,7 +222,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, enMeldingTekst);
+      await changeTextInput(meldingInput, enMeldingTekst);
 
       const previewButton = screen.getByRole("button", {
         name: "Forhåndsvisning",
@@ -251,7 +257,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, enMeldingTekst);
+      await changeTextInput(meldingInput, enMeldingTekst);
       await waitFor(() => {
         expect(screen.queryByText("Vennligst angi meldingstekst")).to.not.exist;
       });
@@ -291,7 +297,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
+      await changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
 
       await clickButton("Send til behandler");
 
@@ -330,7 +336,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
+      await changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
 
       await clickButton("Send til behandler");
 
@@ -366,7 +372,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, enMeldingTekst);
+      await changeTextInput(meldingInput, enMeldingTekst);
 
       await clickButton("Send til behandler");
 

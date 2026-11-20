@@ -12,10 +12,7 @@ import {
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import {
-  tilDatoMedManedNavn,
-  tilLesbarDatoMedArUtenManedNavn,
-} from "@/utils/datoUtils";
+import { formatDateWithMonthName, formatNumericDate } from "@/utils/datoUtils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
@@ -39,6 +36,13 @@ const renderAktivitetskravVurderingAlert = (
   );
 };
 
+function getHeading(text: string) {
+  return screen.getByRole("heading", {
+    name: (name) => name.endsWith(text),
+    level: 2,
+  });
+}
+
 describe("AktivitetskravVurderingAlert", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
@@ -47,15 +51,13 @@ describe("AktivitetskravVurderingAlert", () => {
   it("viser advarsel med frist når siste aktivitetskrav-vurdering er AVVENT med frist", () => {
     renderAktivitetskravVurderingAlert(avventVurdering);
 
-    expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
-    expect(screen.getByText(`Avventer til ${tilDatoMedManedNavn(new Date())}`))
-      .to.exist;
+    expect(getHeading(`Avventer til ${formatDateWithMonthName(new Date())}`)).to
+      .exist;
   });
   it("viser advarsel uten frist når siste aktivitetskrav-vurdering er AVVENT uten frist", () => {
     renderAktivitetskravVurderingAlert(avventVurderingUtenFrist);
 
-    expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
-    expect(screen.getByText(`Avventer`)).to.exist;
+    expect(getHeading("Avventer")).to.exist;
   });
   it("viser beskrivelse og årsaker når siste aktivitetskrav-vurdering er AVVENT", () => {
     const beskrivelse = "Avventer litt";
@@ -80,19 +82,17 @@ describe("AktivitetskravVurderingAlert", () => {
   it("viser info når siste aktivitetskrav-vurdering er ikke-utløpt FORHANDSVARSEL", () => {
     renderAktivitetskravVurderingAlert(forhandsvarselVurdering);
 
-    expect(screen.getByRole("img", { name: "Informasjon" })).to.exist;
     expect(
-      screen.getByText(
-        `Forhåndsvarsel er sendt ${tilLesbarDatoMedArUtenManedNavn(
+      getHeading(
+        `Forhåndsvarsel er sendt ${formatNumericDate(
           forhandsvarselVurdering.createdAt,
         )}`,
       ),
-    );
+    ).to.exist;
   });
   it("viser warning når siste aktivitetskrav-vurdering er utløpt FORHANDSVARSEL", () => {
     renderAktivitetskravVurderingAlert(expiredForhandsvarselVurdering);
 
-    expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
-    expect(screen.getByText("Aktivitetskravet må vurderes"));
+    expect(getHeading("Aktivitetskravet må vurderes")).to.exist;
   });
 });

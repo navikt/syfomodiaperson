@@ -2,12 +2,11 @@ import {
   DialogmoteDTO,
   DialogmoteStatus,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import DialogmoteMoteStatusPanel from "@/sider/dialogmoter/components/innkalling/DialogmoteMoteStatusPanel";
 import { dialogmote, dialogmoteMedMellomlagretReferat } from "./testData";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { getButton } from "../testUtils";
 import { queryClientWithMockData } from "../testQueryClient";
@@ -17,16 +16,16 @@ import {
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import { daysFromToday } from "@/utils/datoUtils.ts";
+import { renderWithRouter } from "../testRouterUtils";
 
 const queryClient = queryClientWithMockData();
 
 const renderDialogmoteMoteStatusPanel = (dialogmote: DialogmoteDTO) =>
-  render(
-    <MemoryRouter>
-      <QueryClientProvider client={queryClient}>
-        <DialogmoteMoteStatusPanel dialogmote={dialogmote} />
-      </QueryClientProvider>
-    </MemoryRouter>,
+  renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <DialogmoteMoteStatusPanel dialogmote={dialogmote} />
+    </QueryClientProvider>,
+    "*",
   );
 
 describe("DialogmoteMoteStatusPanel", () => {
@@ -57,7 +56,7 @@ describe("DialogmoteMoteStatusPanel", () => {
   it("Viser overskrift 'Endringen er sendt' for endret dialogmøte i morgen", () => {
     const endretDialogmote: DialogmoteDTO = {
       ...dialogmote,
-      status: DialogmoteStatus.NYTT_TID_STED,
+      status: DialogmoteStatus.ENDRET,
       tid: daysFromToday(1).toISOString(),
     };
     renderDialogmoteMoteStatusPanel(endretDialogmote);
@@ -78,7 +77,7 @@ describe("DialogmoteMoteStatusPanel", () => {
   it("Viser overskrift 'Møtedato er passert' for endret dialogmøte i går", () => {
     const endretDialogmote: DialogmoteDTO = {
       ...dialogmote,
-      status: DialogmoteStatus.NYTT_TID_STED,
+      status: DialogmoteStatus.ENDRET,
       tid: daysFromToday(-1).toISOString(),
     };
     renderDialogmoteMoteStatusPanel(endretDialogmote);
@@ -99,7 +98,7 @@ describe("DialogmoteMoteStatusPanel", () => {
   it("Viser overskrift 'Endringen er sendt' for endret dialogmøte i dag", () => {
     const endretDialogmote: DialogmoteDTO = {
       ...dialogmote,
-      status: DialogmoteStatus.NYTT_TID_STED,
+      status: DialogmoteStatus.ENDRET,
       tid: new Date().toISOString(),
     };
     renderDialogmoteMoteStatusPanel(endretDialogmote);
@@ -116,7 +115,7 @@ describe("DialogmoteMoteStatusPanel", () => {
     };
     const endretDialogmote: DialogmoteDTO = {
       ...dialogmote,
-      status: DialogmoteStatus.NYTT_TID_STED,
+      status: DialogmoteStatus.ENDRET,
       opprettetAv: VEILEDER_DEFAULT.ident,
       tildeltVeilederIdent: VEILEDER_DEFAULT.ident,
     };
@@ -143,7 +142,7 @@ describe("DialogmoteMoteStatusPanel", () => {
     };
     const endretDialogmote: DialogmoteDTO = {
       ...dialogmote,
-      status: DialogmoteStatus.NYTT_TID_STED,
+      status: DialogmoteStatus.ENDRET,
       opprettetAv: VEILEDER_DEFAULT.ident,
       tildeltVeilederIdent: ANNEN_VEILEDER_IDENT,
     };

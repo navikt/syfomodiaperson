@@ -2,7 +2,7 @@ import {
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import { ForesporselDocumentValues } from "@/hooks/oppfolgingsplan/useOppfolgingsplanForesporselDocument";
 import {
   ARBEIDSTAKER_DEFAULT,
@@ -19,7 +19,7 @@ export const getExpectedForesporselDocument = ({
       type: DocumentComponentType.HEADER_H1,
     },
     {
-      texts: [`Dato sendt: ${tilLesbarDatoMedArstall(new Date())}`],
+      texts: [`Dato sendt: ${formatDateWithYear(new Date())}`],
       type: DocumentComponentType.PARAGRAPH,
     },
     {

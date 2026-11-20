@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 
 import Nokkelinformasjon from "@/sider/nokkelinformasjon/Nokkelinformasjon";
 import { addDays } from "@/utils/datoUtils";
@@ -13,7 +13,6 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData, setEmptyQueryData } from "../testQueryClient";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
-import { MemoryRouter } from "react-router-dom";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import {
   createOppfolgingstilfelleFromSykmelding,
@@ -21,20 +20,20 @@ import {
 } from "../utils/oppfolgingstilfelleUtils";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { behandlendeEnhetMockResponse } from "@/mocks/syfobehandlendeenhet/behandlendeEnhetMock";
+import { renderWithRouter } from "../testRouterUtils";
 
 let queryClient: QueryClient;
 
 const renderNokkelinformasjon = () =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <ValgtEnhetContext.Provider
-          value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-        >
-          <Nokkelinformasjon />
-        </ValgtEnhetContext.Provider>
-      </MemoryRouter>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <Nokkelinformasjon />
+      </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
+    "*",
   );
 
 const sykmeldingOppfolgingstilfelle1 = {

@@ -1,17 +1,20 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { queryClientWithMockData } from "../testQueryClient";
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import Sykmeldingsgrad from "@/sider/nokkelinformasjon/sykmeldingsgrad/Sykmeldingsgrad";
 import { beforeEach, describe, expect, it } from "vitest";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
-import { addDays, tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
+import { addDays, formatNumericDateRange } from "@/utils/datoUtils";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import {
   createOppfolgingstilfelleFromSykmelding,
   setSykmeldingDataFromOppfolgingstilfelle,
 } from "../utils/oppfolgingstilfelleUtils";
+import { sykepengesoknaderQueryKeys } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
+import { harJobbetSoknadMock } from "@/mocks/sykepengesoknad/soknaderMock";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 
 let queryClient: QueryClient;
 
@@ -78,7 +81,7 @@ describe("Sykmeldingsgrad", () => {
       .to.exist;
     expect(
       screen.getByText(
-        `${tilLesbarPeriodeMedArUtenManednavn(
+        `${formatNumericDateRange(
           oppfolgingstilfeller[0].start,
           oppfolgingstilfeller[0].end,
         )}`,
@@ -122,7 +125,7 @@ describe("Sykmeldingsgrad", () => {
       .to.exist;
     expect(
       screen.getByText(
-        `${tilLesbarPeriodeMedArUtenManednavn(
+        `${formatNumericDateRange(
           oppfolgingstilfeller[0].start,
           oppfolgingstilfeller[0].end,
         )}`,
@@ -133,5 +136,51 @@ describe("Sykmeldingsgrad", () => {
     expect(
       screen.getByText(sykmeldingNow[0].medisinskVurdering.hovedDiagnose.kode),
     ).to.exist;
+  });
+
+  describe("Har jobbet utover sykmeldingsgrad", () => {
+    const harJobbetText =
+      "Har jobbet utover sykmeldingsgrad. Se sykepengesøknader for mer informasjon.";
+
+    beforeEach(() => {
+      const oppfolgingstilfeller =
+        createOppfolgingstilfelleFromSykmelding(sykmeldingNow);
+      setSykmeldingDataFromOppfolgingstilfelle(
+        sykmeldingNow,
+        oppfolgingstilfeller,
+        queryClient,
+      );
+    });
+
+    it("viser melding i en live region når sykmeldt har jobbet i tilfellet", () => {
+      queryClient.setQueryData(
+        sykepengesoknaderQueryKeys.sykepengesoknader(
+          ARBEIDSTAKER_DEFAULT.personIdent,
+        ),
+        () => [{ ...harJobbetSoknadMock, sykmeldingId: sykmeldingNow[0].id }],
+      );
+
+      renderSykmeldingsgrad(
+        createOppfolgingstilfelleFromSykmelding(sykmeldingNow)[0],
+      );
+
+      expect(within(screen.getByRole("status")).getByText(harJobbetText)).to
+        .exist;
+    });
+
+    it("har en tom live region når sykmeldt ikke har jobbet i tilfellet", () => {
+      queryClient.setQueryData(
+        sykepengesoknaderQueryKeys.sykepengesoknader(
+          ARBEIDSTAKER_DEFAULT.personIdent,
+        ),
+        () => [],
+      );
+
+      renderSykmeldingsgrad(
+        createOppfolgingstilfelleFromSykmelding(sykmeldingNow)[0],
+      );
+
+      expect(screen.getByRole("status").textContent).to.equal("");
+    });
   });
 });

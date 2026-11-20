@@ -28,7 +28,13 @@ export const brukerinfoMock: BrukerinfoDTO = {
   sikkerhetstiltak: [
     {
       type: Tiltakstype.FYUS,
-      beskrivelse: "",
+      beskrivelse: "Fysisk utestengelse",
+      gyldigFom: dayjs().add(1, "week").toDate().toString(),
+      gyldigTom: dayjs().subtract(1, "week").toDate().toString(),
+    },
+    {
+      type: Tiltakstype.TOAN,
+      beskrivelse: "To ansatte i samtale",
       gyldigFom: dayjs().add(1, "week").toDate().toString(),
       gyldigTom: dayjs().subtract(1, "week").toDate().toString(),
     },
@@ -52,7 +58,7 @@ export const arbeidsforholdPersonMock: ArbeidsforholdPersonDTO = {
       stillingsprosent: "0",
     },
     {
-      navArbeidsforholdId: 1,
+      navArbeidsforholdId: 2,
       opprettet: "2020-01-01T00:00:00",
       sistBekreftet: "2024-01-01T00:00:00",
       orgnummer: "110110110",
@@ -64,7 +70,7 @@ export const arbeidsforholdPersonMock: ArbeidsforholdPersonDTO = {
       stillingsprosent: "40",
     },
     {
-      navArbeidsforholdId: 1,
+      navArbeidsforholdId: 3,
       opprettet: "2020-01-01T00:00:00",
       sistBekreftet: "2024-01-01T00:00:00",
       orgnummer: "333666999",
@@ -76,7 +82,7 @@ export const arbeidsforholdPersonMock: ArbeidsforholdPersonDTO = {
       stillingsprosent: "80",
     },
     {
-      navArbeidsforholdId: 1,
+      navArbeidsforholdId: 4,
       opprettet: "2020-01-01T00:00:00",
       sistBekreftet: "2024-01-01T00:00:00",
       orgnummer: "000000001",

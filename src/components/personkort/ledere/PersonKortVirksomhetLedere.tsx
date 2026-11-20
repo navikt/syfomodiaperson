@@ -1,4 +1,4 @@
-import { restdatoTildato } from "@/utils/datoUtils";
+import { formatShortDate } from "@/utils/datoUtils";
 import { PersonKortVirksomhetHeader } from "./PersonKortVirksomhetHeader";
 import EpostButton from "../EpostButton";
 import {
@@ -8,7 +8,7 @@ import {
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { capitalizeAllWords, formatPhonenumber } from "@/utils/stringUtils";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
-import { Table } from "@navikt/ds-react";
+import { Table, BodyShort } from "@navikt/ds-react";
 
 const texts = {
   name: "Navn",
@@ -58,7 +58,7 @@ function PersonKortVirksomhetLederColumn({
   text,
   isActive,
 }: PersonKortVirksomhetLederColumnProps) {
-  return <p>{isActive ? <b>{text}</b> : text}</p>;
+  return <BodyShort>{isActive ? <b>{text}</b> : text}</BodyShort>;
 }
 
 interface PersonKortVirksomhetLedereProps {
@@ -143,7 +143,7 @@ export function PersonKortVirksomhetLedere({
                   <Table.DataCell align={"left"} textSize={"small"}>
                     <PersonKortVirksomhetLederColumn
                       colSize={2}
-                      text={restdatoTildato(leder.aktivFom)}
+                      text={formatShortDate(leder.aktivFom)}
                       isActive={isActive}
                     />
                   </Table.DataCell>

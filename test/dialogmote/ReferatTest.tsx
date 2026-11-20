@@ -10,7 +10,7 @@ import Referat, {
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/sider/dialogmoter/components/referat/Referat";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   changeTextInput,
   clickButton,
@@ -24,6 +24,7 @@ import {
   annenDeltakerFunksjon,
   annenDeltakerNavn,
   arbeidstaker,
+  behandlerDeltaker,
   behandlerDeltakerTekst,
   dialogmote,
   dialogmoteMedBehandler,
@@ -31,7 +32,7 @@ import {
   narmesteLederNavn,
   veileder,
 } from "./testData";
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedReferatDocument } from "./testDataDocuments";
 import { queryClientWithMockData } from "../testQueryClient";
@@ -40,6 +41,14 @@ import { NewDialogmoteReferatDTO } from "@/sider/dialogmoter/types/dialogmoteRef
 import { renderWithRouter } from "../testRouterUtils";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 import { StoreKey } from "@/hooks/useLocalStorageState";
+import { texts as bekreftTexts } from "@/sider/dialogmoter/components/referat/BekreftSendReferatModal";
+import { formaterFnr } from "@/utils/fnrUtils";
+import { Events, trackEvent } from "@/utils/umami";
+
+vi.mock("@/utils/umami", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/utils/umami")>()),
+  trackEvent: vi.fn(),
+}));
 
 let queryClient: QueryClient;
 
@@ -90,7 +99,7 @@ describe("ReferatTest", () => {
     const getFraArbeidsgiverInput = () => screen.getByLabelText("Navn");
 
     // Sjekk at 'Fra arbeidsgiver' valideres
-    changeTextInput(getFraArbeidsgiverInput(), "");
+    await changeTextInput(getFraArbeidsgiverInput(), "");
     await clickButton("Lagre og send");
     expect(
       screen.getAllByText(
@@ -100,7 +109,7 @@ describe("ReferatTest", () => {
 
     // Sjekk at 'Fra arbeidsgiver' kan endres
     const endretFraArbeidsgiver = "Ny Leder";
-    changeTextInput(getFraArbeidsgiverInput(), endretFraArbeidsgiver);
+    await changeTextInput(getFraArbeidsgiverInput(), endretFraArbeidsgiver);
     expect(
       await screen.findByRole("heading", {
         name: `Fra arbeidsgiver: Ny Leder`,
@@ -136,7 +145,7 @@ describe("ReferatTest", () => {
   it("kan endre behandlers deltakelse", async () => {
     stubFerdigstillApi(dialogmoteMedBehandler.uuid);
     renderReferat(dialogmoteMedBehandler);
-    passSkjemaTekstInput();
+    await passSkjemaTekstInput();
 
     // Fjern avkrysning på deltakelse og motta referat
     const behandlerDeltokCheckbox: HTMLInputElement = screen.getByLabelText(
@@ -150,11 +159,11 @@ describe("ReferatTest", () => {
     await userEvent.click(behandlerMottaReferatCheckbox);
 
     await clickButton("Lagre og send");
+    await bekreftSendReferat();
 
     // Sjekk behandlers deltakelse-felter og brev
-    const ferdigstillMutation = queryClient.getMutationCache().getAll().pop();
-    const newReferat = ferdigstillMutation?.state
-      .variables as unknown as NewDialogmoteReferatDTO;
+    const newReferat =
+      (await getFerdigstiltReferat()) as NewDialogmoteReferatDTO;
     expect(newReferat).to.deep.include({
       behandlerDeltatt: false,
       behandlerMottarReferat: false,
@@ -174,6 +183,7 @@ describe("ReferatTest", () => {
 
     expect(screen.getAllByText(referatSkjemaValideringsTexts.situasjonMissing))
       .to.not.be.empty;
+    expect(screen.queryByText(bekreftTexts.intro)).to.not.exist;
     expect(screen.getAllByText(referatSkjemaValideringsTexts.konklusjonMissing))
       .to.not.be.empty;
     expect(
@@ -220,7 +230,7 @@ describe("ReferatTest", () => {
     ).to.be.empty;
   });
 
-  it("validerer maks lengde på fritekstfelter", () => {
+  it("validerer maks lengde på fritekstfelter", async () => {
     renderReferat(dialogmoteMedBehandler);
 
     const situasjonInput = getTextInput("Situasjon og muligheter");
@@ -229,44 +239,47 @@ describe("ReferatTest", () => {
     const arbeidsgiverInput = getTextInput("Arbeidsgiverens oppgave:");
     const behandlerInput = getTextInput("Behandlerens oppgave (valgfri):");
     const veilederInput = getTextInput("Veilederens oppgave (valgfri):");
-    changeTextInput(situasjonInput, getTooLongText(MAX_LENGTH_SITUASJON));
-    changeTextInput(konklusjonInput, getTooLongText(MAX_LENGTH_KONKLUSJON));
-    changeTextInput(
+    await changeTextInput(situasjonInput, getTooLongText(MAX_LENGTH_SITUASJON));
+    await changeTextInput(
+      konklusjonInput,
+      getTooLongText(MAX_LENGTH_KONKLUSJON),
+    );
+    await changeTextInput(
       arbeidstakerInput,
       getTooLongText(MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE),
     );
-    changeTextInput(
+    await changeTextInput(
       arbeidsgiverInput,
       getTooLongText(MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE),
     );
-    changeTextInput(
+    await changeTextInput(
       behandlerInput,
       getTooLongText(MAX_LENGTH_BEHANDLERS_OPPGAVE),
     );
-    changeTextInput(
+    await changeTextInput(
       veilederInput,
       getTooLongText(MAX_LENGTH_VEILEDERS_OPPGAVE),
     );
 
-    clickButton("Lagre og send");
+    await clickButton("Lagre og send");
   });
 
   it("ferdigstiller dialogmote ved submit av skjema", async () => {
     stubFerdigstillApi(dialogmoteMedBehandler.uuid);
     renderReferat(dialogmoteMedBehandler);
 
-    passSkjemaTekstInput();
+    await passSkjemaTekstInput();
 
     await clickButton("Pluss ikon Legg til en deltaker");
     const annenDeltakerNavnInput = getTextInput("Navn");
     const annenDeltakerFunksjonInput = getTextInput("Funksjon");
-    changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
-    changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
+    await changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
+    await changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
 
     const expectedSendtDato = new Date();
     await clickButton("Lagre og send");
+    await bekreftSendReferat();
 
-    const ferdigstillMutation = queryClient.getMutationCache().getAll().pop();
     const expectedFerdigstilling = {
       narmesteLederNavn: narmesteLederNavn,
       situasjon: moteTekster.situasjonTekst,
@@ -282,20 +295,18 @@ describe("ReferatTest", () => {
         { funksjon: annenDeltakerFunksjon, navn: annenDeltakerNavn },
       ],
     };
-    expect(ferdigstillMutation?.state.variables).to.deep.equal(
-      expectedFerdigstilling,
-    );
+    expect(await getFerdigstiltReferat()).to.deep.equal(expectedFerdigstilling);
   });
 
   it("forhåndsviser referat", async () => {
     renderReferat(dialogmoteMedBehandler);
-    passSkjemaTekstInput();
+    await passSkjemaTekstInput();
 
     await clickButton("Pluss ikon Legg til en deltaker");
     const annenDeltakerNavnInput = getTextInput("Navn");
     const annenDeltakerFunksjonInput = getTextInput("Funksjon");
-    changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
-    changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
+    await changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
+    await changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
 
     const expectedSendtDato = new Date();
     await clickButton("Forhåndsvisning");
@@ -312,7 +323,7 @@ describe("ReferatTest", () => {
 
   it("forhåndsviser referat med nynorsktekster hvis dette er valgt", async () => {
     renderReferat(dialogmoteMedBehandler);
-    passSkjemaTekstInput();
+    await passSkjemaTekstInput();
 
     const malformRadioNynorsk = screen.getByRole("radio", {
       name: "Nynorsk",
@@ -323,7 +334,132 @@ describe("ReferatTest", () => {
 
     expect(screen.getByText(getReferatTexts(Malform.NYNORSK).intro2)).to.exist;
   });
+
+  describe("Bekreftelse før sending", () => {
+    beforeEach(() => {
+      stubFerdigstillApi(dialogmoteMedBehandler.uuid);
+    });
+
+    it("viser hvem referatet gjelder og mottakere, uten å sende referatet", async () => {
+      renderReferat(dialogmoteMedBehandler);
+      await passSkjemaTekstInput();
+
+      await clickButton("Lagre og send");
+
+      const modal = screen.getByRole("dialog", {
+        name: bekreftTexts.heading,
+        hidden: true,
+      });
+      expect(within(modal).getByText(arbeidstaker.navn)).to.exist;
+      expect(
+        within(modal).getByText(`${formaterFnr(arbeidstaker.personident)}`, {
+          exact: false,
+        }),
+      ).to.exist;
+      expect(within(modal).getByText(narmesteLederNavn, { exact: false })).to
+        .exist;
+      expect(within(modal).getByText(behandlerDeltaker.behandlerNavn)).to.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
+    it("sender ikke referatet når veileder avbryter", async () => {
+      renderReferat(dialogmoteMedBehandler);
+      await passSkjemaTekstInput();
+      await clickButton("Lagre og send");
+
+      const modal = screen.getByRole("dialog", {
+        name: bekreftTexts.heading,
+        hidden: true,
+      });
+      await userEvent.click(
+        within(modal).getByRole("button", {
+          name: bekreftTexts.avbryt,
+          hidden: true,
+        }),
+      );
+
+      expect(screen.queryByText(bekreftTexts.intro)).to.not.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
+    describe("Sporing av lukking", () => {
+      beforeEach(() => {
+        vi.mocked(trackEvent).mockClear();
+      });
+
+      it("sporer handlings-knapp når veileder avbryter", async () => {
+        const modal = await apneBekreftModal();
+
+        await userEvent.click(
+          within(modal).getByRole("button", {
+            name: bekreftTexts.avbryt,
+            hidden: true,
+          }),
+        );
+
+        expectKnappKlikket(bekreftTexts.avbryt, "secondary");
+        expectModalLukket("handlings-knapp");
+      });
+
+      it("sporer klikk på bekreft-knappen når veileder sender referatet", async () => {
+        await apneBekreftModal();
+
+        await bekreftSendReferat();
+
+        expectKnappKlikket(bekreftTexts.bekreft, "primary");
+        expectModalLukket("handlings-knapp");
+      });
+    });
+  });
 });
+
+const apneBekreftModal = async () => {
+  renderReferat(dialogmoteMedBehandler);
+  await passSkjemaTekstInput();
+  await clickButton("Lagre og send");
+  return screen.getByRole("dialog", {
+    name: bekreftTexts.heading,
+    hidden: true,
+  });
+};
+
+const expectModalLukket = (lukkMetode: string) => {
+  expect(trackEvent).toHaveBeenCalledWith({
+    name: Events.MODAL_LUKKET,
+    properties: { tittel: bekreftTexts.heading, lukkMetode },
+  });
+  expect(
+    vi
+      .mocked(trackEvent)
+      .mock.calls.filter(([event]) => event.name === Events.MODAL_LUKKET),
+  ).to.have.length(1);
+};
+
+const expectKnappKlikket = (tekst: string, variant: string) => {
+  expect(trackEvent).toHaveBeenCalledWith({
+    name: Events.KNAPP_KLIKKET,
+    properties: { tekst, variant, kontekst: bekreftTexts.heading },
+  });
+};
+
+const bekreftSendReferat = async () => {
+  await userEvent.click(
+    screen.getByRole("button", { name: bekreftTexts.bekreft, hidden: true }),
+  );
+};
+
+const getFerdigstiltReferat = async () => {
+  let referat: unknown;
+  await waitFor(() => {
+    referat = queryClient
+      .getMutationCache()
+      .getAll()
+      .map((mutation) => mutation.state.variables)
+      .find((variables) => typeof variables === "object");
+    expect(referat).to.exist;
+  });
+  return referat;
+};
 
 const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
   return renderWithRouter(
@@ -337,17 +473,17 @@ const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
   );
 };
 
-const passSkjemaTekstInput = () => {
+const passSkjemaTekstInput = async () => {
   const situasjonInput = getTextInput("Situasjon og muligheter");
   const konklusjonInput = getTextInput("Konklusjon");
   const arbeidstakerInput = getTextInput("Arbeidstakerens oppgave:");
   const arbeidsgiverInput = getTextInput("Arbeidsgiverens oppgave:");
   const behandlerInput = getTextInput("Behandlerens oppgave (valgfri):");
   const veilederInput = getTextInput("Veilederens oppgave (valgfri):");
-  changeTextInput(situasjonInput, moteTekster.situasjonTekst);
-  changeTextInput(konklusjonInput, moteTekster.konklusjonTekst);
-  changeTextInput(arbeidstakerInput, moteTekster.arbeidstakersOppgave);
-  changeTextInput(arbeidsgiverInput, moteTekster.arbeidsgiversOppgave);
-  changeTextInput(behandlerInput, moteTekster.behandlersOppgave);
-  changeTextInput(veilederInput, moteTekster.veiledersOppgave);
+  await changeTextInput(situasjonInput, moteTekster.situasjonTekst);
+  await changeTextInput(konklusjonInput, moteTekster.konklusjonTekst);
+  await changeTextInput(arbeidstakerInput, moteTekster.arbeidstakersOppgave);
+  await changeTextInput(arbeidsgiverInput, moteTekster.arbeidsgiversOppgave);
+  await changeTextInput(behandlerInput, moteTekster.behandlersOppgave);
+  await changeTextInput(veilederInput, moteTekster.veiledersOppgave);
 };

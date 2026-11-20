@@ -1,3 +1,15 @@
+export interface PersonOppgaveDTO {
+  uuid: string;
+  referanseUuid: string;
+  fnr: string;
+  virksomhetsnummer: string;
+  type: PersonOppgaveType;
+  behandletTidspunkt: string | null;
+  behandletVeilederIdent: string | null;
+  opprettet: string;
+  duplikatReferanseUuid: string | null;
+}
+
 export interface PersonOppgave {
   uuid: string;
   referanseUuid: string;

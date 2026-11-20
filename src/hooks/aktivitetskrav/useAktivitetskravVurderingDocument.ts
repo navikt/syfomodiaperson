@@ -14,7 +14,7 @@ import {
   VarselType,
   VurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import { vurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
 
 type ForhandsvarselDocumentValues = {
@@ -128,7 +128,7 @@ export const useAktivitetskravVurderingDocument = (): {
       folketrygdloven:
         "Vi har brukt folketrygdloven § 8-8 andre ledd når vi har behandlet saken din.",
     };
-    const stansDatoText = tilDatoMedManedNavn(stansDato);
+    const stansDatoText = formatDateWithMonthName(stansDato);
     return [
       createHeaderH1(texts.title),
       getIntroGjelder(),
@@ -148,7 +148,7 @@ export const useAktivitetskravVurderingDocument = (): {
 };
 const getVurderingText = (type: VarselType, arsak: VurderingArsak): string => {
   const arsakText = vurderingArsakTexts[arsak] ?? "";
-  const vurdertDato = tilDatoMedManedNavn(new Date());
+  const vurdertDato = formatDateWithMonthName(new Date());
   switch (type) {
     case VarselType.UNNTAK: {
       return `Det ble vurdert unntak fra aktivitetskravet den ${vurdertDato}. Årsak: ${arsakText}.`;

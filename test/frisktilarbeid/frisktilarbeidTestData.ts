@@ -3,7 +3,7 @@ import {
   VedtakResponseDTO,
 } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { VEILEDER_DEFAULT } from "@/mocks/common/mockConstants";
-import { addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { addWeeks, formatDateWithMonthName } from "@/utils/datoUtils";
 import {
   DocumentComponentDto,
   DocumentComponentType,
@@ -57,9 +57,9 @@ export const getExpectedVedtakDocument = ({
     },
     {
       texts: [
-        `Vedtaket gjelder for perioden: ${tilDatoMedManedNavn(
+        `Vedtaket gjelder for perioden: ${formatDateWithMonthName(
           fom,
-        )} - ${tilDatoMedManedNavn(tom)}.`,
+        )} - ${formatDateWithMonthName(tom)}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -67,7 +67,7 @@ export const getExpectedVedtakDocument = ({
       ? [
           {
             texts: [
-              `Siden din maksdato for sykepenger er beregnet til ${tilDatoMedManedNavn(
+              `Siden din maksdato for sykepenger er beregnet til ${formatDateWithMonthName(
                 tom,
               )}, vil du ikke få sykepenger etter denne datoen.`,
             ],

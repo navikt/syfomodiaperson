@@ -11,13 +11,16 @@ function getDialogmoteStatusEndringText(
     case DialogmoteStatus.INNKALT:
       return `${statusendring.statusEndringOpprettetAv} kalte inn til et dialogmøte`;
     case DialogmoteStatus.NYTT_TID_STED:
-      return `${statusendring.statusEndringOpprettetAv} endret tid eller sted for dialogmøtet opprettet av ${statusendring.dialogmoteOpprettetAv}`;
+    case DialogmoteStatus.ENDRET:
+      return `${statusendring.statusEndringOpprettetAv} endret dialogmøtet opprettet av ${statusendring.dialogmoteOpprettetAv}`;
     case DialogmoteStatus.AVLYST:
       return `${statusendring.statusEndringOpprettetAv} avlyste dialogmøtet opprettet av ${statusendring.dialogmoteOpprettetAv}`;
     case DialogmoteStatus.FERDIGSTILT:
       return `${statusendring.statusEndringOpprettetAv} skrev referat fra dialogmøtet opprettet av ${statusendring.dialogmoteOpprettetAv}`;
     case DialogmoteStatus.LUKKET:
       return `Dialogmøtet innkalt av ${statusendring.dialogmoteOpprettetAv} ble lukket av systemet`;
+    default:
+      return "";
   }
 }
 

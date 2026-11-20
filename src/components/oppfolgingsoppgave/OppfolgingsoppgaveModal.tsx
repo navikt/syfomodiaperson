@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
 import {
-  Alert,
   BodyLong,
   Button,
   ErrorMessage,
   Heading,
+  InlineMessage,
   Modal,
   Select,
   Textarea,
@@ -201,11 +201,9 @@ export default function OppfolgingsoppgaveModal({
             </Select>
 
             {isOppfolgingsgrunnAnnet && (
-              <Alert inline variant="warning">
-                <BodyLong textColor="subtle" size="small">
-                  {texts.annetChosenAlert}
-                </BodyLong>
-              </Alert>
+              <InlineMessage status="warning" size="small">
+                {texts.annetChosenAlert}
+              </InlineMessage>
             )}
 
             <Textarea
@@ -219,11 +217,9 @@ export default function OppfolgingsoppgaveModal({
             ></Textarea>
 
             {textareaCount >= ALERT_LENGTH_BESKRIVELSE && (
-              <Alert inline variant="warning">
-                <BodyLong textColor="subtle" size="small">
-                  {texts.lengthBeskrivelseAlert}
-                </BodyLong>
-              </Alert>
+              <InlineMessage status="warning" size="small">
+                {texts.lengthBeskrivelseAlert}
+              </InlineMessage>
             )}
 
             <FristDatePicker defaultSelectedDate={defaultSelectedDate} />

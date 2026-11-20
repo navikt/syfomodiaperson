@@ -45,7 +45,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
       renderForhandsvarselSkjema();
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
       const beskrivelseInput = getTextInput(begrunnelseLabel);
-      changeTextInput(beskrivelseInput, "");
+      await changeTextInput(beskrivelseInput, "");
 
       await clickButton("Send");
 
@@ -68,7 +68,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
       expect(screen.getByText("Forhåndsvisning")).to.exist;
 
       const beskrivelseInput = getTextInput(begrunnelseLabel);
-      changeTextInput(beskrivelseInput, begrunnelse);
+      await changeTextInput(beskrivelseInput, begrunnelse);
 
       await clickButton("Send");
 
@@ -102,7 +102,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
 
       const begrunnelseInput = getTextInput(begrunnelseLabel);
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(begrunnelseInput, begrunnelse);
       await clickButton("Forhåndsvisning");
 
       const forhandsvisningForhandsvarsel = screen.getByRole("dialog", {
@@ -129,13 +129,13 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
       const customFrist = addWeeks(new Date(), 5);
       const beskrivelseInput = getTextInput(begrunnelseLabel);
-      changeTextInput(beskrivelseInput, begrunnelse);
+      await changeTextInput(beskrivelseInput, begrunnelse);
 
       const datepickerInput = screen.getByRole("textbox", {
         name: /Svarfrist/,
       });
       const formatted = dayjs(customFrist).format("DD.MM.YYYY");
-      changeTextInput(datepickerInput, formatted);
+      await changeTextInput(datepickerInput, formatted);
 
       await clickButton("Send");
 

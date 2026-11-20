@@ -2,11 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { manglendeMedvirkningPath } from "@/AppRouter";
 import { screen, waitFor } from "@testing-library/react";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
-import {
-  addDays,
-  addWeeks,
-  tilLesbarDatoMedArUtenManedNavn,
-} from "@/utils/datoUtils";
+import { addDays, addWeeks, formatNumericDate } from "@/utils/datoUtils";
 import {
   ForhandsvarselVurdering,
   VurderingResponseDTO,
@@ -83,7 +79,7 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
       const begrunnelse = "En begrunnelse";
 
       const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(begrunnelseInput, begrunnelse);
 
       await clickButton("Send");
 
@@ -111,13 +107,13 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
       renderForhandsvarselSkjema();
       const begrunnelse = "En begrunnelse";
       const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(begrunnelseInput, begrunnelse);
       const customFrist = addWeeks(new Date(), 5);
       const datepickerInput = screen.getByRole("textbox", {
         name: /Svarfrist/,
       });
       const formatted = dayjs(customFrist).format("DD.MM.YYYY");
-      changeTextInput(datepickerInput, formatted);
+      await changeTextInput(datepickerInput, formatted);
 
       await clickButton("Send");
       const expectedRequestBody: ForhandsvarselVurdering = {
@@ -146,12 +142,12 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
       renderForhandsvarselSendt(defaultForhandsvarselVurdering);
 
       expect(
-        screen.getByText(
-          `Forhåndsvarselet er sendt ${tilLesbarDatoMedArUtenManedNavn(
-            new Date(),
-          )}.`,
-        ),
+        screen.getByRole("heading", {
+          name: `Forhåndsvarselet er sendt ${formatNumericDate(new Date())}`,
+        }),
       ).to.exist;
+      expect(screen.queryByText("Forhåndsvarselet er sendt til bruker.")).to.not
+        .exist;
       expect(screen.getByText("Venter på svar fra bruker")).to.exist;
       expect(screen.getByText("Fristen går ut:")).to.exist;
       expect(
@@ -200,8 +196,7 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
 
       expect(screen.getByText("Fristen er gått ut")).to.exist;
       expect(screen.getByText("Fristen var:")).to.exist;
-      expect(screen.getByText(tilLesbarDatoMedArUtenManedNavn(svarfrist))).to
-        .exist;
+      expect(screen.getByText(formatNumericDate(svarfrist))).to.exist;
       expect(screen.getByRole("img", { name: "bjelleikon" })).to.exist;
       expect(screen.getByText("Følgende alternativer er tilgjengelig:")).to
         .exist;

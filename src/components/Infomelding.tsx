@@ -1,4 +1,4 @@
-import { Box, Heading } from "@navikt/ds-react";
+import { Box, Heading, BodyShort } from "@navikt/ds-react";
 
 interface Props {
   tittel: string;
@@ -13,7 +13,7 @@ export function Infomelding(infomeldingProps: Props) {
         {tittel}
       </Heading>
       <hr className="bg-amber-500/75 w-8 h-px border-0 my-4" />
-      <p>{melding}</p>
+      <BodyShort>{melding}</BodyShort>
     </Box>
   );
 }

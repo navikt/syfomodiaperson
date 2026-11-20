@@ -1,11 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import GlobalNavigasjon, {
   Menypunkter,
 } from "@/components/globalnavigasjon/GlobalNavigasjon";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it } from "vitest";
-import { MemoryRouter } from "react-router-dom";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import {
   queryClientWithAktivBruker,
@@ -65,6 +64,7 @@ import {
   SoknadStatusDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import { UTENLANDSOPPHOLD_VARSEL_CUTOFF_DATO } from "@/utils/globalNavigasjonUtils";
+import { renderWithRouter } from "../testRouterUtils";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
@@ -79,6 +79,7 @@ function createUtenlandsoppholdSoknad(
     innsendtTidspunkt: `${UTENLANDSOPPHOLD_VARSEL_CUTOFF_DATO}T12:00:00`,
     soktePerioder: [],
     behandling: null,
+    infoTilBehandling: null,
     ...overrides,
   };
 }
@@ -104,16 +105,15 @@ const mockUnleashWithoutFeatureToggles = () => {
 };
 
 const renderGlobalNavigasjon = () =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <ValgtEnhetContext.Provider
-          value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-        >
-          <GlobalNavigasjon aktivtMenypunkt={Menypunkter.NOKKELINFORMASJON} />
-        </ValgtEnhetContext.Provider>
-      </MemoryRouter>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <GlobalNavigasjon aktivtMenypunkt={Menypunkter.NOKKELINFORMASJON} />
+      </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
+    "*",
   );
 
 describe("GlobalNavigasjon", () => {
@@ -142,7 +142,7 @@ describe("GlobalNavigasjon", () => {
       "Vedtak",
     ];
     const menypunkterNotShown = [
-      "Kartleggingsspørsmål",
+      "Vurder tidlig oppfølging",
       "§ 8-9 Søknad om utenlandsopphold",
     ];
 
@@ -166,7 +166,7 @@ describe("GlobalNavigasjon", () => {
       "Dialog med behandler",
       "Oppfølgingsplaner",
       "Dialogmøter",
-      "Kartleggingsspørsmål",
+      "Vurder tidlig oppfølging",
       "§ 8-8 Aktivitetskrav",
       "§ 8-8 Manglende medvirkning",
       "§ 8-4 Arbeidsuførhet",
@@ -542,7 +542,7 @@ describe("GlobalNavigasjon", () => {
     ).to.exist;
   });
 
-  it("viser én rød prikk for menypunkt Kartleggingsspørsmål når siste kandidat finnes med svar", () => {
+  it("viser én rød prikk for menypunkt Vurder tidlig oppfølging når siste kandidat finnes med svar", () => {
     mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
@@ -550,11 +550,11 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("button", { name: "Kartleggingsspørsmål 1" })).to
-      .exist;
+    expect(screen.getByRole("button", { name: "Vurder tidlig oppfølging 1" }))
+      .to.exist;
   });
 
-  it("viser ikke rød prikk for menypunkt Kartleggingsspørsmål når siste kandidat finnes uten svar", () => {
+  it("viser ikke rød prikk for menypunkt Vurder tidlig oppfølging når siste kandidat finnes uten svar", () => {
     mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
@@ -562,11 +562,11 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("button", { name: "Kartleggingsspørsmål" })).to
+    expect(screen.getByRole("button", { name: "Vurder tidlig oppfølging" })).to
       .exist;
   });
 
-  it("viser ikke rød prikk for menypunkt Kartleggingsspørsmål når siste kandidat finnes med svar og er vurdert", () => {
+  it("viser ikke rød prikk for menypunkt Vurder tidlig oppfølging når siste kandidat finnes med svar og er vurdert", () => {
     mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
@@ -580,7 +580,7 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("button", { name: "Kartleggingsspørsmål" })).to
+    expect(screen.getByRole("button", { name: "Vurder tidlig oppfølging" })).to
       .exist;
   });
 

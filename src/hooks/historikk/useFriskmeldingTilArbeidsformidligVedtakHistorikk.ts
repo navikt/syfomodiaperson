@@ -1,12 +1,12 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function friskTilArbeidText(vedtak: VedtakResponseDTO): string {
-  const fom = tilLesbarDatoMedArUtenManedNavn(vedtak.fom);
-  const tom = tilLesbarDatoMedArUtenManedNavn(vedtak.tom);
+  const fom = formatNumericDate(vedtak.fom);
+  const tom = formatNumericDate(vedtak.tom);
   return `${vedtak.veilederident} fattet vedtak. Periode: ${fom} - ${tom}`;
 }
 

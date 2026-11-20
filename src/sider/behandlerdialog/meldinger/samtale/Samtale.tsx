@@ -1,5 +1,5 @@
 import { MeldingDTO } from "@/data/behandlerdialog/behandlerdialogTypes";
-import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import { formatDateTime } from "@/utils/datoUtils";
 import { Accordion } from "@navikt/ds-react";
 import { MeldingerISamtale } from "@/sider/behandlerdialog/meldinger/samtale/MeldingerISamtale";
 import { StetoskopIkon } from "../../../../../img/ImageComponents";
@@ -28,7 +28,7 @@ export default function Samtale({ meldinger }: Props) {
   const firstMelding = meldinger[0];
   const behandlerRef = firstMelding.behandlerRef;
   const newestMelding = meldinger.slice(-1)[0];
-  const dateAndTimeForNewestMelding = `${tilDatoMedManedNavnOgKlokkeslett(
+  const dateAndTimeForNewestMelding = `${formatDateTime(
     newestMelding.tidspunkt,
   )}`;
 

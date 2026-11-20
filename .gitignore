@@ -1,6 +1,7 @@
 .idea/*
 *.iml
 node_modules
+mise.toml
 *.log
 npm-debug.log*
 package-lock.json

@@ -63,11 +63,11 @@ describe("DialogmoteunntakSkjema", () => {
       dialogmoteunntakSkjemaBeskrivelseMaxLength,
     );
     const beskrivelseInput = getTextInput(unntakSkjemaTexts.beskrivelseLabel);
-    changeTextInput(beskrivelseInput, tooLongBeskrivelse);
+    await changeTextInput(beskrivelseInput, tooLongBeskrivelse);
     const maxLengthErrorMsg = "1 tegn for mye";
     expect(screen.getAllByText(maxLengthErrorMsg)).to.not.be.empty;
 
-    passSkjemaInput(
+    await passSkjemaInput(
       ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
       "beskrivelse",
     );
@@ -89,7 +89,7 @@ describe("DialogmoteunntakSkjema", () => {
 
     expect(screen.getAllByRole("radio")).to.have.length(4);
 
-    passSkjemaInput(ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER);
+    await passSkjemaInput(ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER);
 
     await clickButton(submitButtonText);
     await waitFor(() => {
@@ -113,7 +113,7 @@ describe("DialogmoteunntakSkjema", () => {
 
     const beskrivelse = "Dette er en begrunnelse";
 
-    passSkjemaInput(
+    await passSkjemaInput(
       ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
       beskrivelse,
     );
@@ -149,12 +149,15 @@ const renderDialogmoteunntakSkjema = () => {
   );
 };
 
-const passSkjemaInput = (arsak: ValidUnntakArsak, beskrivelse?: string) => {
+const passSkjemaInput = async (
+  arsak: ValidUnntakArsak,
+  beskrivelse?: string,
+) => {
   const arsakRadioButton = screen.getByText(createUnntakArsakTexts[arsak]);
   fireEvent.click(arsakRadioButton);
 
   if (beskrivelse) {
     const beskrivelseInput = getTextInput(unntakSkjemaTexts.beskrivelseLabel);
-    changeTextInput(beskrivelseInput, beskrivelse);
+    await changeTextInput(beskrivelseInput, beskrivelse);
   }
 };

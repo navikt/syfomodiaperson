@@ -7,7 +7,7 @@ import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { toDate, toDateWithoutNullCheck } from "@/utils/datoUtils";
+import { toDate, toDateOrInvalid } from "@/utils/datoUtils";
 import {
   Soknadstatus,
   Soknadstype,
@@ -23,12 +23,12 @@ export const mockSykepengeSoknad: SykepengesoknadDTO = {
     navn: "KONKURS BEDRIFT OG VENNER AS",
     orgnummer: "000111222",
   },
-  fom: toDateWithoutNullCheck("2018-08-18"),
+  fom: toDateOrInvalid("2018-08-18"),
   id: "123test",
-  opprettetDato: toDateWithoutNullCheck("2018-09-07"),
+  opprettetDato: toDateOrInvalid("2018-09-07"),
   status: Soknadstatus.NY,
   sykmeldingId: mockSykmeldingId,
-  tom: toDateWithoutNullCheck("2018-08-31"),
+  tom: toDateOrInvalid("2018-08-31"),
   soknadstype: Soknadstype.ARBEIDSTAKERE,
   sporsmal: [],
 };
@@ -168,10 +168,10 @@ export const mockOldSykmeldinger: SykmeldingOldFormat[] = [
         {
           avventende: undefined,
           behandlingsdager: undefined,
-          fom: toDateWithoutNullCheck("2020-01-22"),
+          fom: toDateOrInvalid("2020-01-22"),
           grad: 100,
           reisetilskudd: undefined,
-          tom: toDateWithoutNullCheck("2020-05-22"),
+          tom: toDateOrInvalid("2020-05-22"),
         },
       ],
     },

@@ -19,7 +19,7 @@ import {
 import { queryClientWithMockData } from "../testQueryClient";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
-import { addDays, addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { addDays, addWeeks, formatDateWithMonthName } from "@/utils/datoUtils";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { oppfolgingsplanerLPSMock } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
@@ -65,6 +65,7 @@ const sykmeldingNow = {
 
 const sykmeldingIkkeTattIBruk = {
   ...sykmeldingNow,
+  id: "1111a750-7f39-4974-9a06-fa1775f987d2",
   sykmeldingStatus: {
     statusEvent: "APEN",
     timestamp: "2020-01-29T09:38:05.414834Z",
@@ -167,7 +168,7 @@ describe("UtdragFraSykefravaeret", () => {
     expect(planLink.parentElement?.className).toContain("grid-cols-subgrid");
     expect(
       screen.getByText(
-        `Innsendt ${tilDatoMedManedNavn(
+        `Innsendt ${formatDateWithMonthName(
           dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate(),
         )}.`,
       ),
@@ -191,7 +192,7 @@ describe("UtdragFraSykefravaeret", () => {
     expect(screen.queryByRole("link", { name: "Åpne planen" })).to.not.exist;
     expect(
       screen.queryByText(
-        `Innsendt ${tilDatoMedManedNavn(
+        `Innsendt ${formatDateWithMonthName(
           dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate(),
         )}.`,
       ),

@@ -1,4 +1,4 @@
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { BodyShort, Heading } from "@navikt/ds-react";
 
@@ -26,7 +26,7 @@ export default function AvbruttSoknadSelvstendigStatuspanel({ soknad }: Props) {
           {texts.tittel}
         </Heading>
         <BodyShort size="small">
-          {tilLesbarDatoMedArstall(soknad.avbruttDato)}
+          {formatDateWithYear(soknad.avbruttDato)}
         </BodyShort>
       </div>
     </div>

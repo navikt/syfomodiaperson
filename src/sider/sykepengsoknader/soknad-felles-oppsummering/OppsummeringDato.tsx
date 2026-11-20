@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 import { getKey } from "./Oppsummeringsvisning";
 import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
 import OppsummeringSporsmalstekst from "./OppsummeringSporsmalstekst";
@@ -17,7 +17,7 @@ export default function OppsummeringDato({
       {svar.map((svarverdi, index) => {
         return (
           <BodyShort size="small" key={getKey(tag, index)}>
-            {toDatePrettyPrint(svarverdi.verdi)}
+            {formatShortDateOrUndefined(svarverdi.verdi)}
           </BodyShort>
         );
       })}

@@ -1,8 +1,5 @@
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
-import {
-  restdatoTilLesbarDato,
-  tilLesbarDatoMedArstall,
-} from "@/utils/datoUtils";
+import { formatReadableDate, formatDateWithYear } from "@/utils/datoUtils";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import {
   LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
@@ -14,7 +11,14 @@ import {
   partitionOppfolgingsplanerByActiveTilfelle,
 } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { Alert, BodyShort, Box, Heading, Link, Loader } from "@navikt/ds-react";
+import {
+  LocalAlert,
+  BodyShort,
+  Box,
+  Heading,
+  Link,
+  Loader,
+} from "@navikt/ds-react";
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
@@ -58,7 +62,7 @@ function LPSPlaner({ lpsPlaner }: LpsPlanerProps) {
   return (
     <>
       {lpsPlaner.map((plan, index) => {
-        const lesbarDato = tilLesbarDatoMedArstall(plan.opprettet);
+        const lesbarDato = formatDateWithYear(plan.opprettet);
         return (
           <Box key={index} className="col-span-2 grid grid-cols-subgrid">
             <OppfolgingsplanLenke
@@ -80,7 +84,7 @@ interface AktivPlanV2Props {
 }
 
 function AktivPlanV2({ aktivPlan }: AktivPlanV2Props) {
-  const deltMedNav = restdatoTilLesbarDato(aktivPlan.deltMedNavTidspunkt);
+  const deltMedNav = formatReadableDate(aktivPlan.deltMedNavTidspunkt);
   return (
     <div className="col-span-2 grid grid-cols-subgrid">
       <OppfolgingsplanLenke
@@ -166,9 +170,11 @@ export default function UtdragOppfolgingsplaner({
       {isLoading ? (
         <Loader size="large" title={texts.pending} />
       ) : isError ? (
-        <Alert size="small" inline variant="error">
-          {texts.error}
-        </Alert>
+        <LocalAlert size="small" status="error">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.error}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       ) : (
         <Oppfolgingsplaner
           planerV2={planerV2ByOppfolgingstilfelle}

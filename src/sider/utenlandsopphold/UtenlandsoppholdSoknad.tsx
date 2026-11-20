@@ -1,14 +1,19 @@
 import { useState } from "react";
+import {
+  ExclamationmarkTriangleIcon,
+  InformationSquareIcon,
+} from "@navikt/aksel-icons";
 import dayjs from "dayjs";
 import { FormProvider, useForm } from "react-hook-form";
 import {
-  Alert,
   BodyShort,
   Box,
   Button,
   Heading,
   HStack,
+  InfoCard,
   InlineMessage,
+  LocalAlert,
   Loader,
   Radio,
   RadioGroup,
@@ -25,8 +30,8 @@ import {
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  tilLesbarDatoMedArUtenManedNavn,
-  tilLesbarPeriodeMedArUtenManednavn,
+  formatNumericDate,
+  formatNumericDateRange,
 } from "@/utils/datoUtils.ts";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import Oppsummeringsvisning from "@/sider/sykepengsoknader/soknad-felles-oppsummering/Oppsummeringsvisning";
@@ -55,6 +60,7 @@ import {
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
 import { IkkeAktuellModal } from "./IkkeAktuellModal";
+import { OpptellingInfoboks } from "./OpptellingInfoboks";
 import { ikkeAktuellArsakTexts } from "./ikkeAktuellTexts";
 
 const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
@@ -96,8 +102,9 @@ const texts = {
   alertBehandlet: "Denne søknaden er allerede behandlet av",
   alertIkkeAktuell: "Denne søknaden er satt til ikke aktuell av",
   missingUtfall: "Du må velge et utfall for å fatte vedtaket",
-  ikkeUtbetaltAdvarsel:
-    "Sykepenger er ikke utbetalt. Ved innvilgelse eller delvis innvilgelse blir vedtaket sendt med et forbehold om at vedtaket kun gjelder dersom sykmeldt får innvilget sykepenger. Åpne forhåndsvisningen av vedtaket for å se forbeholdet.",
+  ikkeUtbetaltTitle: "Sykepenger er ikke utbetalt",
+  ikkeUtbetaltBody:
+    "Ved innvilgelse eller delvis innvilgelse blir vedtaket sendt med et forbehold om at vedtaket kun gjelder dersom sykmeldt får innvilget sykepenger. Åpne forhåndsvisningen av vedtaket for å se forbeholdet.",
   begrunnelse: {
     label: "Begrunnelse (obligatorisk)",
     labelValgfri: "Begrunnelse (valgfritt)",
@@ -362,9 +369,11 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
         {isLoadingUtenlandsoppholdSoknader ? (
           <Loader size="xlarge" title={texts.pending} />
         ) : isErrorUtenlandsoppholdSoknader ? (
-          <Alert size="small" variant="error">
-            {texts.error}
-          </Alert>
+          <LocalAlert status="error" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>{texts.error}</LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         ) : (
           <BodyShort>{texts.didNotFindSoknad}</BodyShort>
         )}
@@ -440,6 +449,16 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
   return (
     <Box background="default" padding="space-16" className="flex flex-col">
       <VStack gap="space-20">
+        {harPerioderUtenforTilfelle && (
+          <InfoCard data-color="warning" size="small">
+            <InfoCard.Message
+              icon={<ExclamationmarkTriangleIcon aria-hidden />}
+            >
+              {texts.perioderUtenforTilfelleWarning}
+            </InfoCard.Message>
+          </InfoCard>
+        )}
+
         {/* Nokkelinfo i soknaden */}
         <VStack gap="space-8">
           <HStack gap="space-8">
@@ -448,9 +467,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
             </BodyShort>
 
             <BodyShort>
-              {tilLesbarDatoMedArUtenManedNavn(
-                utenlandsoppholdSoknad.innsendtTidspunkt,
-              )}
+              {formatNumericDate(utenlandsoppholdSoknad.innsendtTidspunkt)}
             </BodyShort>
           </HStack>
 
@@ -464,10 +481,10 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
             ))}
           </Box>
 
-          {harPerioderUtenforTilfelle && (
-            <Alert variant="warning" size="small" className="w-fit">
-              {texts.perioderUtenforTilfelleWarning}
-            </Alert>
+          {utenlandsoppholdSoknad.infoTilBehandling && (
+            <OpptellingInfoboks
+              infoTilBehandling={utenlandsoppholdSoknad.infoTilBehandling}
+            />
           )}
         </VStack>
 
@@ -488,9 +505,13 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
           ) : sykepengesoknadFlex ? (
             <Oppsummeringsvisning soknad={sykepengesoknadFlex} />
           ) : (
-            <Alert size="small" variant="error">
-              {texts.errorHenteInnholdISoknad}
-            </Alert>
+            <LocalAlert status="error" size="small">
+              <LocalAlert.Header>
+                <LocalAlert.Title>
+                  {texts.errorHenteInnholdISoknad}
+                </LocalAlert.Title>
+              </LocalAlert.Header>
+            </LocalAlert>
           )}
         </Box>
 
@@ -498,27 +519,31 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
         {soknadBehandlet && (
           <>
             {utenlandsoppholdSoknad.behandling?.utfall === "IKKE_AKTUELL" ? (
-              <Alert variant="info" size="small" className="w-fit p-4">
-                {texts.alertIkkeAktuell}{" "}
-                {utenlandsoppholdSoknad.behandling.behandletAv}{" "}
-                {tilLesbarDatoMedArUtenManedNavn(
-                  utenlandsoppholdSoknad.behandling.behandletTidspunkt,
-                )}
-                {" – "}
-                {
-                  ikkeAktuellArsakTexts[
-                    utenlandsoppholdSoknad.behandling.ikkeAktuellArsak
-                  ]
-                }
-              </Alert>
+              <InfoCard data-color="info" size="small" className="w-fit">
+                <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                  {texts.alertIkkeAktuell}{" "}
+                  {utenlandsoppholdSoknad.behandling.behandletAv}{" "}
+                  {formatNumericDate(
+                    utenlandsoppholdSoknad.behandling.behandletTidspunkt,
+                  )}
+                  {" – "}
+                  {
+                    ikkeAktuellArsakTexts[
+                      utenlandsoppholdSoknad.behandling.ikkeAktuellArsak
+                    ]
+                  }
+                </InfoCard.Message>
+              </InfoCard>
             ) : (
-              <Alert variant="info" size="small" className="w-fit p-4">
-                {texts.alertBehandlet}{" "}
-                {utenlandsoppholdSoknad.behandling?.behandletAv}{" "}
-                {tilLesbarDatoMedArUtenManedNavn(
-                  utenlandsoppholdSoknad.behandling?.behandletTidspunkt,
-                )}
-              </Alert>
+              <InfoCard data-color="info" size="small" className="w-fit">
+                <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                  {texts.alertBehandlet}{" "}
+                  {utenlandsoppholdSoknad.behandling?.behandletAv}{" "}
+                  {formatNumericDate(
+                    utenlandsoppholdSoknad.behandling?.behandletTidspunkt,
+                  )}
+                </InfoCard.Message>
+              </InfoCard>
             )}
             <Button
               className="w-fit"
@@ -539,9 +564,14 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
               className="flex flex-col gap-8"
             >
               {!isSykepengerUtbetalt && (
-                <Alert variant="warning" size="small">
-                  {texts.ikkeUtbetaltAdvarsel}
-                </Alert>
+                <InfoCard data-color="warning" size="small">
+                  <InfoCard.Header
+                    icon={<ExclamationmarkTriangleIcon aria-hidden />}
+                  >
+                    <InfoCard.Title>{texts.ikkeUtbetaltTitle}</InfoCard.Title>
+                  </InfoCard.Header>
+                  <InfoCard.Content>{texts.ikkeUtbetaltBody}</InfoCard.Content>
+                </InfoCard>
               )}
               <RadioGroup
                 legend="Velg utfall"
@@ -595,10 +625,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                         </BodyShort>
                         {avslattePerioder.map((periode, index) => (
                           <BodyShort key={index} size="small">
-                            {tilLesbarPeriodeMedArUtenManednavn(
-                              periode.fom,
-                              periode.tom,
-                            )}
+                            {formatNumericDateRange(periode.fom, periode.tom)}
                           </BodyShort>
                         ))}
                       </div>

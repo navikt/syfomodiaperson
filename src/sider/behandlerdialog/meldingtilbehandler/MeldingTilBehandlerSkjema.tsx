@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Alert, Button, Select, Textarea } from "@navikt/ds-react";
+import { LocalAlert, Button, Select, Textarea } from "@navikt/ds-react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import {
   MeldingTilBehandlerDTO,
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { useMeldingTilBehandler } from "@/data/behandlerdialog/useMeldingTilBehandler";
-import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import { formatDateTime } from "@/utils/datoUtils";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { MeldingsTypeInfo } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
@@ -168,11 +168,13 @@ export function MeldingTilBehandlerSkjema({
         className={"flex flex-col gap-4"}
       >
         {meldingSentTime && (
-          <Alert variant="success" size="small">
-            {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(
-              meldingSentTime,
-            )}`}
-          </Alert>
+          <LocalAlert status="success" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                {`Meldingen ble sendt ${formatDateTime(meldingSentTime)}`}
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         )}
         <div className="max-w-[23rem]">
           <Select

@@ -2,7 +2,7 @@ import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import { Frilansersporsmal } from "./SykmeldingStatuspanelOpplysning";
 import { tilStorForbokstav } from "@/utils";
 import { BodyLong, Heading } from "@navikt/ds-react";
@@ -87,7 +87,7 @@ export default function BekreftetSykmeldingStatuspanel({ sykmelding }: Props) {
         </Heading>
         <BodyLong size="small">
           {textStatus(sykmelding.status)} –{" "}
-          {tilLesbarDatoMedArstall(sykmelding.sendtdato)}
+          {formatDateWithYear(sykmelding.sendtdato)}
         </BodyLong>
       </div>
       <div className="mb-5">

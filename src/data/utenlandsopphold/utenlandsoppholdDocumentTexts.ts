@@ -1,5 +1,5 @@
 import { Periode } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils.ts";
+import { formatNumericDate } from "@/utils/datoUtils.ts";
 
 export type UtenlandsoppholdDocumentTextsValues = {
   soknadDato: Date;
@@ -38,9 +38,9 @@ function perioderTilTekst(perioder: Periode[]) {
   return perioder
     .map(
       (periode) =>
-        `${tilLesbarDatoMedArUtenManedNavn(
+        `${formatNumericDate(
           periode.fom,
-        )} til og med ${tilLesbarDatoMedArUtenManedNavn(periode.tom)}`,
+        )} til og med ${formatNumericDate(periode.tom)}`,
     )
     .join(", og ");
 }
@@ -81,7 +81,7 @@ export const getInnvilgetTexts = ({
   innvilgedePerioder,
   medForbeholdOvrigeVilkar,
 }: InnvilgetDocumentTextsValues) => {
-  const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
+  const soknadDatoTekst = formatNumericDate(soknadDato);
   const innvilgedePerioderTekst = perioderTilTekst(innvilgedePerioder);
 
   return {
@@ -105,7 +105,7 @@ export const getInnvilgetTexts = ({
     },
     oppmerksom: {
       header: "Dette må du være oppmerksom på",
-      body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold i perioden ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.\n\nVi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.`,
+      body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold i perioden ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder, og oppholdet varer lenger enn den perioden du har fått innvilget, kan det få betydning for din videre rett til sykepenger.\n\nVi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.`,
     },
     ...getFellesTekster(),
   };
@@ -115,7 +115,7 @@ export const getAvslagTexts = ({
   soknadDato,
   avslattePerioder,
 }: AvslagDocumentTextsValues) => {
-  const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
+  const soknadDatoTekst = formatNumericDate(soknadDato);
   const avslattePerioderTekst = perioderTilTekst(avslattePerioder);
 
   return {
@@ -145,7 +145,7 @@ export const getDelvisInnvilgetTexts = ({
   avslattePerioder,
   medForbeholdOvrigeVilkar,
 }: DelvisInnvilgetDocumentTextsValues) => {
-  const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
+  const soknadDatoTekst = formatNumericDate(soknadDato);
   const innvilgedePerioderTekst = perioderTilTekst(innvilgedePerioder);
   const avslattePerioderTekst = perioderTilTekst(avslattePerioder);
 
@@ -169,7 +169,7 @@ export const getDelvisInnvilgetTexts = ({
     },
     oppmerksom: {
       header: "Dette må du være oppmerksom på",
-      body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold kun fra ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.\n\nVi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.`,
+      body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold kun fra ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder, og oppholdet varer lenger enn den perioden du har fått innvilget, kan det få betydning for din videre rett til sykepenger.\n\nVi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.`,
     },
     ...getFellesTekster(),
   };
@@ -180,7 +180,7 @@ export const getHenleggelseTexts = ({
   soktePerioder,
   begrunnelse,
 }: HenleggelseDocumentTextsValues) => {
-  const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
+  const soknadDatoTekst = formatNumericDate(soknadDato);
   const soktePerioderTekst = perioderTilTekst(soktePerioder);
 
   return {

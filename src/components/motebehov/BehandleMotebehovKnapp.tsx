@@ -7,7 +7,7 @@ import {
   motebehovUbehandlet,
   toMotebehovTilbakemeldingDTO,
 } from "@/utils/motebehovUtils";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 import { useVurderMotebehov } from "@/data/motebehov/useVurderMotebehov";
 import {
   BodyShort,
@@ -125,7 +125,7 @@ export default function BehandleMotebehovKnapp() {
         <BodyShort size="small">
           {`Møtebehovet ble behandlet av ${
             sistBehandletMotebehov?.behandletVeilederIdent
-          } den ${toDatePrettyPrint(
+          } den ${formatShortDateOrUndefined(
             sistBehandletMotebehov?.behandletTidspunkt,
           )}.`}
         </BodyShort>

@@ -1,19 +1,21 @@
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 
 type AktivitetskravStatusSuccess =
   | AktivitetskravStatus.OPPFYLT
   | AktivitetskravStatus.UNNTAK
   | AktivitetskravStatus.IKKE_OPPFYLT
   | AktivitetskravStatus.INNSTILLING_OM_STANS
-  | AktivitetskravStatus.IKKE_AKTUELL;
+  | AktivitetskravStatus.IKKE_AKTUELL
+  | AktivitetskravStatus.FORHANDSVARSEL
+  | AktivitetskravStatus.AVVENT;
 
 export const useAktivitetskravNotificationAlert = () => {
   const { navn: brukersNavn } = useNavBrukerData();
   const { setNotification, notification } = useNotification();
-  const today = tilLesbarDatoMedArUtenManedNavn(new Date());
+  const today = formatNumericDate(new Date());
 
   const getText = (status: AktivitetskravStatusSuccess) => {
     switch (status) {
@@ -32,6 +34,12 @@ export const useAktivitetskravNotificationAlert = () => {
       case AktivitetskravStatus.IKKE_AKTUELL: {
         return `Det er vurdert at aktivitetskravet ikke er aktuelt for ${brukersNavn} ${today}.`;
       }
+      case AktivitetskravStatus.AVVENT: {
+        return `Det er vurdert å avvente aktivitetskravet for ${brukersNavn} ${today}.`;
+      }
+      case AktivitetskravStatus.FORHANDSVARSEL: {
+        return `Forhåndsvarselet er sendt til ${brukersNavn}.`;
+      }
     }
   };
 
@@ -41,6 +49,7 @@ export const useAktivitetskravNotificationAlert = () => {
         message: getText(status),
       });
     },
+    clearNotification: () => setNotification(undefined),
     notification,
   };
 };

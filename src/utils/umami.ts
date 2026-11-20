@@ -2,12 +2,9 @@
  See documentation for naming guidelines: https://startumami.ansatt.nav.no/taksonomi
  Other documentation for umami on Aksel: https://aksel.nav.no/god-praksis/artikler/male-brukeradferd-med-umami
  */
-export {
-  Events,
-  type TaxonomyEvent,
-  type EventName,
-} from "@navikt/analytics-types";
+export { Events } from "@navikt/analytics-types";
 
+import { Events } from "@navikt/analytics-types";
 import type { EventName, TaxonomyEvent } from "@navikt/analytics-types";
 
 // Holds the resolve function of identifierReady so setIdentifier() can release the gate.
@@ -37,7 +34,7 @@ async function hashId(id: string): Promise<string> {
     .slice(0, 40);
 }
 
-function beforeSendHandler(type, payload) {
+function beforeSendHandler(_, payload) {
   if (payload.id != null) {
     return payload;
   }
@@ -52,4 +49,14 @@ export async function trackEvent<K extends EventName>(
 ): Promise<void> {
   await identifierReady;
   umami.track(event.name, { ...event.properties });
+}
+
+export function trackLinkKlikket(tekst: string, href: string): void {
+  trackEvent({
+    name: Events.LINK_KLIKKET,
+    properties: {
+      tekst,
+      href,
+    },
+  });
 }

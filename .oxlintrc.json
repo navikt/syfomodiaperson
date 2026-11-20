@@ -12,6 +12,7 @@
     "react/jsx-no-useless-fragment": "error",
     "react/rules-of-hooks": "error",
     "react/exhaustive-deps": "error",
+    "jsx-key": "error",
     "no-restricted-imports": [
       "error",
       {

@@ -4,7 +4,8 @@ import {
   NestableListItem,
   VeiledningListForItems,
 } from "@/components/veiledning/VeiledningListForItems";
-import { Box, Heading } from "@navikt/ds-react";
+import { Box, Heading, InfoCard } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const linkRutineYrkesskade =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Vurdering-av-%C3%A5rsakssammenheng-ved-yrkesskade-yrkessykdm.aspx";
@@ -25,6 +26,10 @@ const texts = {
   linkTemaside: "Temaside om Sykepenger ved opphold i utlandet",
   linkNyhetssakNavet: "Nyhetssak om denne løsningen på Navet",
   linkRundskriv: "Rundskriv til folketrygdloven § 8-9 tredje ledd",
+  warningStorbritanniaHeading: "Midlertidig opphold i Storbritannia",
+  warningStorbritanniaContent:
+    "Sykmeldte som midlertidig oppholder seg i Storbritannia skal ikke søke om å beholde sykepenger under oppholdet.",
+  warningStorbritanniaLinkText: "Se fagmelding",
 };
 
 const rutineListItems: NestableListItem[] = [
@@ -71,19 +76,35 @@ const tilleggsopplysningerListItems: NestableListItem[] = [
 ];
 
 const seOgsaLenkerListItems: NestableListItem[] = [
-  <EksternLenke href={linkServiceRutine}>
+  <EksternLenke key={"linkServiceRutine"} href={linkServiceRutine}>
     {texts.linkServiceRutine}
   </EksternLenke>,
-  <EksternLenke href={linkTemaside}>{texts.linkTemaside}</EksternLenke>,
-  <EksternLenke href={linkNyhetssakNavet}>
+  <EksternLenke key={"linkTemaside"} href={linkTemaside}>
+    {texts.linkTemaside}
+  </EksternLenke>,
+  <EksternLenke key={"linkNyhetssakNavet"} href={linkNyhetssakNavet}>
     {texts.linkNyhetssakNavet}
   </EksternLenke>,
-  <EksternLenke href={linkRundskriv}>{texts.linkRundskriv}</EksternLenke>,
+  <EksternLenke key={"linkRundskriv"} href={linkRundskriv}>
+    {texts.linkRundskriv}
+  </EksternLenke>,
 ];
 
 function Rutine() {
   return (
     <Box>
+      <InfoCard data-color="warning" size="small" className="mb-4">
+        <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+          <InfoCard.Title>{texts.warningStorbritanniaHeading}</InfoCard.Title>
+        </InfoCard.Header>
+        <InfoCard.Content>
+          {texts.warningStorbritanniaContent}{" "}
+          <EksternLenke href="https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Sykepenger-under-opphold-i-Storbritannia.aspx?web=1">
+            {texts.warningStorbritanniaLinkText}
+          </EksternLenke>
+        </InfoCard.Content>
+      </InfoCard>
+
       <Heading level="3" size="small" spacing>
         {texts.headingRutine}
       </Heading>

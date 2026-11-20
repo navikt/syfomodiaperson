@@ -9,8 +9,9 @@ import { useAvlysningDocument } from "@/hooks/dialogmote/document/useAvlysningDo
 import { moteoversiktRoutePath } from "@/AppRouter";
 import { useAvlysDialogmote } from "@/sider/dialogmoter/hooks/useAvlysDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { Alert, Box, Button, Label } from "@navikt/ds-react";
-import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import { Box, Button, InfoCard, Label } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
+import { formatDateTimeWithWeekday } from "@/utils/datoUtils";
 import { useForm } from "react-hook-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import MalformRadioGroup from "@/components/MalformRadioGroup";
@@ -102,13 +103,13 @@ const AvlysDialogmoteSkjema = ({
 
   return (
     <Box background="default" padding="space-24">
-      <form onSubmit={handleSubmit(submit)}>
+      <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-4">
         <MalformRadioGroup />
-        <div className="mb-8 flex flex-col">
+        <div className="flex flex-col">
           <Label size="small">{texts.gjelderTitle}</Label>
-          {tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)}
+          {formatDateTimeWithWeekday(dialogmote.tid)}
         </div>
-        <div className="mb-8">
+        <div>
           <TextareaField
             id="begrunnelseArbeidstaker"
             {...register("begrunnelseArbeidstaker", {
@@ -128,7 +129,7 @@ const AvlysDialogmoteSkjema = ({
             }
           />
         </div>
-        <div className="mb-8">
+        <div>
           <TextareaField
             id="begrunnelseArbeidsgiver"
             {...register("begrunnelseArbeidsgiver", {
@@ -149,7 +150,7 @@ const AvlysDialogmoteSkjema = ({
           />
         </div>
         {dialogmote.behandler && (
-          <div className="mb-8">
+          <div>
             <TextareaField
               id="begrunnelseBehandler"
               {...register("begrunnelseBehandler", {
@@ -173,9 +174,11 @@ const AvlysDialogmoteSkjema = ({
         {avlysDialogmote.isError && (
           <SkjemaInnsendingFeil error={avlysDialogmote.error} />
         )}
-        <Alert variant="warning" size="small" className="mb-8 [&>*]:max-w-fit">
-          {texts.alert}
-        </Alert>
+        <InfoCard data-color="info" size="small">
+          <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+            {texts.alert}
+          </InfoCard.Message>
+        </InfoCard>
         <div className="flex gap-4">
           <Button
             type="submit"

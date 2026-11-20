@@ -89,7 +89,7 @@ describe("Manglendemedvirkning Unntak", () => {
 
       const begrunnelse = "En begrunnelse";
       const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(begrunnelseInput, begrunnelse);
 
       await clickButton("Sett unntak");
 

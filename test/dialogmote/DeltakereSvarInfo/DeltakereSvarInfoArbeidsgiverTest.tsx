@@ -84,7 +84,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     });
   });
 
-  describe("arbeidsgiver har åpnet innkalling og svart NYTT_TID_STED med begrunnelse", () => {
+  describe("arbeidsgiver har åpnet innkalling og svart ENDRE med begrunnelse", () => {
     const dialogmoteMedLestInnkalling = dialogmoteMedVarsel(
       [
         varselArbeidsgiver(
@@ -165,7 +165,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     const dialogmoteMedLestEndring = dialogmoteMedVarsel(
       [
         varselArbeidsgiver(
-          MotedeltakerVarselType.NYTT_TID_STED,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-03T12:56:26.271381",
         ),
       ],
@@ -189,7 +189,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     const dialogmoteMedLestEndring = dialogmoteMedVarsel(
       [
         varselArbeidsgiver(
-          MotedeltakerVarselType.NYTT_TID_STED,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-03T12:56:26.271381",
           {
             svarType: SvarType.KOMMER,
@@ -212,11 +212,11 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     });
   });
 
-  describe("arbeidsgiver har åpnet endring og svart NYTT_TID_STED med begrunnelse", () => {
+  describe("arbeidsgiver har åpnet endring og svart ENDRE med begrunnelse", () => {
     const dialogmoteMedLestEndring = dialogmoteMedVarsel(
       [
         varselArbeidsgiver(
-          MotedeltakerVarselType.NYTT_TID_STED,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-03T12:56:26.271381",
           {
             svarType: SvarType.NYTT_TID_STED,
@@ -244,7 +244,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     const dialogmoteMedLestEndring = dialogmoteMedVarsel(
       [
         varselArbeidsgiver(
-          MotedeltakerVarselType.NYTT_TID_STED,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-03T12:56:26.271381",
           {
             svarType: SvarType.KOMMER_IKKE,
@@ -270,7 +270,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
 
   describe("arbeidsgiver har ikke åpnet endring", () => {
     const dialogmoteMedUlestEndring = dialogmoteMedVarsel(
-      [varselArbeidsgiver(MotedeltakerVarselType.NYTT_TID_STED)],
+      [varselArbeidsgiver(MotedeltakerVarselType.ENDRET)],
       [],
     );
 

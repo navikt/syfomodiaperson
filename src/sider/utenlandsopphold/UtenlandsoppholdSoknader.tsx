@@ -1,11 +1,20 @@
 import { useState } from "react";
-import { Alert, BodyShort, Box, Button, Loader, Table } from "@navikt/ds-react";
+import {
+  LocalAlert,
+  BodyShort,
+  Box,
+  Button,
+  InfoCard,
+  Loader,
+  Table,
+} from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import {
   Soknad,
   SoknadStatusDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
@@ -27,7 +36,7 @@ const texts = {
   periode: "Søkt periode",
   saksbehandling: "Saksbehandling",
   saksbehandlingVedtak: (behandletTidspunkt: Date, behandletAv: string) =>
-    `Behandlet ${tilLesbarDatoMedArUtenManedNavn(behandletTidspunkt)} av ${behandletAv}`,
+    `Behandlet ${formatNumericDate(behandletTidspunkt)} av ${behandletAv}`,
   saksbehandlingIngenVedtak: "Ikke behandlet i Modia",
   status: "Status",
   startBehandling: "Start behandling",
@@ -88,24 +97,31 @@ export function UtenlandsoppholdSoknader() {
   return (
     <div className="flex flex-col gap-4">
       {notification && isNotificationVisible && (
-        <Alert
-          variant="success"
-          closeButton
-          onClose={() => setIsNotificationVisible(false)}
-        >
-          {notification.message}
-        </Alert>
+        <LocalAlert status="success">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+            <LocalAlert.CloseButton
+              onClick={() => setIsNotificationVisible(false)}
+            />
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
 
-      <Alert variant="info">{texts.infotrygdInfo}</Alert>
+      <InfoCard data-color="info">
+        <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+          {texts.infotrygdInfo}
+        </InfoCard.Message>
+      </InfoCard>
 
       <Box background="default" padding="space-16" className="flex flex-col">
         {isPending ? (
           <Loader size="xlarge" title={texts.pending} />
         ) : isError ? (
-          <Alert size="small" variant="error">
-            {texts.error}
-          </Alert>
+          <LocalAlert size="small" status="error">
+            <LocalAlert.Header>
+              <LocalAlert.Title>{texts.error}</LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         ) : !data.soknader.length ? (
           <BodyShort>{texts.ingenSoknader}</BodyShort>
         ) : (
@@ -128,9 +144,7 @@ export function UtenlandsoppholdSoknader() {
                 (soknad) => (
                   <Table.Row key={soknad.soknadId}>
                     <Table.HeaderCell scope="row">
-                      {tilLesbarDatoMedArUtenManedNavn(
-                        soknad.innsendtTidspunkt,
-                      )}
+                      {formatNumericDate(soknad.innsendtTidspunkt)}
                     </Table.HeaderCell>
 
                     <Table.DataCell>

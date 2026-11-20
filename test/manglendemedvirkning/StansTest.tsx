@@ -120,11 +120,11 @@ describe("Manglendemedvirkning Stans", () => {
         name: "Innstillingen gjelder fra",
         hidden: true,
       });
-      changeTextInput(datoInput, today.format("DD.MM.YYYY"));
+      await changeTextInput(datoInput, today.format("DD.MM.YYYY"));
 
       const begrunnelse = "En begrunnelse";
       const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(begrunnelseInput, begrunnelse);
 
       await clickButton("Send");
 

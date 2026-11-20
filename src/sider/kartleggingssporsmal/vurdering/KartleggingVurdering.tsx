@@ -1,40 +1,61 @@
 import {
   BodyLong,
+  BodyShort,
   Box,
   Button,
   Heading,
-  Radio,
-  RadioGroup,
+  LocalAlert,
   Textarea,
 } from "@navikt/ds-react";
 import {
+  isFerdigbehandlet,
   KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
-  KartleggingssporsmalSvarResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
 import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil.tsx";
 import { useState } from "react";
-import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
+import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
-import { Events, trackEvent } from "@/utils/umami.ts";
+import { Events, trackEvent, trackLinkKlikket } from "@/utils/umami.ts";
+import { KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST } from "@/sider/kartleggingssporsmal/umamiKontekst.ts";
 import { KartleggingInfo } from "@/sider/kartleggingssporsmal/info/KartleggingInfo.tsx";
 import { useKartleggingssporsmalVurderSvar } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
-import { hasRisikoForLangtidsfravar } from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
+import { RadioCard, RadioCardGroup } from "@navikt/ds-react/PREVIEW";
+
+const DRAFT_CATEGORY = "kartleggingssporsmal-vurdering";
 
 const VURDERING_MAX_LENGTH = 200;
 const LINK_14A = `https://veilarbpersonflate${finnNaisUrlIntern()}/vedtaksstotte`;
 
+export const RISIKO_FOR_LANGTIDSFRAVAR =
+  "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging";
+export const IKKE_RISIKO_FOR_LANGTIDSFRAVAR =
+  "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging";
+
 const texts = {
   heading: "Vurdering",
-  radioLegend: "Velg alternativet som passer vurderingen",
+  radioLegend: "Velg alternativet som passer",
+  intro:
+    "Her skal du vurdere om den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging. Ta utgangspunkt i veiledningen på høyre side når du vurderer saken.",
   textLegend: "Begrunnelse (valgfritt)",
-  RISIKO_FOR_LANGTIDSFRAVAR:
-    "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-  IKKE_RISIKO_FOR_LANGTIDSFRAVAR:
-    "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
+  textDescription:
+    "Brukes kun for å dokumentere vurderingen internt og blir ikke synlig for den sykmeldte. Den sykmeldte kan alltid be om innsyn i egen sak.",
+  radioOptions: {
+    risikoDescription: "Velg denne der du har satt i gang videre oppfølging.",
+    ikkeRisikoDescription:
+      "Velg denne der det ikke er risiko, eller der det er risiko, men ikke behov for oppfølging fra Nav på nåværende tidspunkt.",
+  },
   button: "Lagre vurdering, fjern oppgaven",
+  vurderingLagret: "Vurderingen er lagret",
   vurderingIkkeValgtError: "Du må velge et alternativ",
   begrunnelseForLangError: `Begrunnelse kan ikke være lengre enn ${VURDERING_MAX_LENGTH} tegn`,
   vurdertRisikoForLangtidsfravar:
@@ -42,33 +63,41 @@ const texts = {
   lenkeTilModiaAO: "vedtaksstøtteløsningen i Modia Arbeidsrettet oppfølging.",
 };
 
-function logEvent() {
-  trackEvent({
-    name: Events.LINK_KLIKKET,
-    properties: {
-      tekst: texts.lenkeTilModiaAO,
-      href: LINK_14A,
-    },
-  });
-}
-
 interface Props {
   nyesteKandidat: KartleggingssporsmalKandidatResponseDTO;
-  answeredQuestions: KartleggingssporsmalSvarResponseDTO;
+  begrunnelseUtkast?: string;
 }
 
 export function KartleggingVurdering({
   nyesteKandidat,
-  answeredQuestions,
+  begrunnelseUtkast,
 }: Props) {
   const vurderSvar = useKartleggingssporsmalVurderSvar();
+  const [isSuccessAlertDismissed, setIsSuccessAlertDismissed] = useState(false);
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
+  const saveDraft = useSaveDraft<DraftTextDTO>(DRAFT_CATEGORY);
+  const deleteDraft = useDeleteDraft(DRAFT_CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) {
+      return;
+    }
+    saveDraft.mutate(
+      { begrunnelse: tekst },
+      {
+        onSuccess: () => setUtkastSavedTime(new Date()),
+        onError: () => setUtkastSavedTime(undefined),
+      },
+    );
+  }, 750);
 
   const [vurdering, setVurdering] = useState<{
     vurderingAlternativ: VurderingAlternativ | null;
     vurderingFritekst: string | null;
   }>({
     vurderingAlternativ: nyesteKandidat.vurdering?.vurderingAlternativ ?? null,
-    vurderingFritekst: nyesteKandidat.vurdering?.vurderingFritekst ?? null,
+    vurderingFritekst:
+      nyesteKandidat.vurdering?.vurderingFritekst ?? begrunnelseUtkast ?? null,
   });
 
   const [vurderingError, setVurderingError] = useState<{
@@ -79,105 +108,175 @@ export function KartleggingVurdering({
     vurderingFritekstError: null,
   });
 
-  const shouldShowBegrunnelse =
-    vurdering.vurderingAlternativ &&
-    (vurdering.vurderingAlternativ === "RISIKO_FOR_LANGTIDSFRAVAR" ||
-      hasRisikoForLangtidsfravar(answeredQuestions));
+  const isVurdertRisikoForLangtidsfravar =
+    nyesteKandidat.vurdering?.vurderingAlternativ ===
+    "RISIKO_FOR_LANGTIDSFRAVAR";
+
+  function handleVurderingAlternativChange(valgt: VurderingAlternativ) {
+    trackEvent({
+      name: Events.RADIO_VALG_ENDRET,
+      properties: {
+        valgtAlternativ: valgt,
+        forrigeAlternativ: vurdering.vurderingAlternativ ?? undefined,
+        antallAlternativer: 2,
+        kontekst: KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST,
+      },
+    });
+    setVurdering((vurderingParam) => ({
+      ...vurderingParam,
+      vurderingAlternativ: valgt,
+    }));
+  }
 
   return (
-    <Box background="default" className="p-6 gap-6 [&>*]:mb-4 mb-4">
+    <Box background="default" className="flex flex-col p-6 gap-4 mb-2">
+      <Heading size={"medium"}>{texts.heading}</Heading>
+      <BodyShort size="small">{texts.intro}</BodyShort>
       <KartleggingInfo />
 
-      <Heading size={"medium"}>{texts.heading}</Heading>
-      <RadioGroup
-        legend={texts.radioLegend}
-        size="small"
-        value={vurdering.vurderingAlternativ}
-        readOnly={nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET}
-        error={vurderingError.vurderingAlternativError}
-        onChange={(e: VurderingAlternativ) =>
-          setVurdering((vurderingParam) => ({
-            ...vurderingParam,
-            vurderingAlternativ: e,
-          }))
-        }
-      >
-        <Radio value="RISIKO_FOR_LANGTIDSFRAVAR">
-          {texts.RISIKO_FOR_LANGTIDSFRAVAR}
-        </Radio>
-        <Radio value="IKKE_RISIKO_FOR_LANGTIDSFRAVAR">
-          {texts.IKKE_RISIKO_FOR_LANGTIDSFRAVAR}
-        </Radio>
-      </RadioGroup>
-      {shouldShowBegrunnelse && (
-        <Textarea
-          label={texts.textLegend}
-          value={vurdering.vurderingFritekst ?? ""}
-          maxLength={VURDERING_MAX_LENGTH}
-          readOnly={nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET}
-          error={vurderingError.vurderingFritekstError}
-          onChange={(e) =>
-            setVurdering((vurderingParam) => ({
-              ...vurderingParam,
-              vurderingFritekst: e.target.value,
-            }))
-          }
-        />
-      )}
-
-      {nyesteKandidat.status === KandidatStatus.SVAR_MOTTATT && (
-        <Button
-          variant="primary"
-          size="medium"
-          onClick={() => {
-            setVurderingError({
-              vurderingAlternativError: null,
-              vurderingFritekstError: null,
-            });
-
-            if (!vurdering.vurderingAlternativ) {
-              setVurderingError((vurderingErrorParam) => ({
-                ...vurderingErrorParam,
-                vurderingAlternativError: texts.vurderingIkkeValgtError,
+      {!isFerdigbehandlet(nyesteKandidat) && (
+        <>
+          <RadioCardGroup
+            legend={texts.radioLegend}
+            className="mt-4"
+            size="small"
+            value={vurdering.vurderingAlternativ}
+            readOnly={nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET}
+            error={vurderingError.vurderingAlternativError}
+            onChange={handleVurderingAlternativChange}
+          >
+            <RadioCard
+              value="RISIKO_FOR_LANGTIDSFRAVAR"
+              description={texts.radioOptions.risikoDescription}
+            >
+              {RISIKO_FOR_LANGTIDSFRAVAR}
+            </RadioCard>
+            <RadioCard
+              value="IKKE_RISIKO_FOR_LANGTIDSFRAVAR"
+              description={texts.radioOptions.ikkeRisikoDescription}
+            >
+              {IKKE_RISIKO_FOR_LANGTIDSFRAVAR}
+            </RadioCard>
+          </RadioCardGroup>
+          <Textarea
+            label={texts.textLegend}
+            className="mt-4"
+            size="small"
+            description={texts.textDescription}
+            value={vurdering.vurderingFritekst ?? ""}
+            maxLength={VURDERING_MAX_LENGTH}
+            readOnly={isFerdigbehandlet(nyesteKandidat)}
+            error={vurderingError.vurderingFritekstError}
+            onChange={(e) => {
+              setVurdering((vurderingParam) => ({
+                ...vurderingParam,
+                vurderingFritekst: e.target.value,
               }));
-              return;
-            }
-            if (
-              shouldShowBegrunnelse &&
-              vurdering.vurderingFritekst &&
-              vurdering.vurderingFritekst.length > VURDERING_MAX_LENGTH
-            ) {
-              setVurderingError((vurderingErrorParam) => ({
-                ...vurderingErrorParam,
-                vurderingFritekstError: texts.begrunnelseForLangError,
-              }));
-              return;
-            }
+              debouncedAutoSaveDraft(e.target.value);
+            }}
+          />
 
-            vurderSvar.mutate({
-              kandidatUuid: nyesteKandidat.kandidatUuid,
-              vurderingAlternativ: vurdering.vurderingAlternativ,
-              vurderingFritekst: shouldShowBegrunnelse
-                ? (vurdering.vurderingFritekst ?? undefined)
-                : undefined,
-            });
-          }}
-          loading={vurderSvar.isPending}
-        >
-          {texts.button}
-        </Button>
+          {nyesteKandidat.status === KandidatStatus.SVAR_MOTTATT && (
+            <div className={"flex flex-row gap-4 items-center mt-4"}>
+              <Button
+                variant="primary"
+                className="w-fit"
+                onClick={() => {
+                  setVurderingError({
+                    vurderingAlternativError: null,
+                    vurderingFritekstError: null,
+                  });
+
+                  if (!vurdering.vurderingAlternativ) {
+                    setVurderingError((vurderingErrorParam) => ({
+                      ...vurderingErrorParam,
+                      vurderingAlternativError: texts.vurderingIkkeValgtError,
+                    }));
+                    return;
+                  }
+                  if (
+                    vurdering.vurderingFritekst &&
+                    vurdering.vurderingFritekst.length > VURDERING_MAX_LENGTH
+                  ) {
+                    setVurderingError((vurderingErrorParam) => ({
+                      ...vurderingErrorParam,
+                      vurderingFritekstError: texts.begrunnelseForLangError,
+                    }));
+                    return;
+                  }
+
+                  trackEvent({
+                    name: Events.KNAPP_KLIKKET,
+                    properties: {
+                      tekst: texts.button,
+                      variant: "primary",
+                      kontekst: KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST,
+                    },
+                  });
+
+                  vurderSvar.mutate(
+                    {
+                      kandidatUuid: nyesteKandidat.kandidatUuid,
+                      vurderingAlternativ: vurdering.vurderingAlternativ,
+                      vurderingFritekst:
+                        vurdering.vurderingFritekst ?? undefined,
+                    },
+                    {
+                      onSuccess: (_, { vurderingAlternativ }) => {
+                        trackEvent({
+                          name: Events.SKJEMA_SPORSMAL_BESVART,
+                          properties: {
+                            skjemanavn: texts.heading,
+                            spørsmål: texts.radioLegend,
+                            svar: vurderingAlternativ,
+                            kontekst: KARTLEGGINGSSPORSMAL_UMAMI_KONTEKST,
+                          },
+                        });
+                        setUtkastSavedTime(undefined);
+                        debouncedAutoSaveDraft.cancel();
+                        deleteDraft.mutate(undefined);
+                      },
+                    },
+                  );
+                }}
+                loading={vurderSvar.isPending}
+              >
+                {texts.button}
+              </Button>
+
+              <DraftSaveStatus
+                isSaveError={saveDraft.isError}
+                savedTime={utkastSavedTime}
+              />
+            </div>
+          )}
+        </>
       )}
 
       {vurderSvar.isError && <SkjemaInnsendingFeil error={vurderSvar.error} />}
 
-      {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET && (
-        <SuccessAlert nyesteKandidat={nyesteKandidat} />
+      {vurderSvar.isSuccess && !isSuccessAlertDismissed && (
+        <LocalAlert status="success" size="small">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.vurderingLagret}</LocalAlert.Title>
+            <LocalAlert.CloseButton
+              onClick={() => setIsSuccessAlertDismissed(true)}
+            />
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
-      {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET &&
-        shouldShowBegrunnelse && (
+
+      {isFerdigbehandlet(nyesteKandidat) && (
+        <FerdigbehandletInfoCard kandidat={nyesteKandidat} />
+      )}
+      {isFerdigbehandlet(nyesteKandidat) &&
+        isVurdertRisikoForLangtidsfravar && (
           <BodyLong size="small">
             {texts.vurdertRisikoForLangtidsfravar}
-            <EksternLenke href={LINK_14A} onClick={logEvent}>
+            <EksternLenke
+              href={LINK_14A}
+              onClick={() => trackLinkKlikket(texts.lenkeTilModiaAO, LINK_14A)}
+            >
               {texts.lenkeTilModiaAO}
             </EksternLenke>
           </BodyLong>

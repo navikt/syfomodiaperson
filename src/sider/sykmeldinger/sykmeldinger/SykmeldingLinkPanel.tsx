@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { formatDateRangeWithYear } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import {
   SykmeldingOldFormat,
@@ -96,7 +96,7 @@ export default function SykmeldingLinkPanel({
       <div className="flex gap-5">
         <div className="w-full">
           <div className="flex justify-between">
-            {tilLesbarPeriodeMedArstall(
+            {formatDateRangeWithYear(
               tidligsteFom(sykmelding.mulighetForArbeid.perioder),
               senesteTom(sykmelding.mulighetForArbeid.perioder),
             )}

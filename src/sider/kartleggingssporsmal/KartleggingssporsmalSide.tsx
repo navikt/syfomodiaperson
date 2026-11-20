@@ -1,41 +1,38 @@
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import {
-  Accordion,
-  Alert,
-  BodyLong,
-  BodyShort,
-  Box,
-  Heading,
-  List,
-} from "@navikt/ds-react";
+import { BodyShort, Box, Heading, InfoCard, List } from "@navikt/ds-react";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
 import {
   hasMottattKartleggingssporsmal,
+  isFerdigbehandlet,
   KandidatStatus,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import {
   useKartleggingssporsmalKandidaterQuery,
   useKartleggingssporsmalSvarQuery,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
+import { trackLinkKlikket } from "@/utils/umami";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
-import { Events, trackEvent } from "@/utils/umami";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { KartleggingssporsmalHistorikk } from "@/sider/kartleggingssporsmal/historikk/KartleggingssporsmalHistorikk";
-import { KartleggingVurdering } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurdering.tsx";
-import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
-import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsmalSurvey.ts";
 import { ReactElement } from "react";
+import { SyketilfelleList } from "@/components/syketilfelleList/SyketilfelleList.tsx";
+import { KartleggingssporsmalRutine } from "@/sider/kartleggingssporsmal/info/KartleggingssporsmalRutine.tsx";
+import { KartleggingVurderingContainer } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurderingContainer.tsx";
+import { FerdigbehandletInfoCard } from "@/sider/kartleggingssporsmal/ferdigbehandletInfoCard/FerdigbehandletInfoCard.tsx";
+import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 
 const texts = {
-  title: "Kartleggingsspørsmål",
+  title: "Vurder tidlig oppfølging",
+  heading: "Kartleggingsspørsmål",
   kandidat: "Spørsmålene ble sendt",
   svart: "Den sykmeldte svarte",
   ikkeSvart: "Den sykmeldte har ikke svart",
@@ -63,76 +60,7 @@ const texts = {
     "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Behovsrettet-oppf%C3%B8lging.aspx?csf=1&web=1&e=e73C3c",
   link: "Slik ser spørsmålene ut for den sykmeldte",
   demoUrl: "https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal",
-  veiledningBox: {
-    heading: "Veiledning",
-    intro:
-      "Svarene fra den sykmeldte skal hjelpe deg å tidlig identifisere personer som står i fare for et langvarig sykefravær eller å falle ut av arbeidslivet.\n\n" +
-      "Det sykmeldte svarer om forhold på arbeidsplassen er taushetsbelagt informasjon og skal ikke deles med arbeidsgiver.",
-    accordion1: "Slik vurderer du svarene",
-    info1:
-      "Spørsmålene tar utgangspunkt i kjente risikofaktorer, og svarene vil derfor gi en indikasjon på hvem som trenger videre vurdering av oppfølgingsbehov. Svarene må ses i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte.",
-    accordion2: "Ikke behov for videre vurdering av oppfølgingsbehov",
-    info2:
-      "Sykmeldte som svarer at de blir sykmeldte mindre enn seks måneder, får god oppfølging av arbeidsgiver og som har tro på at de skal tilbake til samme jobb og stilling, har som hovedregel ikke behov for mer kartlegging og vurdering av oppfølgingsbehov på nåværende tidspunkt.",
-    accordion3: "Behov for vurdering av oppfølgingsbehov",
-    info3:
-      "Sykmeldte som svarer at de tror de blir sykmeldt mer enn seks måneder, opplever manglende oppfølging av arbeidsgiver eller som ser på det som utfordrende å komme tilbake til samme jobb og stilling, gir en indikasjon på behov for nærmere vurdering av oppfølgingsbehov. Dette vil ofte innebære at Nav bør ta kontakt med den sykmeldte og arbeidsgiver.",
-    link: 'Bruk også "Bli kjent og forstå behov"',
-    url: "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Start.aspx?csf=1&web=1&e=qc76DU#bli-kjent-og-forst%C3%A5-behov",
-  },
 };
-
-function PilotInfo() {
-  return (
-    <Box
-      background="accent-soft"
-      borderColor="brand-blue"
-      borderWidth="1"
-      className="flex flex-col rounded p-4 mt-2 gap-4"
-    >
-      <Heading size="small">
-        Send inn feil, mangler eller annet du lurer på
-      </Heading>
-      <div>
-        <BodyShort size="small">
-          Generelle tilbakemeldinger sendes på Teams.
-        </BodyShort>
-        <EksternLenke
-          href={
-            "https://teams.microsoft.com/l/channel/19%3A53f937eda2124d29938e4278a1cb106c%40thread.tacv2/Pilot%20kartleggingssp%C3%B8rsm%C3%A5l?groupId=05b6c0d2-b6db-4440-96b4-4de66c09b3c6&tenantId=62366534-1ec3-4962-8869-9b5535279d0b&ngc=true"
-          }
-        >
-          Gå til Pilot kartleggingsspørsmål-kanalen
-        </EksternLenke>
-      </div>
-      <div>
-        <BodyShort size="small">
-          Tilbakemeldinger om en spesifikk sykmeldt kan du melde i Porten med
-          tittel [Pilot Modia syfo].
-        </BodyShort>
-        <EksternLenke
-          href={
-            "https://jira.adeo.no/plugins/servlet/desk/portal/541/create/1401"
-          }
-        >
-          Meld sak i Porten
-        </EksternLenke>
-      </div>
-    </Box>
-  );
-}
-
-function trackAccordionApnet(isOpen: boolean, accordionTekst: string): void {
-  if (isOpen) {
-    trackEvent({
-      name: Events.ACCORDION_APNET,
-      properties: {
-        tittel: accordionTekst,
-        kontekst: texts.title,
-      },
-    });
-  }
-}
 
 export default function KartleggingssporsmalSide(): ReactElement {
   const { toggles } = useFeatureToggles();
@@ -145,7 +73,8 @@ export default function KartleggingssporsmalSide(): ReactElement {
     useKartleggingssporsmalSvarQuery(nyesteKandidat);
   const answeredQuestions = getKartleggingssporsmalSvar.data;
 
-  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
+  const { brukerKanIkkeVarslesDigitalt, isLoading: henterKontaktinfo } =
+    useKontaktinfoQuery();
 
   const isSurveyVisible =
     toggles.isFlexjarKartleggingssporsmalEnabled &&
@@ -167,12 +96,14 @@ export default function KartleggingssporsmalSide(): ReactElement {
   ) : null;
 
   const isPending =
-    getKandidater.isPending || getKartleggingssporsmalSvar.isLoading;
+    getKandidater.isPending ||
+    getKartleggingssporsmalSvar.isLoading ||
+    henterKontaktinfo;
   const isError = getKandidater.isError || getKartleggingssporsmalSvar.isError;
 
   const behandletWithoutVurdering =
-    nyesteKandidat?.status === KandidatStatus.FERDIGBEHANDLET &&
-    !nyesteKandidat?.vurdering?.vurderingAlternativ;
+    isFerdigbehandlet(nyesteKandidat) &&
+    !nyesteKandidat.vurdering.vurderingAlternativ;
 
   return (
     <Side
@@ -181,24 +112,34 @@ export default function KartleggingssporsmalSide(): ReactElement {
       lumi={lumiSurvey}
     >
       <Sidetopp tittel={texts.title} />
+
       <SideLaster isLoading={isPending} isError={isError}>
         {nyesteKandidat && hasMottattKartleggingssporsmal(nyesteKandidat) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">
-              <Box background="default" className="p-8 gap-6 [&>*]:mb-4 mb-4">
+              <Box
+                background="default"
+                className="flex flex-col p-6 gap-4 mb-2"
+              >
+                <Heading size={"medium"}>{texts.heading}</Heading>
                 {answeredQuestions ? (
                   <>
                     <BodyShort size="small" weight="semibold">
-                      {`${texts.svart} ${tilLesbarDatoMedArstall(
+                      {`${texts.svart} ${formatDateWithYear(
                         answeredQuestions.createdAt,
                       )}`}
-                    </BodyShort>
-                    <BodyShort size="small" weight="semibold">
-                      {`${texts.kandidat} ${tilLesbarDatoMedArstall(
+                      <br />
+                      {`${texts.kandidat} ${formatDateWithYear(
                         nyesteKandidat.varsletAt,
                       )}`}
                     </BodyShort>
-                    <EksternLenke href={texts.demoUrl}>
+                    <EksternLenke
+                      href={texts.demoUrl}
+                      className="text-[16px]"
+                      onClick={() =>
+                        trackLinkKlikket(texts.link, texts.demoUrl)
+                      }
+                    >
                       {texts.link}
                     </EksternLenke>
                     <KartleggingssporsmalSkjemasvar
@@ -206,35 +147,38 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     />
 
                     {behandletWithoutVurdering && (
-                      <SuccessAlert nyesteKandidat={nyesteKandidat} />
+                      <FerdigbehandletInfoCard kandidat={nyesteKandidat} />
                     )}
                   </>
                 ) : (
                   <>
                     {brukerKanIkkeVarslesDigitalt && (
-                      <Alert variant="warning" size="small">
-                        <Heading size="xsmall">
-                          {texts.reservertWarning.header}
-                        </Heading>
-                        <BodyShort size="small" spacing>
-                          {texts.reservertWarning.info1}
-                        </BodyShort>
-                        <BodyShort size="small" spacing>
-                          {texts.reservertWarning.info2}
-                        </BodyShort>
-                      </Alert>
+                      <InfoCard data-color="warning" size="small">
+                        <InfoCard.Header
+                          icon={<ExclamationmarkTriangleIcon aria-hidden />}
+                        >
+                          <InfoCard.Title>
+                            {texts.reservertWarning.header}
+                          </InfoCard.Title>
+                        </InfoCard.Header>
+                        <InfoCard.Content>
+                          <BodyShort size="small" spacing>
+                            {texts.reservertWarning.info1}
+                          </BodyShort>
+                          <BodyShort size="small">
+                            {texts.reservertWarning.info2}
+                          </BodyShort>
+                        </InfoCard.Content>
+                      </InfoCard>
                     )}
                     <BodyShort size="small" weight="semibold">
                       {texts.ikkeSvart}
                     </BodyShort>
                     <BodyShort size="small" weight="semibold">
-                      {`${texts.kandidat} ${tilLesbarDatoMedArstall(
+                      {`${texts.kandidat} ${formatDateWithYear(
                         nyesteKandidat.varsletAt,
                       )}`}
                     </BodyShort>
-                    <EksternLenke href={texts.demoUrl}>
-                      {texts.link}
-                    </EksternLenke>
                     {brukerKanIkkeVarslesDigitalt ? (
                       <BodyShort size="small">
                         {texts.extraInfoReservert}
@@ -248,9 +192,8 @@ export default function KartleggingssporsmalSide(): ReactElement {
               {!behandletWithoutVurdering &&
                 answeredQuestions &&
                 nyesteKandidat.status !== KandidatStatus.KANDIDAT && (
-                  <KartleggingVurdering
+                  <KartleggingVurderingContainer
                     nyesteKandidat={nyesteKandidat}
-                    answeredQuestions={answeredQuestions}
                   />
                 )}
               <KartleggingssporsmalHistorikk
@@ -258,74 +201,8 @@ export default function KartleggingssporsmalSide(): ReactElement {
               />
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
-              <Box background="default" padding="space-24" className="mb-4">
-                <Heading level="2" size="medium">
-                  {texts.veiledningBox.heading}
-                </Heading>
-                <BodyLong size="small" className="mb-4 whitespace-pre-line">
-                  {texts.veiledningBox.intro}
-                </BodyLong>
-                <Accordion size="small">
-                  <Accordion.Item
-                    onOpenChange={(isOpen) =>
-                      trackAccordionApnet(
-                        isOpen,
-                        texts.veiledningBox.accordion1,
-                      )
-                    }
-                  >
-                    <Accordion.Header>
-                      {texts.veiledningBox.accordion1}
-                    </Accordion.Header>
-                    <Accordion.Content>
-                      <BodyLong size="small">
-                        {texts.veiledningBox.info1}
-                      </BodyLong>
-                    </Accordion.Content>
-                  </Accordion.Item>
-                  <Accordion.Item
-                    onOpenChange={(isOpen) =>
-                      trackAccordionApnet(
-                        isOpen,
-                        texts.veiledningBox.accordion2,
-                      )
-                    }
-                  >
-                    <Accordion.Header>
-                      {texts.veiledningBox.accordion2}
-                    </Accordion.Header>
-                    <Accordion.Content>
-                      <BodyLong size="small">
-                        {texts.veiledningBox.info2}
-                      </BodyLong>
-                    </Accordion.Content>
-                  </Accordion.Item>
-                  <Accordion.Item
-                    onOpenChange={(isOpen) =>
-                      trackAccordionApnet(
-                        isOpen,
-                        texts.veiledningBox.accordion3,
-                      )
-                    }
-                  >
-                    <Accordion.Header>
-                      {texts.veiledningBox.accordion3}
-                    </Accordion.Header>
-                    <Accordion.Content>
-                      <BodyLong size="small">
-                        {texts.veiledningBox.info3}{" "}
-                        <EksternLenke
-                          href={texts.veiledningBox.url}
-                          className="mt-2"
-                        >
-                          {texts.veiledningBox.link}
-                        </EksternLenke>
-                      </BodyLong>
-                    </Accordion.Content>
-                  </Accordion.Item>
-                  <PilotInfo />
-                </Accordion>
-              </Box>
+              <KartleggingssporsmalRutine />
+              <SyketilfelleList />
               {answeredQuestions && <UtdragFraSykefravaeret />}
             </Tredelt.SecondColumn>
           </Tredelt.Container>
@@ -350,7 +227,12 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 </List>
               </Box>
             </div>
-            <EksternLenke href={texts.behovsrettetUrl}>
+            <EksternLenke
+              href={texts.behovsrettetUrl}
+              onClick={() =>
+                trackLinkKlikket(texts.behovsrettetLink, texts.behovsrettetUrl)
+              }
+            >
               {texts.behovsrettetLink}
             </EksternLenke>
           </Box>

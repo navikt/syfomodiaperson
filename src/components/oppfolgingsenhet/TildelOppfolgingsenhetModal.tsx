@@ -1,5 +1,5 @@
 import {
-  Alert,
+  LocalAlert,
   BodyLong,
   Button,
   Modal,
@@ -42,7 +42,7 @@ const tildelOppfolgingsenhetFailed = (
   enhet: string,
 ): TildeltNotification => {
   return {
-    variant: "error",
+    status: "error",
     message: `Tildeling av ${navn} til ${enhet} feilet.`,
   };
 };
@@ -52,7 +52,7 @@ const tildelOppfolgingsenhetSuccess = (
   enhet: string,
 ): TildeltNotification => {
   return {
-    variant: "success",
+    status: "success",
     header: "Bruker tildelt",
     message: `${navn} tildelt til ${enhet}.`,
   };
@@ -158,9 +158,13 @@ export default function TildelOppfolgingsenhetModal({
           </>
         )}
         {getMuligeOppfolgingsenheter.isError && (
-          <Alert size="small" variant="error">
-            {text.getMuligeOppfolgingsenheterFailedErrorMessage}
-          </Alert>
+          <LocalAlert size="small" status="error">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                {text.getMuligeOppfolgingsenheterFailedErrorMessage}
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
         )}
       </Modal.Body>
       <Modal.Footer>

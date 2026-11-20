@@ -11,7 +11,7 @@ import { AvslagForm } from "@/sider/arbeidsuforhet/avslag/AvslagForm";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
 import { getAvslagVurderingDocument } from "../documents";
-import { addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
+import { addWeeks, formatShortDateOrUndefined } from "@/utils/datoUtils";
 import { renderArbeidsuforhetSide } from "../arbeidsuforhetTestUtils";
 import { createForhandsvarsel } from "../arbeidsuforhetTestData";
 import dayjs from "dayjs";
@@ -23,10 +23,13 @@ const sisteForhandsvarsel = createForhandsvarsel({
   svarfrist: new Date(),
 });
 
-const renderAvslagForm = () => {
+const renderAvslagForm = (begrunnelseUtkast?: string) => {
   renderArbeidsuforhetSide(
     queryClient,
-    <AvslagForm sisteVurdering={sisteForhandsvarsel} />,
+    <AvslagForm
+      sisteVurdering={sisteForhandsvarsel}
+      begrunnelseUtkast={begrunnelseUtkast}
+    />,
     arbeidsuforhetOppfyltPath,
     [arbeidsuforhetOppfyltPath],
   );
@@ -85,6 +88,19 @@ describe("AvslagForm", () => {
     });
   });
 
+  describe("Mellomlagring", () => {
+    it("prefills begrunnelse from draft", () => {
+      const utkast = "Mellomlagret begrunnelse";
+
+      renderAvslagForm(utkast);
+
+      expect(getTextInput("Begrunnelse (obligatorisk)")).to.have.property(
+        "value",
+        utkast,
+      );
+    });
+  });
+
   describe("Send avslag", () => {
     it("Gives errors when trying to send vurdering without date and begrunnelse", async () => {
       renderAvslagForm();
@@ -104,8 +120,11 @@ describe("AvslagForm", () => {
       const dateInput = getTextInput(dateLabel);
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      changeTextInput(dateInput, toDatePrettyPrint(fristDate) as string);
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(
+        dateInput,
+        formatShortDateOrUndefined(fristDate) as string,
+      );
+      await changeTextInput(begrunnelseInput, begrunnelse);
       await clickButton("Send");
 
       await waitFor(() => {
@@ -137,8 +156,11 @@ describe("AvslagForm", () => {
       const dateInput = getTextInput(dateLabel);
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      changeTextInput(dateInput, toDatePrettyPrint(fristDate) as string);
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(
+        dateInput,
+        formatShortDateOrUndefined(fristDate) as string,
+      );
+      await changeTextInput(begrunnelseInput, begrunnelse);
 
       await clickButton("Forhåndsvisning");
 

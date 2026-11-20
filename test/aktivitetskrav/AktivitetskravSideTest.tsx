@@ -27,8 +27,10 @@ import { daysFromToday } from "@/utils/datoUtils.ts";
 let queryClient: QueryClient;
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
-const noOppfolgingstilfelleAktivitetskravText =
-  "Vi finner ingen aktiv sykmelding på denne personen. Du kan likevel vurdere aktivitetskravet hvis det er behov for det.";
+const noOppfolgingstilfelleTitle =
+  "Vi finner ingen aktiv sykmelding på denne personen";
+const noOppfolgingstilfelleBody =
+  "Du kan likevel vurdere aktivitetskravet hvis det er behov for det.";
 
 const mockOppfolgingstilfellePerson = (
   oppfolgingstilfeller: OppfolgingstilfelleDTO[],
@@ -91,9 +93,13 @@ describe("AktivitetskravSide", () => {
           name: "Start ny aktivitetskrav-vurdering",
         }),
       ).to.exist;
-      expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
-      expect(screen.queryByText(noOppfolgingstilfelleAktivitetskravText)).to.not
-        .exist;
+      expect(
+        screen.queryByRole("heading", {
+          name: noOppfolgingstilfelleTitle,
+          level: 2,
+        }),
+      ).to.not.exist;
+      expect(screen.queryByText(noOppfolgingstilfelleBody)).to.not.exist;
     });
     it("Vises med advarsel når person har inaktivt oppfølgingstilfelle uten aktivitetskrav", () => {
       mockOppfolgingstilfellePerson([inactiveOppfolgingstilfelle]);
@@ -109,9 +115,13 @@ describe("AktivitetskravSide", () => {
           name: "Start ny aktivitetskrav-vurdering",
         }),
       ).to.exist;
-      expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
-      expect(screen.getByText(noOppfolgingstilfelleAktivitetskravText)).to
-        .exist;
+      expect(
+        screen.getByRole("heading", {
+          name: noOppfolgingstilfelleTitle,
+          level: 2,
+        }),
+      ).to.exist;
+      expect(screen.getByText(noOppfolgingstilfelleBody)).to.exist;
     });
     it("Vises med advarsel når person har verken oppfølgingstilfelle eller aktivitetskrav", () => {
       mockOppfolgingstilfellePerson([]);
@@ -127,9 +137,13 @@ describe("AktivitetskravSide", () => {
           name: "Start ny aktivitetskrav-vurdering",
         }),
       ).to.exist;
-      expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
-      expect(screen.getByText(noOppfolgingstilfelleAktivitetskravText)).to
-        .exist;
+      expect(
+        screen.getByRole("heading", {
+          name: noOppfolgingstilfelleTitle,
+          level: 2,
+        }),
+      ).to.exist;
+      expect(screen.getByText(noOppfolgingstilfelleBody)).to.exist;
     });
     it("Vises når person har aktivitetskrav LUKKET", () => {
       mockAktivitetskrav([
@@ -380,9 +394,13 @@ describe("AktivitetskravSide", () => {
 
       renderAktivitetskravSide();
 
-      expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
-      expect(screen.getByText(noOppfolgingstilfelleAktivitetskravText)).to
-        .exist;
+      expect(
+        screen.getByRole("heading", {
+          name: noOppfolgingstilfelleTitle,
+          level: 2,
+        }),
+      ).to.exist;
+      expect(screen.getByText(noOppfolgingstilfelleBody)).to.exist;
     });
   });
 });

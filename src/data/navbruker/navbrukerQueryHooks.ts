@@ -68,6 +68,7 @@ export const useKontaktinfoQuery = () => {
     brukerKanIkkeVarslesDigitalt: query.data?.skalHaVarsel === false,
     brukerKanVarslesDigitalt: query.data?.skalHaVarsel === true,
     isPending: query.isPending,
+    isLoading: query.isLoading,
     isError: query.isError,
   };
 };

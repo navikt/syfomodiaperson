@@ -33,7 +33,8 @@ export default function DialogmoteSideContainer({
     dialogmoteUuid: string;
   }>();
   const { isLoading, isError, data: dialogmoter } = useDialogmoterQuery();
-  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
+  const { brukerKanIkkeVarslesDigitalt, isLoading: henterKontaktinfo } =
+    useKontaktinfoQuery();
 
   const dialogmote = dialogmoter.find(
     (dialogmote) => dialogmote.uuid === dialogmoteUuid,
@@ -41,7 +42,7 @@ export default function DialogmoteSideContainer({
 
   return (
     <Side tittel={title} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
-      <SideLaster isLoading={isLoading} isError={isError}>
+      <SideLaster isLoading={isLoading || henterKontaktinfo} isError={isError}>
         <Sidetopp tittel={header} />
         {dialogmote ? (
           <div>

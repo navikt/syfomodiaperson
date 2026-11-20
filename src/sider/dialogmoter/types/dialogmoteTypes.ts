@@ -6,7 +6,9 @@ export enum MotedeltakerVarselType {
   AVLYST = "AVLYST",
   INNKALT = "INNKALT",
   REFERAT = "REFERAT",
+  /** Erstattet av ENDRET, men beholdes for eksisterende data fra isdialogmote */
   NYTT_TID_STED = "NYTT_TID_STED",
+  ENDRET = "ENDRET",
 }
 
 export interface DialogmotedeltakerVarselDTO {
@@ -57,7 +59,9 @@ export enum DialogmoteStatus {
   INNKALT = "INNKALT",
   AVLYST = "AVLYST",
   FERDIGSTILT = "FERDIGSTILT",
+  /** Erstattet av ENDRET, men beholdes for eksisterende data fra isdialogmote */
   NYTT_TID_STED = "NYTT_TID_STED",
+  ENDRET = "ENDRET",
   LUKKET = "LUKKET",
 }
 
@@ -108,7 +112,7 @@ export interface DialogmoteInnkallingDTO {
   tidSted: TidStedDto;
 }
 
-export interface EndreTidStedDialogmoteDTO extends TidStedDto {
+export interface EndreDialogmoteDTO extends TidStedDto {
   arbeidstaker: {
     begrunnelse: string;
     endringsdokument: DocumentComponentDto[];
@@ -118,9 +122,17 @@ export interface EndreTidStedDialogmoteDTO extends TidStedDto {
     endringsdokument: DocumentComponentDto[];
   };
   behandler?: {
-    begrunnelse: string;
-    endringsdokument: DocumentComponentDto[];
+    fritekst?: string;
+    moteDokument: DocumentComponentDto[];
+    deltaker?: BehandlerDto;
   };
+}
+
+interface BehandlerDto {
+  personIdent?: string;
+  behandlerRef: string;
+  behandlerNavn: string;
+  behandlerKontor: string;
 }
 
 export interface TidStedDto {

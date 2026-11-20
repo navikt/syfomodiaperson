@@ -45,6 +45,10 @@ function oppdaterSoknadICache(
       };
     },
   );
+  // Opptellingene på de andre søknadene avhenger av denne søknaden, så listen må hentes på nytt.
+  return queryClient.invalidateQueries({
+    queryKey: utenlandsoppholdQueryKeys.soknader(personident),
+  });
 }
 
 /**

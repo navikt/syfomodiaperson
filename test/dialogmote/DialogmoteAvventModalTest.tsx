@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import { queryClientWithMockData } from "../testQueryClient";
 import { DialogmoteAvventModal } from "@/sider/dialogmoter/components/innkalling/DialogmoteAvventModal";
 import dayjs from "dayjs";
-import { toDatePrettyPrint } from "@/utils/datoUtils.ts";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils.ts";
 
 let queryClient: QueryClient;
 
@@ -15,7 +15,12 @@ const renderDialogmoteAvventModal = (
 ) =>
   render(
     <QueryClientProvider client={queryClient}>
-      <DialogmoteAvventModal isKandidat={isKandidat} isOpen onClose={onClose} />
+      <DialogmoteAvventModal
+        isKandidat={isKandidat}
+        isOpen
+        onClose={onClose}
+        onSaved={() => undefined}
+      />
     </QueryClientProvider>,
   );
 
@@ -29,7 +34,7 @@ describe("DialogmoteAvventModal", () => {
 
     const now = new Date();
     const inTwoMonths = dayjs(now).add(2, "months").toDate();
-    const dateString = toDatePrettyPrint(inTwoMonths);
+    const dateString = formatShortDateOrUndefined(inTwoMonths);
 
     const lagreButton = await screen.findByRole("button", { name: "Lagre" });
     await userEvent.click(lagreButton);
@@ -47,7 +52,7 @@ describe("DialogmoteAvventModal", () => {
 
     const now = new Date();
     const inThreeWeeks = dayjs(now).add(3, "weeks").toDate();
-    const dateString = toDatePrettyPrint(inThreeWeeks);
+    const dateString = formatShortDateOrUndefined(inThreeWeeks);
 
     const lagreButton = await screen.findByRole("button", { name: "Lagre" });
     await userEvent.click(lagreButton);

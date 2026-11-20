@@ -1,5 +1,5 @@
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks.ts";
-import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils.ts";
+import { formatDateTimeWithWeekday } from "@/utils/datoUtils.ts";
 import { BodyShort } from "@navikt/ds-react";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 export function ReferatPanelSubtitle({ tid, sted, virksomhetsnummer }: Props) {
   const { virksomhetsnavn } = useVirksomhetQuery(virksomhetsnummer);
-  const moteDatoTid = tilDatoMedUkedagOgManedNavnOgKlokkeslett(tid);
+  const moteDatoTid = formatDateTimeWithWeekday(tid);
   const timeAndPlace = `Møtetidspunkt: ${moteDatoTid} - ${sted}`;
   const arbeidsgiver = `Arbeidsgiver: ${virksomhetsnavn}`;
 

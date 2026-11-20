@@ -28,7 +28,7 @@ export const mockIsmanglendemedvirkning = [
           ? {
               uuid: generateUUID(),
               createdAt: addDays(new Date(), -1),
-              svarfrist: addDays(new Date(), -1),
+              svarfrist: addDays(new Date(), 21),
             }
           : null;
       const stansdato =

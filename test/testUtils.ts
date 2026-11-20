@@ -1,5 +1,5 @@
 import userEvent from "@testing-library/user-event";
-import { fireEvent, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 export const clickButton = async (buttonText: string) =>
   await userEvent.click(getButton(buttonText));
@@ -28,10 +28,13 @@ export const getTextInput = (name: string) =>
     name,
   });
 
-export const changeTextInput = (input: HTMLElement, value: string) =>
-  fireEvent.change(input, {
-    target: { value },
-  });
+export const changeTextInput = async (input: HTMLElement, value: string) => {
+  const user = userEvent.setup();
+  await user.clear(input);
+  if (value.length > 0) {
+    await user.paste(value);
+  }
+};
 
 export const maxLengthErrorMessage = (max: number) =>
   `Maks ${max} tegn tillatt`;

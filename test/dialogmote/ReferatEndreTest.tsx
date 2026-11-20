@@ -13,7 +13,8 @@ import {
   moteTekster,
   narmesteLederNavn,
 } from "./testData";
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { expectedEndretReferatDocument } from "./testDataDocuments";
 import { queryClientWithMockData } from "../testQueryClient";
 import { getReferatTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
@@ -25,6 +26,7 @@ import Referat, {
   ReferatMode,
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "@/sider/dialogmoter/components/referat/Referat";
+import { texts as bekreftTexts } from "@/sider/dialogmoter/components/referat/BekreftSendReferatModal";
 
 let queryClient: QueryClient;
 
@@ -47,7 +49,7 @@ describe("ReferatEndreTest", () => {
     ).to.not.be.empty;
 
     const begrunnelseInput = getTextInput("Årsaken til at referatet må endres");
-    changeTextInput(
+    await changeTextInput(
       begrunnelseInput,
       getTooLongText(MAX_LENGTH_BEGRUNNELSE_ENDRING),
     );
@@ -74,7 +76,7 @@ describe("ReferatEndreTest", () => {
 
   it("forhåndsviser endret referat", async () => {
     renderEndreReferat(dialogmoteMedFerdigstiltReferat);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     await clickButton("Forhåndsvisning");
 
@@ -98,14 +100,13 @@ describe("ReferatEndreTest", () => {
 
   it("endrer ferdigstilling av dialogmote ved submit av skjema", async () => {
     renderEndreReferat(dialogmoteMedFerdigstiltReferat);
-    passSkjemaInput();
+    await passSkjemaInput();
     const expectedSendtDato = new Date();
     await clickButton("Lagre og send");
+    await userEvent.click(
+      screen.getByRole("button", { name: bekreftTexts.bekreft, hidden: true }),
+    );
 
-    const endringFerdigstillMutation = queryClient
-      .getMutationCache()
-      .getAll()
-      .pop();
     const expectedEndringFerdigstilling = {
       narmesteLederNavn: narmesteLederNavn,
       situasjon: moteTekster.situasjonTekst,
@@ -117,9 +118,14 @@ describe("ReferatEndreTest", () => {
       document: expectedEndretReferatDocument(expectedSendtDato),
       andreDeltakere: [],
     };
-    expect(endringFerdigstillMutation?.state.variables).to.deep.equal(
-      expectedEndringFerdigstilling,
-    );
+    await waitFor(() => {
+      const endretReferat = queryClient
+        .getMutationCache()
+        .getAll()
+        .map((mutation) => mutation.state.variables)
+        .find((variables) => typeof variables === "object");
+      expect(endretReferat).to.deep.equal(expectedEndringFerdigstilling);
+    });
   });
 });
 
@@ -135,17 +141,17 @@ const renderEndreReferat = (dialogmote: DialogmoteDTO) => {
   );
 };
 
-const passSkjemaInput = () => {
+const passSkjemaInput = async () => {
   const begrunnelseInput = getTextInput("Årsaken til at referatet må endres");
   const situasjonInput = getTextInput("Situasjon og muligheter");
   const konklusjonInput = getTextInput("Konklusjon");
   const arbeidstakerInput = getTextInput("Arbeidstakerens oppgave:");
   const arbeidsgiverInput = getTextInput("Arbeidsgiverens oppgave:");
   const veilederInput = getTextInput("Veilederens oppgave (valgfri):");
-  changeTextInput(begrunnelseInput, moteTekster.begrunnelseEndring);
-  changeTextInput(situasjonInput, moteTekster.situasjonTekst);
-  changeTextInput(konklusjonInput, moteTekster.konklusjonTekst);
-  changeTextInput(arbeidstakerInput, moteTekster.arbeidstakersOppgave);
-  changeTextInput(arbeidsgiverInput, moteTekster.arbeidsgiversOppgave);
-  changeTextInput(veilederInput, moteTekster.veiledersOppgave);
+  await changeTextInput(begrunnelseInput, moteTekster.begrunnelseEndring);
+  await changeTextInput(situasjonInput, moteTekster.situasjonTekst);
+  await changeTextInput(konklusjonInput, moteTekster.konklusjonTekst);
+  await changeTextInput(arbeidstakerInput, moteTekster.arbeidstakersOppgave);
+  await changeTextInput(arbeidsgiverInput, moteTekster.arbeidsgiversOppgave);
+  await changeTextInput(veilederInput, moteTekster.veiledersOppgave);
 };

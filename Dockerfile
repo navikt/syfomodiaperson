@@ -1,4 +1,5 @@
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:22-slim
+ARG NODE_VERSION
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:${NODE_VERSION}-slim
 WORKDIR /syfomodiaperson
 
 COPY package.json ./

@@ -10,8 +10,8 @@ import {
 import { MeldingDTO } from "@/data/behandlerdialog/behandlerdialogTypes";
 import {
   addWeeks,
-  tilDatoMedManedNavn,
-  tilLesbarDatoMedArUtenManedNavn,
+  formatDateWithMonthName,
+  formatNumericDate,
 } from "@/utils/datoUtils";
 
 export const expectedTilleggsopplysningerDocument = (
@@ -76,7 +76,7 @@ export const expectedPaminnelseDocument = (
   },
   {
     texts: [
-      `Vi viser til tidligere forespørsel av ${tilLesbarDatoMedArUtenManedNavn(
+      `Vi viser til tidligere forespørsel av ${formatNumericDate(
         opprinneligMelding.tidspunkt,
       )} angående din pasient.`,
     ],
@@ -121,7 +121,7 @@ export const expectedLegeerklaringDocument = (
   },
   {
     texts: [
-      `For å kunne behandle din pasient sin sak ber vi om svar så fort som mulig og innen ${tilDatoMedManedNavn(
+      `For å kunne behandle din pasient sin sak ber vi om svar så fort som mulig og innen ${formatDateWithMonthName(
         addWeeks(new Date(), 3),
       )} (tre uker). Nav kan gi forlenget frist.`,
     ],

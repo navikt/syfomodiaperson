@@ -16,6 +16,7 @@ import { useTildeltOppfolgingsenhetHistorikk } from "@/hooks/historikk/useTildel
 import { useKartleggingssporsmalHistorikk } from "@/hooks/historikk/useKartleggingssporsmalHistorikk";
 import { useUtenlandsoppholdHistorikk } from "@/hooks/historikk/useUtenlandsoppholdHistorikk.ts";
 import { useUnntaksvurderingHistorikk } from "./useUnntaksvurderingHistorikk";
+import { useBistandsbehovHistorikk } from "@/hooks/historikk/useBistandsbehovHistorikk";
 
 export interface HistorikkEvents {
   isLoading: boolean;
@@ -43,6 +44,7 @@ export function useHistorikk(): HistorikkEvents {
   const kartleggingssporsmalHistorikk = useKartleggingssporsmalHistorikk();
   const utenlandsoppholdHistorikk = useUtenlandsoppholdHistorikk();
   const unntaksvurderingHistorikk = useUnntaksvurderingHistorikk();
+  const bistandsbehovHistorikk = useBistandsbehovHistorikk();
 
   const historikk: HistorikkEvents[] = [
     motebehovHistorikk,
@@ -62,6 +64,7 @@ export function useHistorikk(): HistorikkEvents {
     kartleggingssporsmalHistorikk,
     unntaksvurderingHistorikk,
     utenlandsoppholdHistorikk,
+    bistandsbehovHistorikk,
   ];
 
   return {

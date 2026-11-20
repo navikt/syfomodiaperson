@@ -83,7 +83,7 @@ const ferdigstiltMote: DialogmoteDTO = {
         {
           svarType: SvarType.KOMMER,
         },
-        MotedeltakerVarselType.NYTT_TID_STED,
+        MotedeltakerVarselType.ENDRET,
       ),
     ],
   },
@@ -101,7 +101,7 @@ const ferdigstiltMote: DialogmoteDTO = {
         {
           svarType: SvarType.KOMMER,
         },
-        MotedeltakerVarselType.NYTT_TID_STED,
+        MotedeltakerVarselType.ENDRET,
       ),
     ],
   },

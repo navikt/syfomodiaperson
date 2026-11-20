@@ -7,7 +7,7 @@ import {
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import {
   Brevmal,
   getForhandsvarselTexts,
@@ -35,7 +35,7 @@ export const getUnntakDocument = (
     vurderingGjelder,
     {
       texts: [
-        `Det ble vurdert unntak fra aktivitetskravet den ${tilDatoMedManedNavn(
+        `Det ble vurdert unntak fra aktivitetskravet den ${formatDateWithMonthName(
           new Date(),
         )}. Årsak: ${unntakVurderingArsakTexts[arsak]}.`,
       ],
@@ -56,7 +56,7 @@ export const getIkkeAktuellDocument = (
     vurderingGjelder,
     {
       texts: [
-        `Det ble vurdert at aktivitetskravet ikke er aktuelt den ${tilDatoMedManedNavn(
+        `Det ble vurdert at aktivitetskravet ikke er aktuelt den ${formatDateWithMonthName(
           new Date(),
         )}. Årsak: ${ikkeAktuellVurderingArsakTexts[arsak]}.`,
       ],
@@ -77,7 +77,7 @@ export const getOppfyltDocument = (
     vurderingGjelder,
     {
       texts: [
-        `Det ble vurdert at aktivitetskravet er oppfylt den ${tilDatoMedManedNavn(
+        `Det ble vurdert at aktivitetskravet er oppfylt den ${formatDateWithMonthName(
           new Date(),
         )}. Årsak: ${oppfyltVurderingArsakTexts[arsak]}.`,
       ],
@@ -224,7 +224,7 @@ export function innstillingOmStansDocument(beskrivelse: string) {
     vurderingGjelder,
     {
       texts: [
-        `Nav har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
+        `Nav har stanset sykepengene dine fra og med ${formatDateWithMonthName(
           new Date(),
         )}.`,
       ],

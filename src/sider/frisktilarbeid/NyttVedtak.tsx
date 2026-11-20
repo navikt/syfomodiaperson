@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  Alert,
+  LocalAlert,
   BodyShort,
   Box,
   Button,
@@ -53,14 +53,14 @@ export default function NyttVedtak({
   return (
     <>
       {notification && isNotificationVisible && (
-        <Alert
-          variant={"success"}
-          className="mb-4"
-          closeButton
-          onClose={() => setIsNotificationVisible(false)}
-        >
-          {notification.message}
-        </Alert>
+        <LocalAlert status="success" className="mb-4">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+            <LocalAlert.CloseButton
+              onClick={() => setIsNotificationVisible(false)}
+            />
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       {isExistingVedtak && <VedtakInfoPanel vedtak={vedtak} className="mb-2" />}
       <Box

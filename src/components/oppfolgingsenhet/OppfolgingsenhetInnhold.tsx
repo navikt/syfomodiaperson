@@ -1,5 +1,5 @@
 import {
-  Alert,
+  LocalAlert,
   BodyShort,
   Button,
   Heading,
@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { Buildings2Icon } from "@navikt/aksel-icons";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import AppSpinner from "@/components/AppSpinner";
 import { ApiErrorException } from "@/api/errors";
@@ -61,7 +61,13 @@ export default function OppfolgingsenhetInnhold({ modalRef }: Props) {
 
   if (!behandlendeenhet) {
     return (
-      <Alert variant={"error"}>{text.errorIngenInfoOmBehandlendeEnhet}</Alert>
+      <LocalAlert status="error">
+        <LocalAlert.Header>
+          <LocalAlert.Title>
+            {text.errorIngenInfoOmBehandlendeEnhet}
+          </LocalAlert.Title>
+        </LocalAlert.Header>
+      </LocalAlert>
     );
   }
 
@@ -79,7 +85,7 @@ export default function OppfolgingsenhetInnhold({ modalRef }: Props) {
           <Spacer />
           {behandlendeenhet?.oppfolgingsenhetDTO && (
             <div>
-              {`${text.endret}: ${tilLesbarDatoMedArUtenManedNavn(
+              {`${text.endret}: ${formatNumericDate(
                 behandlendeenhet.oppfolgingsenhetDTO.createdAt,
               )}`}
             </div>

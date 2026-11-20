@@ -1,9 +1,9 @@
-import { Alert } from "@navikt/ds-react";
+import { LocalAlert } from "@navikt/ds-react";
 import { SaveFile } from "../../img/ImageComponents";
 import {
   addDays,
   showTimeIncludingSeconds,
-  tilLesbarDatoUtenArstall,
+  formatDateWithoutYear,
 } from "@/utils/datoUtils";
 
 interface Props {
@@ -20,14 +20,16 @@ export function DraftSaveStatus({ isSaveError, savedTime }: Props) {
   return (
     <>
       {isSaveError && (
-        <Alert variant="error" size="small">
-          {texts.saveFailed}
-        </Alert>
+        <LocalAlert status="error" size="small">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.saveFailed}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       )}
       {!isSaveError && savedTime && (
         <div className="mb-2 font-ax-bold flex gap-2">
           <img src={SaveFile} alt="saved" />
-          <span>{`${texts.saved} ${tilLesbarDatoUtenArstall(
+          <span>{`${texts.saved} ${formatDateWithoutYear(
             addDays(savedTime, 7),
           )} ${showTimeIncludingSeconds(savedTime)}`}</span>
         </div>

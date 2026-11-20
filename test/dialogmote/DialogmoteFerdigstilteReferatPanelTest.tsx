@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { DialogmoteFerdigstilteReferatPanel } from "@/sider/dialogmoter/components/DialogmoteFerdigstilteReferatPanel";
 
 import {
@@ -12,17 +12,17 @@ import {
   DialogmoteStatus,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { getButton } from "../testUtils";
-import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   daysFromToday,
-  tilDatoMedManedNavnOgKlokkeslett,
-  tilLesbarDatoMedArstall,
+  formatDateTime,
+  formatDateWithYear,
 } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { VIRKSOMHET_PONTYPANDY } from "@/mocks/common/mockConstants.ts";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks.ts";
+import { renderWithRouter } from "../testRouterUtils";
 
 let queryClient: QueryClient;
 
@@ -54,14 +54,13 @@ const ferdigstiltDialogmoteTwoMonthsAgo: DialogmoteDTO = {
 const renderDialogmoteFerdigstilteReferatPanel = (
   ferdigstilteMoter: DialogmoteDTO[],
 ) =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <DialogmoteFerdigstilteReferatPanel
-          ferdigstilteMoter={ferdigstilteMoter}
-        />
-      </MemoryRouter>
+      <DialogmoteFerdigstilteReferatPanel
+        ferdigstilteMoter={ferdigstilteMoter}
+      />
     </QueryClientProvider>,
+    "*",
   );
 
 describe("DialogmoteFerdigstilteReferatPanel", () => {
@@ -121,10 +120,10 @@ describe("DialogmoteFerdigstilteReferatPanel", () => {
     const referater = screen.getAllByRole("listitem");
     expect(referater).to.have.length(2);
     expect(referater[0].textContent).to.equal(
-      `Endret referat, sendt ${tilLesbarDatoMedArstall(today)}`,
+      `Endret referat, sendt ${formatDateWithYear(today)}`,
     );
     expect(referater[1].textContent).to.equal(
-      `Referat, sendt ${tilLesbarDatoMedArstall(yesterday)}`,
+      `Referat, sendt ${formatDateWithYear(yesterday)}`,
     );
   });
   it("viser frist for å endre referat", () => {
@@ -137,11 +136,7 @@ describe("DialogmoteFerdigstilteReferatPanel", () => {
     renderDialogmoteFerdigstilteReferatPanel([ferdigstiltDialogmote]);
 
     const expectedFrist = dayjs(yesterday).add(30, "days");
-    expect(
-      screen.getByText(
-        `${fristText} ${tilDatoMedManedNavnOgKlokkeslett(expectedFrist)}`,
-      ),
-    );
+    expect(screen.getByText(`${fristText} ${formatDateTime(expectedFrist)}`));
   });
   it("viser arbeidsgivers virksomhetsnavn", () => {
     const ferdigstiltDialogmote: DialogmoteDTO = {

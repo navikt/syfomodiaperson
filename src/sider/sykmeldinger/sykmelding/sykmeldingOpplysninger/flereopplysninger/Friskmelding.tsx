@@ -1,5 +1,5 @@
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import { BodyShort, Checkbox, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -44,7 +44,7 @@ export default function Friskmelding(friskmeldingProps: Props) {
             {texts.returArbeidsgiverDato}
           </Heading>
           <BodyShort size="small">
-            {tilLesbarDatoMedArstall(
+            {formatDateWithYear(
               sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver,
             )}
           </BodyShort>
@@ -65,7 +65,7 @@ export default function Friskmelding(friskmeldingProps: Props) {
               {texts.returUsikkerDato}
             </Heading>
             <BodyShort size="small">
-              {tilLesbarDatoMedArstall(
+              {formatDateWithYear(
                 sykmelding.friskmelding.tilbakemeldingReturArbeid,
               )}
             </BodyShort>
@@ -83,7 +83,7 @@ export default function Friskmelding(friskmeldingProps: Props) {
                 {texts.returUtenArbeidsgiverDato}
               </Heading>
               <BodyShort size="small">
-                {tilLesbarDatoMedArstall(
+                {formatDateWithYear(
                   sykmelding.friskmelding
                     .utenArbeidsgiverAntarTilbakeIArbeidDato,
                 )}
@@ -102,7 +102,7 @@ export default function Friskmelding(friskmeldingProps: Props) {
               {texts.returUtenArbeidsgiverUsikkerDato}
             </Heading>
             <BodyShort size="small">
-              {tilLesbarDatoMedArstall(
+              {formatDateWithYear(
                 sykmelding.friskmelding.utenArbeidsgiverTilbakemelding,
               )}
             </BodyShort>

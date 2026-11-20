@@ -32,7 +32,7 @@ type VarselOpts = {
   varselType:
     | MotedeltakerVarselType.INNKALT
     | MotedeltakerVarselType.AVLYST
-    | MotedeltakerVarselType.NYTT_TID_STED;
+    | MotedeltakerVarselType.ENDRET;
   uuid: string;
   svar?: VarselSvarDTO;
 };
@@ -111,7 +111,7 @@ const createVarsel = ({
         ],
       };
     }
-    case MotedeltakerVarselType.NYTT_TID_STED: {
+    case MotedeltakerVarselType.ENDRET: {
       return {
         uuid: uuid + 5,
         createdAt: dayjs().subtract(5, "days").toISOString(),
@@ -157,7 +157,7 @@ export const createDialogmote = (
           svarType: SvarType.KOMMER_IKKE,
         },
         uuid,
-        varselType: MotedeltakerVarselType.NYTT_TID_STED,
+        varselType: MotedeltakerVarselType.ENDRET,
       }),
       digitalt: false,
     },
@@ -165,7 +165,7 @@ export const createDialogmote = (
       ...createVarsel({
         svar: undefined,
         uuid,
-        varselType: MotedeltakerVarselType.NYTT_TID_STED,
+        varselType: MotedeltakerVarselType.ENDRET,
       }),
       digitalt: false,
     },
@@ -191,7 +191,7 @@ export const createDialogmote = (
           svarType: SvarType.NYTT_TID_STED,
         },
         uuid,
-        varselType: MotedeltakerVarselType.NYTT_TID_STED,
+        varselType: MotedeltakerVarselType.ENDRET,
       }),
       status: "",
     },
@@ -203,7 +203,7 @@ export const createDialogmote = (
           svarType: SvarType.KOMMER,
         },
         uuid,
-        varselType: MotedeltakerVarselType.NYTT_TID_STED,
+        varselType: MotedeltakerVarselType.ENDRET,
       }),
       status: "",
     },
@@ -384,7 +384,7 @@ export const dialogmoteStatusEndringMock: DialogmoteStatusEndringDTO[] = [
     createdAt: addDays(new Date(), -7),
     dialogmoteId: 1,
     dialogmoteOpprettetAv: VEILEDER_IDENT_DEFAULT,
-    status: DialogmoteStatus.NYTT_TID_STED,
+    status: DialogmoteStatus.ENDRET,
     statusEndringOpprettetAv: VEILEDER_IDENT_DEFAULT,
   },
   {

@@ -1,7 +1,7 @@
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import SykmeldingPerioder from "./SykmeldingPerioder";
 import { Egenmeldingsdager } from "./Egenmeldingsdager";
-import { BodyLong, Heading } from "@navikt/ds-react";
+import { BodyLong, BodyShort, Heading } from "@navikt/ds-react";
 
 const texts = {
   diagnose: "Diagnose",
@@ -33,7 +33,9 @@ export function KoronaSykmeldingOpplysninger({ sykmelding }: Props) {
                 <Heading size="xsmall" level="3" className="mb-1">
                   {texts.diagnose}
                 </Heading>
-                <p>{sykmelding.diagnose.hoveddiagnose.diagnose}</p>
+                <BodyShort>
+                  {sykmelding.diagnose.hoveddiagnose.diagnose}
+                </BodyShort>
               </div>
               <div>
                 <Heading size="xsmall" level="3" className="mb-1">

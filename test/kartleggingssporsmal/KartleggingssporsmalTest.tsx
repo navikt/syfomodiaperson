@@ -24,10 +24,11 @@ import {
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { appRoutePath } from "@/AppRouter";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import {
   changeTextInput,
   clickButton,
+  clickRadio,
   getButton,
   getTextInput,
   queryButton,
@@ -37,14 +38,22 @@ import {
   stubVurderSvarError,
 } from "../stubs/stubIsmeroppfolging";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { draftQueryKeys } from "@/hooks/useDraftQuery";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { generateUUID } from "@/utils/utils";
+import { mockServer } from "../setup";
+import { delay, http, HttpResponse } from "msw";
+import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { mockUnleashTogglesOffResponse } from "@/mocks/unleashMocks.ts";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks.ts";
 import { ToggleNames } from "@/data/unleash/unleash_types.ts";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock.ts";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
-import { daysFromToday } from "@/utils/datoUtils.ts";
+import {
+  addWeeks,
+  daysFromToday,
+  formatNumericDate,
+} from "@/utils/datoUtils.ts";
 import {
   kartleggingssporsmalFlervalgFritekstV3Answered,
   kartleggingssporsmalFlervalgV1Answered,
@@ -160,20 +169,61 @@ describe("Kartleggingssporsmal", () => {
     expect(screen.queryByText("Den sykmeldte har ikke svart")).to.exist;
     expect(screen.queryByText("Spørsmålene ble sendt", { exact: false })).to
       .exist;
-    expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
-      .exist;
+    expect(
+      screen.queryByRole("link", {
+        name: /Slik ser spørsmålene ut for den sykmeldte/,
+      }),
+    ).to.not.exist;
     expect(
       screen.queryByText("Ved manglende svar vil vi automatisk sende", {
         exact: false,
       }),
     ).to.exist;
     expect(
-      screen.queryByText("Svarene fra den sykmeldte skal", {
-        exact: false,
-      }),
+      screen.queryByText(
+        "Svarene skal hjelpe deg å tidlig identifisere sykmeldte med risiko for langtidsfravær eller fare for å falle ut av arbeidslivet.",
+      ),
     ).to.exist;
 
     expect(queryButton("Lagre vurdering, fjern oppgaven")).to.not.exist;
+  });
+
+  it("Sykmeldt is kandidat and shows syketilfellehistorikk", () => {
+    mockKartleggingssporsmalKandidat(
+      kartleggingIsKandidatAndReceivedQuestions,
+      ARBEIDSTAKER_DEFAULT.personIdent,
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Sykefraværhistorikk",
+      }),
+    ).to.exist;
+
+    const historikk = screen.getByRole("heading", {
+      name: "Sykefraværhistorikk",
+    });
+    const container = historikk.closest("section") ?? historikk.parentElement!;
+    const scoped = within(container);
+
+    const currentTilfelleStart = addWeeks(new Date(), -40);
+    const currentTilfelleEnd = addWeeks(new Date(), 20);
+
+    expect(
+      scoped.getByText(
+        `${formatNumericDate(currentTilfelleStart)} - ${formatNumericDate(currentTilfelleEnd)}`,
+      ),
+    ).to.exist;
+    expect(scoped.getByText("21.02.2020 - 10.12.2020")).to.exist;
+    expect(scoped.getByText("06.06.2019 - 21.01.2020")).to.exist;
+
+    expect(scoped.getAllByText("(48 uker)").length).to.equal(2);
+    expect(scoped.getByText("(25 uker)")).to.exist;
+
+    expect(scoped.getByText("R28")).to.exist;
+    expect(scoped.getAllByAltText("Medisinskrin").length).to.be.greaterThan(0);
   });
 
   it("Sykmeldt is kandidat, but was not varslet (kandidat pre-pilot)", () => {
@@ -195,6 +245,26 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
   });
 
+  it("venter med å vise siden til kontaktinformasjon er hentet", () => {
+    mockKartleggingssporsmalKandidat(
+      kartleggingIsKandidatAndReceivedQuestions,
+      ARBEIDSTAKER_DEFAULT.personIdent,
+    );
+    queryClient.removeQueries({
+      queryKey: brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+    });
+    mockServer.use(
+      http.get(`*${SYFOPERSON_ROOT}/person/kontaktinformasjon`, async () => {
+        await delay("infinite");
+        return HttpResponse.json(kontaktinformasjonMock);
+      }),
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(screen.queryByText("Den sykmeldte har ikke svart")).to.not.exist;
+  });
+
   it("Sykmeldt is kandidat, is reservert, and has not answered questions", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingIsKandidatAndReceivedQuestions,
@@ -214,8 +284,11 @@ describe("Kartleggingssporsmal", () => {
     expect(screen.getByText("Den sykmeldte har ikke svart")).to.exist;
     expect(screen.getByText("Spørsmålene ble sendt", { exact: false })).to
       .exist;
-    expect(screen.getByText("Slik ser spørsmålene ut for den sykmeldte")).to
-      .exist;
+    expect(
+      screen.queryByRole("link", {
+        name: /Slik ser spørsmålene ut for den sykmeldte/,
+      }),
+    ).to.not.exist;
     expect(
       screen.getByText(
         "Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar.",
@@ -243,8 +316,13 @@ describe("Kartleggingssporsmal", () => {
       .exist;
     expect(screen.queryByText("Spørsmålene ble sendt", { exact: false })).to
       .exist;
-    expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
-      .exist;
+    expect(
+      screen
+        .getByRole("link", {
+          name: /Slik ser spørsmålene ut for den sykmeldte/,
+        })
+        .getAttribute("href"),
+    ).to.equal("https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal");
     expect(screen.getAllByRole("radiogroup").length).toBeGreaterThan(0);
 
     expect(
@@ -288,9 +366,9 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
 
     expect(
-      screen.queryByText("Svarene fra den sykmeldte skal", {
-        exact: false,
-      }),
+      screen.queryByText(
+        "Svarene skal hjelpe deg å tidlig identifisere sykmeldte med risiko for langtidsfravær eller fare for å falle ut av arbeidslivet.",
+      ),
     ).to.exist;
     expect(screen.queryByText("Utdrag fra sykefraværet")).to.exist;
 
@@ -369,21 +447,82 @@ describe("Kartleggingssporsmal", () => {
       .exist;
 
     expect(
-      screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}`),
+      screen.queryByText(
+        `Oppgaven er behandlet av ${VEILEDER_DEFAULT.fulltNavn()}`,
+      ),
     ).to.exist;
+    expect(screen.queryByText("Vurderingen er lagret")).to.not.exist;
 
     expect(
       screen.queryByText(
-        `Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging`,
+        `Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging`,
       ),
     ).to.exist;
 
-    expect(screen.getByDisplayValue("Dette er en begrunnelse for vurderingen."))
-      .to.exist;
-    expect(getTextInput("Begrunnelse (valgfritt)")).to.have.property(
-      "readOnly",
-      true,
-    );
+    expect(screen.queryByText(`Dette er en begrunnelse for vurderingen.`)).to
+      .exist;
+  });
+
+  describe("§ 14a-vurdering text", () => {
+    const vurdertRisikoText =
+      "Det er vurdert risiko for langtidsfravær. Da kan det være aktuelt å gjøre en § 14a-vurdering i";
+
+    beforeEach(() => {
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1Answered,
+        kartleggingssporsmalVurderingFerdigbehandlet.kandidatUuid,
+      );
+    });
+
+    it("is shown when ferdigbehandlet with vurdert risiko for langtidsfravær", () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingssporsmalVurderingFerdigbehandlet,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(screen.getByText(vurdertRisikoText, { exact: false })).to.exist;
+    });
+
+    it("is hidden when ferdigbehandlet without vurdert risiko for langtidsfravær", () => {
+      const vurdering = kartleggingssporsmalVurderingFerdigbehandlet.vurdering;
+      mockKartleggingssporsmalKandidat(
+        {
+          ...kartleggingssporsmalVurderingFerdigbehandlet,
+          vurdering: vurdering && {
+            ...vurdering,
+            vurderingAlternativ: "IKKE_RISIKO_FOR_LANGTIDSFRAVAR",
+          },
+        },
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(screen.queryByText(vurdertRisikoText, { exact: false })).to.not
+        .exist;
+    });
+
+    it("is hidden before vurdering is saved, even when risiko is selected", async () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1Answered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
+
+      renderKartleggingssporsmal();
+
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
+
+      expect(screen.queryByText(vurdertRisikoText, { exact: false })).to.not
+        .exist;
+    });
   });
 
   describe("Evaluate answers to kartleggingsspørsmål with vurdering", () => {
@@ -417,13 +556,40 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      await screen
-        .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-        )
-        .click();
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
       await clickButton("Lagre vurdering, fjern oppgaven");
-      expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
+      expect(await screen.findByText("Oppgaven er behandlet av Vetle Veileder"))
+        .to.exist;
+      expect(
+        screen.getByRole("heading", {
+          name: (name) => name.endsWith("Vurderingen er lagret"),
+        }),
+      ).to.exist;
+    });
+
+    it("Success message can be closed", async () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1Answered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
+      stubDefaultIsmeroppfolging();
+      renderKartleggingssporsmal();
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
+      await clickButton("Lagre vurdering, fjern oppgaven");
+      await screen.findByText("Oppgaven er behandlet av Vetle Veileder");
+
+      await clickButton("Lukk");
+
+      expect(screen.queryByText("Vurderingen er lagret")).to.not.exist;
+      expect(screen.getByText("Oppgaven er behandlet av Vetle Veileder")).to
         .exist;
     });
 
@@ -440,11 +606,9 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      await screen
-        .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-        )
-        .click();
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
       await clickButton("Lagre vurdering, fjern oppgaven");
       expect(
         await screen.findByText(
@@ -453,87 +617,43 @@ describe("Kartleggingssporsmal", () => {
       ).to.exist;
     });
 
-    describe("Begrunnelse field visibility", () => {
-      it("is shown regardless of selected alternativ when answers indicate risk", async () => {
-        mockKartleggingssporsmalKandidat(
-          kartleggingIsKandidatAndAnsweredQuestions,
+    it("Begrunnelse is shown before any alternativ is selected", () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1LowRiskAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
+    });
+
+    it("Begrunnelse is prefilled from saved draft", () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1LowRiskAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
+      queryClient.setQueryData(
+        draftQueryKeys.draft(
+          "kartleggingssporsmal-vurdering",
           ARBEIDSTAKER_DEFAULT.personIdent,
-        );
-        mockKartleggingssporsmalSvar(
-          kartleggingssporsmalFlervalgV1Answered,
-          kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
-        );
+        ),
+        () => ({ begrunnelse: "Mellomlagret tekst" }),
+      );
 
-        renderKartleggingssporsmal();
+      renderKartleggingssporsmal();
 
-        expect(
-          screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
-        ).to.not.exist;
-
-        await screen
-          .getByLabelText(
-            "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
-          )
-          .click();
-
-        expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
-
-        await screen
-          .getByLabelText(
-            "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-          )
-          .click();
-
-        expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
-      });
-
-      it("is hidden when answers do not indicate risk and IKKE_RISIKO_FOR_LANGTIDSFRAVAR is selected", async () => {
-        mockKartleggingssporsmalKandidat(
-          kartleggingIsKandidatAndAnsweredQuestions,
-          ARBEIDSTAKER_DEFAULT.personIdent,
-        );
-        mockKartleggingssporsmalSvar(
-          kartleggingssporsmalFlervalgV1LowRiskAnswered,
-          kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
-        );
-
-        renderKartleggingssporsmal();
-
-        expect(
-          screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
-        ).to.not.exist;
-
-        await screen
-          .getByLabelText(
-            "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
-          )
-          .click();
-
-        expect(
-          screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
-        ).to.not.exist;
-      });
-
-      it("is shown when answers do not indicate risk but RISIKO_FOR_LANGTIDSFRAVAR is selected", async () => {
-        mockKartleggingssporsmalKandidat(
-          kartleggingIsKandidatAndAnsweredQuestions,
-          ARBEIDSTAKER_DEFAULT.personIdent,
-        );
-        mockKartleggingssporsmalSvar(
-          kartleggingssporsmalFlervalgV1LowRiskAnswered,
-          kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
-        );
-
-        renderKartleggingssporsmal();
-
-        await screen
-          .getByLabelText(
-            "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-          )
-          .click();
-
-        expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
-      });
+      expect(
+        (getTextInput("Begrunnelse (valgfritt)") as HTMLTextAreaElement).value,
+      ).to.equal("Mellomlagret tekst");
     });
 
     it("Begrunnelse is optional, and submitting without one succeeds", async () => {
@@ -549,17 +669,15 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      await screen
-        .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-        )
-        .click();
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
       expect(
         (getTextInput("Begrunnelse (valgfritt)") as HTMLTextAreaElement).value,
       ).to.equal("");
       await clickButton("Lagre vurdering, fjern oppgaven");
-      expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
-        .exist;
+      expect(await screen.findByText("Oppgaven er behandlet av Vetle Veileder"))
+        .to.exist;
     });
 
     it("Submitting a begrunnelse longer than 200 characters shows error message", async () => {
@@ -574,12 +692,13 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      await screen
-        .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-        )
-        .click();
-      changeTextInput(getTextInput("Begrunnelse (valgfritt)"), "a".repeat(201));
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
+      await changeTextInput(
+        getTextInput("Begrunnelse (valgfritt)"),
+        "a".repeat(201),
+      );
       await clickButton("Lagre vurdering, fjern oppgaven");
 
       expect(

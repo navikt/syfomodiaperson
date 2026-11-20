@@ -11,13 +11,15 @@ import { useSettDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useSettD
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
-  Alert,
+  InfoCard,
+  BodyShort,
   Box,
   Button,
   Radio,
   RadioGroup,
   Textarea,
 } from "@navikt/ds-react";
+import { InformationSquareIcon } from "@navikt/aksel-icons";
 
 const texts = {
   noBrev: "Det blir ikke sendt ut varsel eller brev til den sykmeldte.",
@@ -62,10 +64,12 @@ export default function DialogmoteIkkeAktuellSkjema() {
 
   return (
     <Box background="default" padding="space-24">
-      <Alert variant="info" size="small" className="p-4 mb-4">
-        {texts.noBrev}
-      </Alert>
-      <p>{texts.infoKandidatlist}</p>
+      <InfoCard data-color="info" size="small" className="mb-4">
+        <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+          {texts.noBrev}
+        </InfoCard.Message>
+      </InfoCard>
+      <BodyShort>{texts.infoKandidatlist}</BodyShort>
       <form onSubmit={handleSubmit(onSubmit)}>
         {settDialogmoteikkeaktuell.isError && (
           <SkjemaInnsendingFeil error={settDialogmoteikkeaktuell.error} />

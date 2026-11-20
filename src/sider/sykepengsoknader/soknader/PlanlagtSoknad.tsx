@@ -1,9 +1,6 @@
 import { ReactElement } from "react";
 import dayjs from "dayjs";
-import {
-  tilLesbarDatoMedArstall,
-  tilLesbarPeriodeMedArstall,
-} from "@/utils/datoUtils";
+import { formatDateWithYear, formatDateRangeWithYear } from "@/utils/datoUtils";
 import {
   Soknadstatus,
   SykepengesoknadDTO,
@@ -30,7 +27,7 @@ interface Props {
 }
 
 export default function PlanlagtSoknad({ soknad }: Props): ReactElement {
-  const soknadTomDato = tilLesbarDatoMedArstall(
+  const soknadTomDato = formatDateWithYear(
     dayjs(soknad.tom).add(1, "days").toDate(),
   );
   const soknadStatusText = textSoknadStatus(soknad.status);
@@ -61,9 +58,7 @@ export default function PlanlagtSoknad({ soknad }: Props): ReactElement {
         <BodyShort size="small">{soknad.arbeidsgiver.navn}</BodyShort>
       )}
       <BodyShort size="small">
-        {texts.gjelderPerioden(
-          tilLesbarPeriodeMedArstall(soknad.fom, soknad.tom),
-        )}
+        {texts.gjelderPerioden(formatDateRangeWithYear(soknad.fom, soknad.tom))}
       </BodyShort>
     </Box>
   );

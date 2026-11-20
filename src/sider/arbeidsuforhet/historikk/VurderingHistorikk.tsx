@@ -9,7 +9,7 @@ import {
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { Paragraph } from "@/components/Paragraph";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import { VisBrev } from "@/components/VisBrev";
 import {
   Sykepengestopp,
@@ -56,7 +56,7 @@ const getButtonText = (type: VurderingType): string => {
 const VurderingHistorikkItem = ({ vurdering }: VurderingHistorikkItemProps) => {
   const { type, arsak, begrunnelse, createdAt, veilederident } = vurdering;
   const { data: veilederinfo } = useVeilederInfoQuery(veilederident);
-  const header = `${typeTexts[type]} - ${tilDatoMedManedNavn(createdAt)}`;
+  const header = `${typeTexts[type]} - ${formatDateWithMonthName(createdAt)}`;
   return (
     <Accordion.Item>
       <Accordion.Header>{header}</Accordion.Header>

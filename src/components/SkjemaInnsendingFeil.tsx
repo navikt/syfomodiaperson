@@ -1,6 +1,5 @@
 import { ApiErrorException, defaultErrorTexts, ErrorType } from "@/api/errors";
-
-import { Alert, HStack } from "@navikt/ds-react";
+import { LocalAlert, HStack, VStack } from "@navikt/ds-react";
 
 interface Props {
   error: unknown;
@@ -34,10 +33,14 @@ export function SkjemaInnsendingFeil({
 }: Props) {
   const message = resolveErrorMessage(error, defaultErrorMsgOverride);
   return (
-    <HStack className={"my-2"}>
-      <Alert variant="error" size="small" contentMaxWidth={false}>
-        {message}
-      </Alert>
+    <HStack className="my-1">
+      <VStack className="w-full">
+        <LocalAlert status="error" size="small">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{message}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
+      </VStack>
     </HStack>
   );
 }

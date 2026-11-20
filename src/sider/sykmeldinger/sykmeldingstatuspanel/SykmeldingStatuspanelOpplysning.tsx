@@ -2,10 +2,7 @@ import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import {
-  tilLesbarDatoMedArstall,
-  tilLesbarPeriodeMedArstall,
-} from "@/utils/datoUtils";
+import { formatDateWithYear, formatDateRangeWithYear } from "@/utils/datoUtils";
 import { BodyLong, BodyShort, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -79,7 +76,7 @@ export function SendtDato({ sykmelding }: SendtDatoProps) {
         {tittel}
       </Heading>
       <BodyShort size="small">
-        {tilLesbarDatoMedArstall(sykmelding.sendtdato)}
+        {formatDateWithYear(sykmelding.sendtdato)}
       </BodyShort>
     </div>
   );
@@ -134,9 +131,7 @@ export function SykmeldingopplysningFravaersperioder({
       sykmelding.sporsmal.fravaersperioder.length > 0 ? (
         <ul className="m-0 pl-6">
           {sykmelding.sporsmal.fravaersperioder?.map((p, index) => {
-            return (
-              <li key={index}>{tilLesbarPeriodeMedArstall(p.fom, p.tom)}</li>
-            );
+            return <li key={index}>{formatDateRangeWithYear(p.fom, p.tom)}</li>;
           })}
         </ul>
       ) : (

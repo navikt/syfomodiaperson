@@ -4,7 +4,7 @@ import {
   MotedeltakerVarselType,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { HStack, Label } from "@navikt/ds-react";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import { ArbeidsgiverSvar } from "@/sider/dialogmoter/components/svar/ArbeidsgiverSvar";
 import { ArbeidstakerSvar } from "@/sider/dialogmoter/components/svar/ArbeidstakerSvar";
 import { BehandlerSvar } from "@/sider/dialogmoter/components/svar/BehandlerSvar";
@@ -21,7 +21,9 @@ type SortableVarsel = Pick<
 const getEndringVarslerSortedAsc = <T extends SortableVarsel>(varsler: T[]) =>
   varsler
     .filter(
-      ({ varselType }) => varselType == MotedeltakerVarselType.NYTT_TID_STED,
+      ({ varselType }) =>
+        varselType === MotedeltakerVarselType.ENDRET ||
+        varselType === MotedeltakerVarselType.NYTT_TID_STED,
     )
     .sort(byCreatedAtAsc);
 
@@ -43,7 +45,7 @@ export function MoteSvarHistorikkEndringer({ dialogmote }: Props) {
     <div>
       {endringVarslerArbeidsgiver.map((arbeidgiverVarsel, index) => (
         <div key={index} className="mt-4">
-          <Label size="small">{`Endret tid/sted sendt ${tilDatoMedManedNavn(
+          <Label size="small">{`Endret tid/sted sendt ${formatDateWithMonthName(
             arbeidgiverVarsel.createdAt,
           )} - svar:`}</Label>
           <HStack gap="space-16">

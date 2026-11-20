@@ -21,7 +21,7 @@ import {
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { getButton } from "../testUtils";
-import { daysFromToday, tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { daysFromToday, formatDateWithMonthName } from "@/utils/datoUtils";
 import userEvent from "@testing-library/user-event";
 import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
 import {
@@ -125,16 +125,16 @@ describe("VurderingHistorikk", () => {
       const vurderingButtons = getAccordionButtons();
 
       expect(vurderingButtons[0].textContent).to.contain(
-        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`,
+        `Oppfylt - ${formatDateWithMonthName(oppfyltCreated)}`,
       );
       expect(vurderingButtons[1].textContent).to.contain(
-        `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`,
+        `Forhåndsvarsel - ${formatDateWithMonthName(forhandsvarselCreated)}`,
       );
       expect(vurderingButtons[2].textContent).to.contain(
-        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`,
+        `Ikke aktuell - ${formatDateWithMonthName(ikkeAktuellCreated)}`,
       );
       expect(vurderingButtons[3].textContent).to.contain(
-        `Innstilling om avslag - ${tilDatoMedManedNavn(avslagCreated)}`,
+        `Innstilling om avslag - ${formatDateWithMonthName(avslagCreated)}`,
       );
     });
 
@@ -142,7 +142,7 @@ describe("VurderingHistorikk", () => {
       renderVurderingHistorikk([oppfylt]);
 
       const vurderingButton = getButton(
-        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`,
+        `Oppfylt - ${formatDateWithMonthName(oppfyltCreated)}`,
       );
 
       await userEvent.click(vurderingButton);
@@ -159,7 +159,7 @@ describe("VurderingHistorikk", () => {
       renderVurderingHistorikk([ikkeAktuell]);
 
       const vurderingButton = getButton(
-        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`,
+        `Ikke aktuell - ${formatDateWithMonthName(ikkeAktuellCreated)}`,
       );
 
       await userEvent.click(vurderingButton);

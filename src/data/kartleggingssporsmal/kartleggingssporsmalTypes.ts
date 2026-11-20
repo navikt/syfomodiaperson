@@ -39,6 +39,35 @@ export interface KartleggingssporsmalSvarResponseDTO {
   createdAt: Date;
 }
 
+export type FerdigbehandletKandidat =
+  KartleggingssporsmalKandidatResponseDTO & {
+    vurdering: KartleggingssporsmalKandidatVurderingResponseDTO;
+  };
+
+export type FerdigbehandletAndVurdertKandidat = FerdigbehandletKandidat & {
+  vurdering: KartleggingssporsmalKandidatVurderingResponseDTO & {
+    vurderingAlternativ: VurderingAlternativ;
+  };
+};
+
+export function isFerdigbehandlet(
+  kartleggingssporsmalKandidat?: KartleggingssporsmalKandidatResponseDTO,
+): kartleggingssporsmalKandidat is FerdigbehandletKandidat {
+  return (
+    kartleggingssporsmalKandidat?.status === KandidatStatus.FERDIGBEHANDLET
+  );
+}
+
+export function isFerdigbehandletAndVurdert(
+  kartleggingssporsmalKandidat?: KartleggingssporsmalKandidatResponseDTO,
+): kartleggingssporsmalKandidat is FerdigbehandletAndVurdertKandidat {
+  return (
+    isFerdigbehandlet(kartleggingssporsmalKandidat) &&
+    !!kartleggingssporsmalKandidat.vurdering &&
+    !!kartleggingssporsmalKandidat.vurdering.vurderingAlternativ
+  );
+}
+
 /*
  * Det vil finnes kandidater i prod som ikke ble varslet ettersom de ble kandidater før vi startet pilotering.
  * Dermed vil noen kandidater ha status KANDIDAT uten varsletAt, og det burde ikke vises til veileder at disse har fått spørsmålene når de ikke har det.

@@ -9,10 +9,7 @@ import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
-import {
-  daysFromToday,
-  tilLesbarPeriodeMedArUtenManednavn,
-} from "@/utils/datoUtils";
+import { daysFromToday, formatNumericDateRange } from "@/utils/datoUtils";
 import { behandlendeEnhetMockResponse } from "@/mocks/syfobehandlendeenhet/behandlendeEnhetMock";
 import { PersonkortVisning } from "@/components/personkort/PersonkortVisning";
 
@@ -60,7 +57,7 @@ describe("PersonkortVisning", () => {
   it("Viser sikkerhetstiltak med beskrivelse og gyldighet dersom visning for Sikkerhetstiltak er valgt", () => {
     const tenDaysAgo = daysFromToday(-10);
     const inTenDays = daysFromToday(10);
-    const expectedGyldighetText = `Gyldig: ${tilLesbarPeriodeMedArUtenManednavn(
+    const expectedGyldighetText = `Gyldig: ${formatNumericDateRange(
       tenDaysAgo,
       inTenDays,
     )}`;

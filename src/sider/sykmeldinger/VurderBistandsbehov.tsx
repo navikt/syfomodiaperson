@@ -1,9 +1,9 @@
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import {
   BodyShort,
+  Heading,
   Box,
   Button,
-  Heading,
   HelpText,
   Link,
   Tag,
@@ -22,6 +22,8 @@ const texts = {
   link: "Gå til sykmeldingen",
   linkDuplicate: "Gå til tidligere sykmelding med duplikate felter",
   behandleOppgaveText: "Jeg har vurdert behovet, fjern oppgaven.",
+  annetArbeidPaSikt:
+    "Pasienten kan være aktuell for friskmelding til arbeidsformidling.",
 };
 
 interface Props {
@@ -41,6 +43,8 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
   const tiltakNav = sykmelding?.arbeidsevne.tiltakNAV;
   const tiltakAndre = sykmelding?.arbeidsevne.tiltakAndre;
   const bistandsbehov = sykmelding?.meldingTilNav.navBoerTaTakISakenBegrunnelse;
+  const isAnnetArbeidPaSikt =
+    sykmelding?.friskmelding.antarReturAnnenArbeidsgiver === true;
   return (
     !!sykmelding && (
       <Box background="default" className="mb-4 p-4">
@@ -65,6 +69,11 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
           </div>
         </div>
         <blockquote>
+          {isAnnetArbeidPaSikt && (
+            <BodyShort className="whitespace-pre-line">
+              {texts.annetArbeidPaSikt}
+            </BodyShort>
+          )}
           {tiltakNav && (
             <BodyShort className="whitespace-pre-line">
               Felt 7.2 (Forslag til tiltak i regi fra Nav): {tiltakNav}
@@ -114,7 +123,7 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
                   className={"w-6 h-6"}
                 />
               </span>
-              <p>Ferdigbehandlet</p>
+              <BodyShort>Ferdigbehandlet</BodyShort>
             </div>
           )}
         </div>

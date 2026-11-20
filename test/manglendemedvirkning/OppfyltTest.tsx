@@ -95,7 +95,7 @@ describe("Manglendemedvirkning Oppfylt", () => {
 
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      changeTextInput(begrunnelseInput, enBegrunnelse);
+      await changeTextInput(begrunnelseInput, enBegrunnelse);
       await clickButton("Forhåndsvisning");
 
       const forhandsvisningVurdering = screen.getAllByRole("dialog", {
@@ -120,7 +120,7 @@ describe("Manglendemedvirkning Oppfylt", () => {
       renderOppfyltSide();
 
       const begrunnelseInput = getTextInput(begrunnelseLabel);
-      changeTextInput(begrunnelseInput, enBegrunnelse);
+      await changeTextInput(begrunnelseInput, enBegrunnelse);
 
       await clickButton("Lagre");
 

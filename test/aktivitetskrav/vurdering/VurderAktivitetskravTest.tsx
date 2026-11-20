@@ -34,10 +34,7 @@ import {
   UnntakVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { beforeEach, describe, expect, it } from "vitest";
-import {
-  daysFromToday,
-  tilLesbarPeriodeMedArUtenManednavn,
-} from "@/utils/datoUtils";
+import { daysFromToday, formatNumericDateRange } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import {
   getIkkeAktuellDocument,
@@ -48,7 +45,7 @@ import {
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { stubVurderAktivitetskravApi } from "../../stubs/stubIsaktivitetskrav";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { NotificationContext } from "@/context/notification/NotificationContext";
+import { NotificationProvider } from "@/context/notification/NotificationContext";
 import {
   aktivitetskrav,
   buttonTexts,
@@ -72,11 +69,9 @@ const renderVurderAktivitetskrav = (aktivitetskravDto: AktivitetskravDTO) =>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <NotificationContext.Provider
-          value={{ notification: undefined, setNotification: () => void 0 }}
-        >
+        <NotificationProvider>
           <VurderAktivitetskrav aktivitetskrav={aktivitetskravDto} />
-        </NotificationContext.Provider>
+        </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
   );
@@ -122,10 +117,7 @@ describe("VurderAktivitetskrav", () => {
     );
     renderVurderAktivitetskrav(aktivitetskrav);
 
-    const periodeText = tilLesbarPeriodeMedArUtenManednavn(
-      tilfelleStart,
-      tilfelleEnd,
-    );
+    const periodeText = formatNumericDateRange(tilfelleStart, tilfelleEnd);
     expect(screen.getByText(`Gjelder tilfelle ${periodeText}`)).to.exist;
   });
 
@@ -136,7 +128,7 @@ describe("VurderAktivitetskrav", () => {
       await clickTab(tabTexts["OPPFYLT"]);
       const tooLongBeskrivelse = getTooLongText(1000);
       const beskrivelseInput = getTextInput("Begrunnelse");
-      changeTextInput(beskrivelseInput, tooLongBeskrivelse);
+      await changeTextInput(beskrivelseInput, tooLongBeskrivelse);
       await clickButton("Lagre");
 
       expect(await screen.findByText("Vennligst angi årsak")).to.exist;
@@ -153,7 +145,7 @@ describe("VurderAktivitetskrav", () => {
       const arsakRadioButton = screen.getByText("Friskmeldt");
       fireEvent.click(arsakRadioButton);
       const beskrivelseInput = getTextInput("Begrunnelse");
-      changeTextInput(beskrivelseInput, enLangBeskrivelse);
+      await changeTextInput(beskrivelseInput, enLangBeskrivelse);
       await clickButton("Lagre");
 
       await waitFor(() => {
@@ -184,7 +176,7 @@ describe("VurderAktivitetskrav", () => {
       await clickTab(tabTexts["UNNTAK"]);
       const tooLongBeskrivelse = getTooLongText(1000);
       const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(beskrivelseInput, tooLongBeskrivelse);
+      await changeTextInput(beskrivelseInput, tooLongBeskrivelse);
       await clickButton("Lagre");
 
       expect(await screen.findByText("Vennligst angi årsak")).to.exist;
@@ -205,7 +197,7 @@ describe("VurderAktivitetskrav", () => {
       const arsakRadioButton = screen.getByText("Tilrettelegging ikke mulig");
       fireEvent.click(arsakRadioButton);
       const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(beskrivelseInput, enLangBeskrivelse);
+      await changeTextInput(beskrivelseInput, enLangBeskrivelse);
       await clickButton("Lagre");
 
       await waitFor(() => {
@@ -242,7 +234,7 @@ describe("VurderAktivitetskrav", () => {
         name: "Beskrivelse",
         hidden: true,
       });
-      changeTextInput(beskrivelseInput, tooLongBeskrivelse);
+      await changeTextInput(beskrivelseInput, tooLongBeskrivelse);
       fireEvent.click(lagreButton);
 
       expect(await screen.findByText("1 tegn for mye")).to.exist;
@@ -292,14 +284,14 @@ describe("VurderAktivitetskrav", () => {
         name: "Beskrivelse",
         hidden: true,
       });
-      changeTextInput(beskrivelseInput, enKortBeskrivelse);
+      await changeTextInput(beskrivelseInput, enKortBeskrivelse);
 
       const today = dayjs();
       const datoInput = screen.getByRole("textbox", {
         name: "Avventer til",
         hidden: true,
       });
-      changeTextInput(datoInput, today.format("DD.MM.YYYY"));
+      await changeTextInput(datoInput, today.format("DD.MM.YYYY"));
 
       const avventModal = screen.getAllByRole("dialog", { hidden: true })[0];
       const lagreButton = within(avventModal).getByRole("button", {
@@ -325,6 +317,11 @@ describe("VurderAktivitetskrav", () => {
           expectedVurdering,
         );
       });
+      expect(
+        await screen.findByRole("heading", {
+          name: /Det er vurdert å avvente aktivitetskravet for/,
+        }),
+      ).to.exist;
     });
   });
   describe("Ikke oppfylt", () => {
@@ -349,7 +346,7 @@ describe("VurderAktivitetskrav", () => {
         name: "Begrunnelse",
         hidden: true,
       });
-      changeTextInput(beskrivelseInputs, tooLongBeskrivelse);
+      await changeTextInput(beskrivelseInputs, tooLongBeskrivelse);
       const lagreButton = within(ikkeAktuellModal).getByRole("button", {
         name: "Lagre",
         hidden: true,
@@ -387,7 +384,7 @@ describe("VurderAktivitetskrav", () => {
         name: "Begrunnelse",
         hidden: true,
       });
-      changeTextInput(beskrivelseInputs, enLangBeskrivelse);
+      await changeTextInput(beskrivelseInputs, enLangBeskrivelse);
 
       const lagreButton = within(ikkeAktuellModal).getByRole("button", {
         name: "Lagre",
@@ -457,11 +454,11 @@ describe("VurderAktivitetskrav", () => {
         name: "Innstillingen gjelder fra",
         hidden: true,
       });
-      changeTextInput(datoInput, today.format("DD.MM.YYYY"));
+      await changeTextInput(datoInput, today.format("DD.MM.YYYY"));
 
       const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
       const beskrivelse = "Flott beskrivelse";
-      changeTextInput(beskrivelseInput, beskrivelse);
+      await changeTextInput(beskrivelseInput, beskrivelse);
 
       await clickButton("Send");
 
@@ -483,6 +480,9 @@ describe("VurderAktivitetskrav", () => {
   });
 
   describe("Vurdering alert", () => {
+    const vurderingAlertHeading =
+      /Avventer|Forhåndsvarsel er sendt|Aktivitetskravet må vurderes/;
+
     it("viser alert for aktivitetskrav med siste vurdering AVVENT", () => {
       const aktivitetskravAvvent = createAktivitetskrav(
         daysFromToday(20),
@@ -491,12 +491,13 @@ describe("VurderAktivitetskrav", () => {
       );
       renderVurderAktivitetskrav(aktivitetskravAvvent);
 
-      expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
+      expect(screen.getByRole("heading", { name: /Avventer/ })).to.exist;
     });
     it("viser alert for aktivitetskrav med siste vurdering FORHANDSVARSEL", () => {
       renderVurderAktivitetskrav(forhandsvarselAktivitetskrav);
 
-      expect(screen.getByRole("img", { name: "Informasjon" })).to.exist;
+      expect(screen.getByRole("heading", { name: /Forhåndsvarsel er sendt/ }))
+        .to.exist;
     });
     it("viser ingen alert når aktivitetskrav har siste vurdering OPPFYLT", () => {
       const aktivitetskravOppfylt = createAktivitetskrav(
@@ -506,16 +507,14 @@ describe("VurderAktivitetskrav", () => {
       );
       renderVurderAktivitetskrav(aktivitetskravOppfylt);
 
-      expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
-      expect(screen.queryByRole("img", { name: "Suksess" })).to.not.exist;
-      expect(screen.queryByRole("img", { name: "Info" })).to.not.exist;
+      expect(screen.queryByRole("heading", { name: vurderingAlertHeading })).to
+        .not.exist;
     });
     it("viser ingen alert når aktivitetskrav har ingen vurdering", () => {
       renderVurderAktivitetskrav(aktivitetskrav);
 
-      expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
-      expect(screen.queryByRole("img", { name: "Suksess" })).to.not.exist;
-      expect(screen.queryByRole("img", { name: "Info" })).to.not.exist;
+      expect(screen.queryByRole("heading", { name: vurderingAlertHeading })).to
+        .not.exist;
     });
   });
 });

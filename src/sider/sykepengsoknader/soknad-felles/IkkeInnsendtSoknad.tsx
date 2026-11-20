@@ -1,5 +1,5 @@
 import TilbakeTilSoknader from "./TilbakeTilSoknader";
-import { Box, Heading } from "@navikt/ds-react";
+import { Box, Heading, BodyShort } from "@navikt/ds-react";
 
 const texts = {
   title: "Søknaden er ikke sendt ennå",
@@ -15,7 +15,7 @@ export default function IkkeInnsendtSoknad() {
           {texts.title}
         </Heading>
         <hr className="bg-amber-500/75 w-8 h-px border-0" />
-        <p>{texts.content}</p>
+        <BodyShort>{texts.content}</BodyShort>
       </Box>
       <TilbakeTilSoknader />
     </>

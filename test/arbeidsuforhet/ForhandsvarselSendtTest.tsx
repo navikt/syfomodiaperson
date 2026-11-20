@@ -5,7 +5,7 @@ import { screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import ForhandsvarselSendt from "@/sider/arbeidsuforhet/ForhandsvarselSendt";
 import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { addWeeks, tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { addWeeks, formatNumericDate } from "@/utils/datoUtils";
 import { createForhandsvarsel } from "./arbeidsuforhetTestData";
 import { arbeidsuforhetPath } from "@/AppRouter";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
@@ -73,12 +73,11 @@ describe("ForhandsvarselSendt", () => {
           "Velg Ikke aktuell-knappen hvis personen har blitt friskmeldt eller fått vedtak om § 8-5 Friskmelding til arbeidsformidling etter at forhåndsvarselet ble sendt ut.",
         ),
       ).to.exist;
-      expect(screen.getByText(tilLesbarDatoMedArUtenManedNavn(new Date()))).to
-        .exist;
+      expect(screen.getByText(formatNumericDate(new Date()))).to.exist;
       expect(screen.getByRole("img", { name: "bjelleikon" })).to.exist;
       expect(
         screen.getByText(
-          `Fristen for forhåndsvarselet som ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
+          `Fristen for forhåndsvarselet som ble sendt ut ${formatNumericDate(
             createdAt,
           )} er gått ut. Trykk på Innstilling om avslag-knappen hvis vilkårene i § 8-4 ikke er oppfylt og rett til videre sykepenger skal avslås.`,
         ),

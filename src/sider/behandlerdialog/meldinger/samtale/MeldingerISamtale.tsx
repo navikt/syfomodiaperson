@@ -99,11 +99,11 @@ export function MeldingTilBehandler({ melding }: MeldingInnholdProps) {
   const { data: oppgaver } = usePersonoppgaverQuery();
   const behandleOppgave = useBehandlePersonoppgave();
   const ubesvartMeldingOppgave = getAllUbehandledePersonOppgaver(
-    oppgaver,
+    oppgaver ?? [],
     PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART,
   ).find((oppgave) => oppgave.referanseUuid === melding.uuid);
   const avvistMelding = melding.status?.type === MeldingStatusType.AVVIST;
-  const avvistOppgave = oppgaver
+  const avvistOppgave = (oppgaver ?? [])
     .filter(
       (oppgave) =>
         oppgave.type === PersonOppgaveType.BEHANDLERDIALOG_MELDING_AVVIST,

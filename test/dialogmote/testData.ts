@@ -8,7 +8,7 @@ import {
   MotedeltakerVarselType,
   VarselSvarDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import {
   ARBEIDSTAKER_DEFAULT,
@@ -150,7 +150,9 @@ export const dialogmoteMedVarsel = (
 });
 
 const moteSted = "Sted for møtet";
-const moteDato = toDatePrettyPrint(dayjs(new Date()).add(1, "days")) as string;
+const moteDato = formatShortDateOrUndefined(
+  dayjs(new Date()).add(1, "days"),
+) as string;
 const moteDatoAsISODateString = dayjs(moteDato, "DD.MM.YYYY").format(
   "YYYY-MM-DD",
 );
@@ -160,7 +162,7 @@ const moteVideoLink = "https://video.nav.no";
 const arbeidsgivernavn = VIRKSOMHET_PONTYPANDY.virksomhetsnavn;
 
 const endretSted = "Videomøte endret";
-const endretDato = toDatePrettyPrint(
+const endretDato = formatShortDateOrUndefined(
   dayjs(new Date()).add(2, "days"),
 ) as string;
 const endretKlokkeslett = "09:00";

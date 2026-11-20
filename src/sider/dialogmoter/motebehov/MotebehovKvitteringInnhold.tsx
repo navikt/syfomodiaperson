@@ -1,23 +1,44 @@
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import {
-  MotebehovIkkeSvartImage,
-  MotebehovKanIkkeImage,
-  MotebehovKanImage,
-} from "../../../../img/ImageComponents";
 import { Box, HStack, VStack } from "@navikt/ds-react";
 import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
+import {
+  CheckmarkCircleFillIcon,
+  MinusCircleFillIcon,
+  QuestionmarkCircleFillIcon,
+} from "@navikt/aksel-icons";
 
-const setSvarIkon = (deltakerOnskerMote?: boolean): string => {
+const setSvarIkon = (
+  deltakerOnskerMote: boolean | undefined,
+  ikonAltTekst: string,
+): ReactNode => {
   switch (deltakerOnskerMote) {
     case true: {
-      return MotebehovKanImage;
+      return (
+        <CheckmarkCircleFillIcon
+          title={ikonAltTekst}
+          fontSize="1.7rem"
+          color="var(--ax-bg-success-strong)"
+        />
+      );
     }
     case false: {
-      return MotebehovKanIkkeImage;
+      return (
+        <MinusCircleFillIcon
+          title={ikonAltTekst}
+          fontSize="1.7rem"
+          color="var(--ax-bg-danger-strong)"
+        />
+      );
     }
     default: {
-      return MotebehovIkkeSvartImage;
+      return (
+        <QuestionmarkCircleFillIcon
+          title={ikonAltTekst}
+          fontSize="1.7rem"
+          color="var(--ax-bg-neutral-strong)"
+        />
+      );
     }
   }
 };
@@ -38,13 +59,9 @@ export default function MotebehovKvitteringInnhold({
   return (
     <Box padding={"space-12"}>
       <VStack gap={"space-16"}>
-        <HStack>
-          <img
-            src={setSvarIkon(deltakerOnskerMote)}
-            alt={ikonAltTekst}
-            className="mr-4 w-6"
-          />
-          <div>{tekst}</div>
+        <HStack gap={"space-12"} align="center">
+          {setSvarIkon(deltakerOnskerMote, ikonAltTekst)}
+          {tekst}
         </HStack>
         {motebehov && (
           <Skjemasvar formSnapshot={motebehov.formValues.formSnapshot} />

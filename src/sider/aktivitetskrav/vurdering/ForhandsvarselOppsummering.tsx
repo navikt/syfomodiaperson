@@ -1,6 +1,6 @@
 import { AktivitetskravVarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { BodyShort, Heading, Panel, Tag } from "@navikt/ds-react";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { VisBrev } from "@/components/VisBrev";
 import { ExpandableBlockquote } from "@/components/ExpandableBlockquote";
 
@@ -18,7 +18,7 @@ export default function ForhandsvarselOppsummering({
   varsel,
   beskrivelse,
 }: Props) {
-  const fristDato = tilLesbarDatoMedArUtenManedNavn(varsel.svarfrist);
+  const fristDato = formatNumericDate(varsel.svarfrist);
 
   return (
     <Panel className="flex flex-col mb-4 gap-4 px-8">

@@ -41,21 +41,22 @@ export default function BehandleBehandlerdialogSvarOppgaveKnapp() {
   const { data: tilganger } = useGetTilgangQuery();
 
   const { data: personOppgaver } = usePersonoppgaverQuery();
-  const hasBehandlerDialogSvarOppgaver = personOppgaver.some(
+  const hasBehandlerDialogSvarOppgaver = (personOppgaver ?? []).some(
     (p) => p.type === PersonOppgaveType.BEHANDLERDIALOG_SVAR,
   );
   const fnr = useValgtPersonident();
   const behandleAllPersonoppgaver = useBehandleAllPersonoppgaver();
   const isBehandlet = !hasUbehandletPersonoppgave(
-    personOppgaver,
+    personOppgaver ?? [],
     PersonOppgaveType.BEHANDLERDIALOG_SVAR,
   );
   const behandlePersonOppgaveRequestDTO: BehandlePersonoppgaveRequestDTO = {
     personIdent: fnr,
     personOppgaveType: PersonOppgaveType.BEHANDLERDIALOG_SVAR,
   };
-  const sisteBehandledeOppgave =
-    getSisteBehandledeBehandlerdialogSvarOppgave(personOppgaver);
+  const sisteBehandledeOppgave = getSisteBehandledeBehandlerdialogSvarOppgave(
+    personOppgaver ?? [],
+  );
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import { http, HttpResponse } from "msw";
@@ -19,7 +19,7 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import {
   mockSoknaderResponse,
@@ -44,6 +44,7 @@ import { mockDraftText } from "@/mocks/draft/mockDraftText.ts";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { generateOppfolgingstilfelle } from "../testDataUtils";
+import { renderWithRouter } from "../testRouterUtils";
 
 let queryClient: QueryClient;
 
@@ -52,29 +53,29 @@ const forbeholdOvrigeVilkarBrevText =
 
 const perioderUtenforTilfelleWarning =
   "En eller flere av periodene det er søkt om ligger utenfor sykmeldingsperioden.";
-const sykepengerIkkeUtbetaltWarning = /Sykepenger er ikke utbetalt\./;
+const sykepengerIkkeUtbetaltWarning = "Sykepenger er ikke utbetalt";
 
 const renderUtenlandsoppholdSoknad = (
   soknadId: string = soknadUtenVedtakMock.soknadId,
   initialPath: string = `${utenlandsoppholdPath}/${soknadId}`,
 ) =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={[initialPath]}>
-        <NotificationProvider>
-          <Routes>
-            <Route
-              path={`${utenlandsoppholdPath}/:utenlandsoppholdSoknadId`}
-              element={<UtenlandsoppholdSoknad draftDebouncedMs={0} />}
-            />
-            <Route
-              path={utenlandsoppholdPath}
-              element={<UtenlandsoppholdSoknader />}
-            />
-          </Routes>
-        </NotificationProvider>
-      </MemoryRouter>
+      <NotificationProvider>
+        <Routes>
+          <Route
+            path={`${utenlandsoppholdPath}/:utenlandsoppholdSoknadId`}
+            element={<UtenlandsoppholdSoknad draftDebouncedMs={0} />}
+          />
+          <Route
+            path={utenlandsoppholdPath}
+            element={<UtenlandsoppholdSoknader />}
+          />
+        </Routes>
+      </NotificationProvider>
     </QueryClientProvider>,
+    "*",
+    [initialPath],
   );
 
 function setOppfolgingstilfeller(
@@ -106,9 +107,12 @@ describe("UtenlandsoppholdSoknad", () => {
     renderUtenlandsoppholdSoknad();
 
     expect(
-      await screen.findByText(
-        "Noe gikk galt ved henting av søknader. Vennligst prøv igjen senere.",
-      ),
+      await screen.findByRole("heading", {
+        name: (name) =>
+          name.endsWith(
+            "Noe gikk galt ved henting av søknader. Vennligst prøv igjen senere.",
+          ),
+      }),
     ).to.exist;
   });
 
@@ -220,16 +224,22 @@ describe("UtenlandsoppholdSoknad", () => {
     await clickButton("Start behandling");
 
     await clickRadio("Innvilget: Godkjenn hele perioden");
-    changeTextInput(getTextInput("Begrunnelse (valgfritt)"), "Draft innvilget");
+    await changeTextInput(
+      getTextInput("Begrunnelse (valgfritt)"),
+      "Draft innvilget",
+    );
 
     await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
-    changeTextInput(
+    await changeTextInput(
       getTextInput("Begrunnelse (obligatorisk)"),
       "Draft delvis innvilget",
     );
 
     await clickRadio("Avslag: Avslå hele perioden");
-    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft avslag");
+    await changeTextInput(
+      getTextInput("Begrunnelse (obligatorisk)"),
+      "Draft avslag",
+    );
 
     await clickRadio("Innvilget: Godkjenn hele perioden");
     expect(await screen.findByText("Draft innvilget")).to.exist;
@@ -327,7 +337,7 @@ describe("UtenlandsoppholdSoknad", () => {
       await screen.findByRole("button", { name: "Se brev og send" });
       await clickRadio("Innvilget: Godkjenn hele perioden");
 
-      changeTextInput(
+      await changeTextInput(
         getTextInput("Begrunnelse (valgfritt)"),
         "Oppholdet hindrer ikke planlagt behandling",
       );
@@ -412,7 +422,7 @@ describe("UtenlandsoppholdSoknad", () => {
       await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
 
       const tomInput = getTextInput("Til og med dato");
-      changeTextInput(tomInput, "05.09.2026");
+      await changeTextInput(tomInput, "05.09.2026");
 
       expect(screen.queryByText("Vennligst angi periode")).to.not.exist;
     });
@@ -428,8 +438,8 @@ describe("UtenlandsoppholdSoknad", () => {
       const fomInput = getTextInput("Fra og med dato");
       const tomInput = getTextInput("Til og med dato");
       // 05.06.2026 - 11.06.2026 krysser hullet 08.06.2026-09.06.2026 mellom soktePerioder
-      changeTextInput(fomInput, "05.09.2026");
-      changeTextInput(tomInput, "11.09.2026");
+      await changeTextInput(fomInput, "05.09.2026");
+      await changeTextInput(tomInput, "11.09.2026");
 
       await screen.findByRole("button", { name: "Se brev og send" });
       await clickButton("Se brev og send");
@@ -462,9 +472,9 @@ describe("UtenlandsoppholdSoknad", () => {
 
       const fomInput = getTextInput("Fra og med dato");
       const tomInput = getTextInput("Til og med dato");
-      changeTextInput(fomInput, "02.09.2026");
-      changeTextInput(tomInput, "05.09.2026");
-      changeTextInput(
+      await changeTextInput(fomInput, "02.09.2026");
+      await changeTextInput(tomInput, "05.09.2026");
+      await changeTextInput(
         getTextInput("Begrunnelse (obligatorisk)"),
         "Vurdering av delvis innvilgelse",
       );
@@ -571,10 +581,10 @@ describe("UtenlandsoppholdSoknad", () => {
         name: "Til og med dato",
       });
       // Begge periodene ligger innenfor 01.09.2026-07.09.2026, men overlapper hverandre
-      changeTextInput(fomInputs[0], "01.09.2026");
-      changeTextInput(tomInputs[0], "05.09.2026");
-      changeTextInput(fomInputs[1], "03.09.2026");
-      changeTextInput(tomInputs[1], "06.09.2026");
+      await changeTextInput(fomInputs[0], "01.09.2026");
+      await changeTextInput(tomInputs[0], "05.09.2026");
+      await changeTextInput(fomInputs[1], "03.09.2026");
+      await changeTextInput(tomInputs[1], "06.09.2026");
 
       await clickButton("Se brev og send");
 
@@ -605,10 +615,10 @@ describe("UtenlandsoppholdSoknad", () => {
         name: "Til og med dato",
       });
       // Perioden matcher nøyaktig soknadUtenVedtakMock sine soktePerioder
-      changeTextInput(fomInputs[0], "01.09.2026");
-      changeTextInput(tomInputs[0], "07.09.2026");
-      changeTextInput(fomInputs[1], "10.09.2026");
-      changeTextInput(tomInputs[1], "12.09.2026");
+      await changeTextInput(fomInputs[0], "01.09.2026");
+      await changeTextInput(tomInputs[0], "07.09.2026");
+      await changeTextInput(fomInputs[1], "10.09.2026");
+      await changeTextInput(tomInputs[1], "12.09.2026");
 
       expect(
         await screen.findByText(
@@ -643,11 +653,11 @@ describe("UtenlandsoppholdSoknad", () => {
       const tomInputs = screen.getAllByRole("textbox", {
         name: "Til og med dato",
       });
-      changeTextInput(fomInputs[0], "02.09.2026");
-      changeTextInput(tomInputs[0], "05.09.2026");
-      changeTextInput(fomInputs[1], "10.09.2026");
-      changeTextInput(tomInputs[1], "12.09.2026");
-      changeTextInput(
+      await changeTextInput(fomInputs[0], "02.09.2026");
+      await changeTextInput(tomInputs[0], "05.09.2026");
+      await changeTextInput(fomInputs[1], "10.09.2026");
+      await changeTextInput(tomInputs[1], "12.09.2026");
+      await changeTextInput(
         getTextInput("Begrunnelse (obligatorisk)"),
         "Vurdering av delvis innvilgelse",
       );
@@ -705,7 +715,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       await clickRadio("Avslag: Avslå hele perioden");
 
-      changeTextInput(
+      await changeTextInput(
         getTextInput("Begrunnelse (obligatorisk)"),
         "Vurdering av avslag",
       );
@@ -768,7 +778,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       await screen.findByRole("button", { name: "Se brev og send" });
       await clickRadio("Avslag: Avslå hele perioden");
-      changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "   ");
+      await changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "   ");
       await clickButton("Se brev og send");
 
       expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;
@@ -799,7 +809,7 @@ describe("UtenlandsoppholdSoknad", () => {
         "I henvendelse til Nav har du gitt beskjed om at du ønsker å trekke søknaden.",
       );
 
-      changeTextInput(
+      await changeTextInput(
         begrunnelseInput,
         "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
       );
@@ -1028,7 +1038,11 @@ describe("UtenlandsoppholdSoknad", () => {
 
       await clickButton("Start behandling");
 
-      expect(await screen.findByText(sykepengerIkkeUtbetaltWarning)).to.exist;
+      expect(
+        await screen.findByRole("heading", {
+          name: sykepengerIkkeUtbetaltWarning,
+        }),
+      ).to.exist;
 
       await clickRadio("Innvilget: Godkjenn hele perioden");
       await clickButton("Se brev og send");
@@ -1070,7 +1084,11 @@ describe("UtenlandsoppholdSoknad", () => {
 
       await clickButton("Start behandling");
 
-      expect(await screen.findByText(sykepengerIkkeUtbetaltWarning)).to.exist;
+      expect(
+        await screen.findByRole("heading", {
+          name: sykepengerIkkeUtbetaltWarning,
+        }),
+      ).to.exist;
 
       await clickRadio("Innvilget: Godkjenn hele perioden");
       await clickButton("Se brev og send");

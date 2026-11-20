@@ -1,30 +1,28 @@
 import { Component, ReactNode } from "react";
 import { ApiError, defaultErrorTexts, ErrorType } from "@/api/errors";
-import { Alert, Link } from "@navikt/ds-react";
+import { Link, LocalAlert } from "@navikt/ds-react";
 
 const texts = {
-  meldFeil: "Meld oss gjerne om feilen her",
+  problemetVedvarer: "Dersom problemet vedvarer,",
+  meldFeil: "meld oss gjerne om feilen her",
 };
 
 const newJiraTicketUrl =
   "https://jira.adeo.no/plugins/servlet/desk/portal/541/create/1401";
 
-interface TextWithJiraLinkProps {
-  children: string;
-}
-
-const TextWithJiraLink = ({ children }: TextWithJiraLinkProps) => {
+function MeldFeil() {
   return (
     <>
-      <span>{children}</span>
-      <Link className="ml-[0.2em]" target="_blank" href={newJiraTicketUrl}>
+      {texts.problemetVedvarer}{" "}
+      <Link target="_blank" href={newJiraTicketUrl}>
         {texts.meldFeil}
       </Link>
+      .
     </>
   );
-};
+}
 
-interface ErrorBoundaryProps {
+interface Props {
   children?: ReactNode;
   apiError?: ApiError | null;
   errorMessage?: string;
@@ -34,8 +32,8 @@ type State = {
   hasError: boolean;
 };
 
-class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
-  constructor(props: ErrorBoundaryProps) {
+class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
   }
@@ -45,29 +43,41 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
   }
 
   render() {
-    //Frontend errors
     if (this.state.hasError) {
       return (
-        <Alert variant={"error"}>
-          <TextWithJiraLink>{defaultErrorTexts.generalError}</TextWithJiraLink>
-        </Alert>
+        <LocalAlert status="error">
+          <LocalAlert.Header>
+            <LocalAlert.Title>
+              {defaultErrorTexts.generalError}
+            </LocalAlert.Title>
+          </LocalAlert.Header>
+          <LocalAlert.Content>
+            <MeldFeil />
+          </LocalAlert.Content>
+        </LocalAlert>
       );
     }
 
-    //API errors
-    if (this.props.apiError) {
-      return (
-        <Alert variant={"error"}>
-          {this.props.errorMessage && <span>{this.props.errorMessage}</span>}
+    const { apiError, errorMessage } = this.props;
+    if (apiError) {
+      const isGeneralError = apiError.type === ErrorType.GENERAL_ERROR;
+      const hasContent = !!errorMessage || isGeneralError;
 
-          {this.props.apiError.type === ErrorType.GENERAL_ERROR ? (
-            <TextWithJiraLink>
-              {this.props.apiError.defaultErrorMsg}
-            </TextWithJiraLink>
-          ) : (
-            this.props.apiError.defaultErrorMsg
+      return (
+        <LocalAlert status="error">
+          <LocalAlert.Header>
+            <LocalAlert.Title>
+              {errorMessage ?? apiError.defaultErrorMsg}
+            </LocalAlert.Title>
+          </LocalAlert.Header>
+          {hasContent && (
+            <LocalAlert.Content>
+              {errorMessage && apiError.defaultErrorMsg}
+              {errorMessage && isGeneralError && " "}
+              {isGeneralError && <MeldFeil />}
+            </LocalAlert.Content>
           )}
-        </Alert>
+        </LocalAlert>
       );
     }
 

@@ -1,5 +1,5 @@
 import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenOppfolgingSvarQuery";
-import { Alert, BodyShort, Label, Loader } from "@navikt/ds-react";
+import { LocalAlert, BodyShort, Label, Loader } from "@navikt/ds-react";
 
 const texts = {
   pending: "Henter spørsmål og svar...",
@@ -15,9 +15,11 @@ export function KandidatFormResponse() {
   }
   if (isError || !data) {
     return (
-      <Alert size="small" inline variant="error">
-        {texts.error}
-      </Alert>
+      <LocalAlert size="small" status="error">
+        <LocalAlert.Header>
+          <LocalAlert.Title>{texts.error}</LocalAlert.Title>
+        </LocalAlert.Header>
+      </LocalAlert>
     );
   }
 

@@ -1,5 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 
 import { beforeEach, describe, expect, it } from "vitest";
 import {
@@ -29,7 +29,7 @@ import {
   addDays,
   addWeeks,
   daysFromToday,
-  tilLesbarDatoMedArUtenManedNavn,
+  formatNumericDate,
 } from "@/utils/datoUtils";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { defaultVedtak } from "@/mocks/isfrisktilarbeid/mockIsfrisktilarbeid";
@@ -46,6 +46,8 @@ import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks.ts";
 import { aapQueryKeys } from "@/data/aap/aapQueryHooks";
 import { createAapStatusMock } from "@/mocks/aap/mockAapSaker";
+import { tiltakQueryKeys } from "@/data/tiltak/tiltakQueryHooks";
+import { createTiltakMock } from "@/mocks/tiltak/mockTiltak";
 
 let queryClient: any;
 
@@ -72,6 +74,33 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.getByText("Egenansatt")).to.exist;
+  });
+
+  it("viser tags som listeelementer i fast rekkefølge", () => {
+    queryClient.setQueryData(
+      diskresjonskodeQueryKeys.diskresjonskode(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => "6",
+    );
+    queryClient.setQueryData(
+      egenansattQueryKeys.egenansatt(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => true,
+    );
+    queryClient.setQueryData(
+      brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({ ...kontaktinformasjonMock, skalHaVarsel: false }),
+    );
+
+    renderPersonkortHeader();
+
+    const tagTexts = within(screen.getByRole("list"))
+      .getAllByRole("listitem")
+      .map((listItem) => listItem.textContent);
+    const expectedOrder = ["Kode 6", "Egenansatt", "Reservert KRR"];
+    expect(
+      tagTexts.filter((text) => expectedOrder.includes(text ?? "")),
+    ).to.deep.equal(expectedOrder);
   });
 
   it("viser ikke 'Egenansatt' når isEgenansatt er false fra API", () => {
@@ -390,10 +419,10 @@ describe("PersonkortHeader", () => {
     expect(screen.getByText("Søknad behandlet tom:")).to.exist;
 
     const expectedMaksdato = dayjs(maksdato).format("DD.MM.YYYY");
-    const expectedUtbetaltTom = tilLesbarDatoMedArUtenManedNavn(
+    const expectedUtbetaltTom = formatNumericDate(
       maksdatoMock.maxDate.utbetalt_tom,
     );
-    const expectedSoknadBehandletTom = tilLesbarDatoMedArUtenManedNavn(
+    const expectedSoknadBehandletTom = formatNumericDate(
       maksdatoMock.maxDate.tom,
     );
 
@@ -496,7 +525,7 @@ describe("PersonkortHeader", () => {
 
     renderPersonkortHeader();
 
-    const expected = tilLesbarDatoMedArUtenManedNavn(utbetaltTomDate);
+    const expected = formatNumericDate(utbetaltTomDate);
     expect(screen.getByText(expected)).to.exist;
   });
 
@@ -600,7 +629,7 @@ describe("PersonkortHeader", () => {
     );
     renderPersonkortHeader();
 
-    expect(screen.getByText("Sikkerhetstiltak")).to.exist;
+    expect(screen.getByText("Sikkerhetstiltak: Fysisk utestengelse")).to.exist;
   });
 
   it("viser under-arbeidsrettet-oppfølging tag når under arbeidsrettet oppfølging", () => {
@@ -892,5 +921,63 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.queryByText("Under vergemål")).not.to.exist;
+  });
+
+  describe("Tiltak", () => {
+    it("viser én tag per aktivt tiltak med tiltakstype", () => {
+      queryClient.setQueryData(
+        tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({
+          tiltak: [
+            createTiltakMock({
+              id: "1",
+              tiltakstypeNavn: "Oppfølging",
+            }),
+            createTiltakMock({
+              id: "2",
+              tiltakstypeNavn: "Arbeidstrening",
+            }),
+          ],
+        }),
+      );
+
+      renderPersonkortHeader();
+
+      expect(screen.getByText("Tiltak: Oppfølging")).to.exist;
+      expect(screen.getByText("Tiltak: Arbeidstrening")).to.exist;
+    });
+
+    it("viser bare én tag når flere tiltak har lik tiltakstype", () => {
+      queryClient.setQueryData(
+        tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({
+          tiltak: [
+            createTiltakMock({
+              id: "1",
+              tiltakstypeNavn: "Oppfølging",
+            }),
+            createTiltakMock({
+              id: "2",
+              tiltakstypeNavn: "Oppfølging",
+            }),
+          ],
+        }),
+      );
+
+      renderPersonkortHeader();
+
+      expect(screen.getAllByText("Tiltak: Oppfølging")).to.have.length(1);
+    });
+
+    it("viser ingen tiltak-tag når personen ikke har aktive tiltak", () => {
+      queryClient.setQueryData(
+        tiltakQueryKeys.aktiveTiltak(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({ tiltak: [] }),
+      );
+
+      renderPersonkortHeader();
+
+      expect(screen.queryByText(/^Tiltak:/)).to.not.exist;
+    });
   });
 });

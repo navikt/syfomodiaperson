@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Heading } from "@navikt/ds-react";
+import { Heading, BodyShort } from "@navikt/ds-react";
 
 interface IconHeaderProps {
   icon: string;
@@ -24,7 +24,11 @@ export const IconHeader = ({
           <Heading level="2" size="medium">
             {header}
           </Heading>
-          {typeof subtitle === "string" ? <p>{subtitle}</p> : subtitle}
+          {typeof subtitle === "string" ? (
+            <BodyShort>{subtitle}</BodyShort>
+          ) : (
+            subtitle
+          )}
         </div>
       </div>
       {headerAction && <div className="ml-4">{headerAction}</div>}

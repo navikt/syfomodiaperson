@@ -30,9 +30,11 @@ import {
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
+import { useNotification } from "@/context/notification/NotificationContext";
 
 const texts = {
   title: "Send forhåndsvarsel",
+  success: "Forhåndsvarselet er sendt til bruker.",
   beskrivelseLabel: "Begrunnelse (obligatorisk)",
   begrunnelseDescription:
     "Begrunnelsen din blir en del av en større brevmal. Åpne forhåndsvisning for å se hele varselet.",
@@ -67,6 +69,7 @@ interface Props {
 export default function ForhandsvarselSkjema({ begrunnelseUtkast }: Props) {
   const personident = useValgtPersonident();
   const sendForhandsvarsel = useSendVurdering<ForhandsvarselVurdering>();
+  const { setNotification } = useNotification();
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
     register,
@@ -132,6 +135,7 @@ export default function ForhandsvarselSkjema({ begrunnelseUtkast }: Props) {
     };
     sendForhandsvarsel.mutate(forhandsvarselRequestDTO, {
       onSuccess: () => {
+        setNotification({ message: texts.success });
         setUtkastSavedTime(undefined);
         debouncedAutoSaveDraft.cancel();
         deleteDraft.mutate(undefined);

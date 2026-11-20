@@ -65,11 +65,11 @@ describe("DialogmoteikkeaktuellSkjema", () => {
 
     const tooLongBeskrivelse = getTooLongText(2000);
     const beskrivelseInput = getTextInput("Beskrivelse (valgfri)");
-    changeTextInput(beskrivelseInput, tooLongBeskrivelse);
+    await changeTextInput(beskrivelseInput, tooLongBeskrivelse);
     const maxLengthErrorMsg = "1 tegn for mye";
     expect(screen.getAllByText(maxLengthErrorMsg)).to.not.be.empty;
 
-    passSkjemaInput(IkkeAktuellArsak.DIALOGMOTE_AVHOLDT, "beskrivelse");
+    await passSkjemaInput(IkkeAktuellArsak.DIALOGMOTE_AVHOLDT, "beskrivelse");
 
     // Feilmeldinger forsvinner
     await waitFor(() => {
@@ -85,9 +85,9 @@ describe("DialogmoteikkeaktuellSkjema", () => {
   it("sett ikke aktuell med kun med obligatorisk verdier fra skjema", async () => {
     renderDialogmoteikkeaktuellSkjema();
 
-    expect(screen.getAllByRole("radio")).to.have.length(5);
+    expect(screen.getAllByRole("radio")).to.have.length(6);
 
-    passSkjemaInput(IkkeAktuellArsak.DIALOGMOTE_AVHOLDT);
+    await passSkjemaInput(IkkeAktuellArsak.DIALOGMOTE_AVHOLDT);
 
     await clickButton(submitButtonText);
     await waitFor(() => {
@@ -107,11 +107,11 @@ describe("DialogmoteikkeaktuellSkjema", () => {
   it("sett ikke aktuell med alle verdier fra skjema", async () => {
     renderDialogmoteikkeaktuellSkjema();
 
-    expect(screen.getAllByRole("radio")).to.have.length(5);
+    expect(screen.getAllByRole("radio")).to.have.length(6);
 
     const beskrivelse = "Dette er en begrunnelse";
 
-    passSkjemaInput(IkkeAktuellArsak.DIALOGMOTE_AVHOLDT, beskrivelse);
+    await passSkjemaInput(IkkeAktuellArsak.DIALOGMOTE_AVHOLDT, beskrivelse);
 
     await clickButton(submitButtonText);
 
@@ -144,7 +144,7 @@ const renderDialogmoteikkeaktuellSkjema = () => {
   );
 };
 
-const passSkjemaInput = (
+const passSkjemaInput = async (
   ikkeaktuellArsak: IkkeAktuellArsak,
   beskrivelse?: string,
 ) => {
@@ -155,6 +155,6 @@ const passSkjemaInput = (
 
   if (beskrivelse) {
     const beskrivelseInput = getTextInput("Beskrivelse (valgfri)");
-    changeTextInput(beskrivelseInput, beskrivelse);
+    await changeTextInput(beskrivelseInput, beskrivelse);
   }
 };
