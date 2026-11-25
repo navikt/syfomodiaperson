@@ -120,6 +120,29 @@ describe("VelgBehandler", () => {
     expect(screen.getByText(behandlerSearchResultMock.fnr)).to.exist;
     expect(screen.getByText(behandlerSearchResultMock.behandlerRef)).to.exist;
   });
+
+  it("viser ikke komma i søkeresultat når behandler har tomt fornavn", async () => {
+    mockServer.use(
+      http.get(`*${ISDIALOGMELDING_ROOT}/behandler/search`, () =>
+        HttpResponse.json([
+          { ...behandlerSokDialogmeldingMock[1], fornavn: "" },
+        ]),
+      ),
+    );
+    renderVelgBehandler();
+    const etternavn = behandlerSokDialogmeldingMock[1].etternavn;
+
+    fireEvent.click(
+      screen.getByRole("radio", { name: searchBehandlerOptionText }),
+    );
+    await changeTextInput(screen.getByRole("searchbox"), "Baker");
+
+    const searchResult = await screen.findByRole("button", {
+      name: new RegExp(etternavn),
+    });
+    expect(searchResult.textContent).to.contain(`${etternavn}:`);
+    expect(searchResult.textContent).to.not.contain(`${etternavn},`);
+  });
 });
 
 const VelgBehandlerWrapper = () => {
