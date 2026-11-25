@@ -54,7 +54,9 @@ const BehandlerSearchResult = ({
           .join(" ");
 
         const behandlerInfo = [
-          `${behandler.etternavn}, ${behandler.fornavn}:`,
+          `${[behandler.etternavn, behandler.fornavn]
+            .filter(Boolean)
+            .join(", ")}:`,
           kontorOgDetaljer,
         ]
           .filter(Boolean)
