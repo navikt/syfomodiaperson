@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import SykmeldingLinkPanel from "./SykmeldingLinkPanel";
+import SykmeldingLinkCard from "./SykmeldingLinkCard";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 
 interface SykmeldingTeasereProps {
@@ -41,7 +41,7 @@ export default function Sykmeldinger({
           <ul className="flex flex-col gap-1 list-none m-0 p-0">
             {sykmeldinger.map((sykmelding, idx) => (
               <li key={idx}>
-                <SykmeldingLinkPanel sykmelding={sykmelding} />
+                <SykmeldingLinkCard sykmelding={sykmelding} />
               </li>
             ))}
           </ul>
