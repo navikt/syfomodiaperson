@@ -5,6 +5,7 @@ import {
   Button,
   Heading,
   Panel,
+  Box,
 } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useCreateAktivitetskrav } from "@/data/aktivitetskrav/useCreateAktivitetskrav";
@@ -117,7 +118,7 @@ export function StartNyVurdering({ aktivitetskrav }: StartNyVurderingProps) {
           </LocalAlert.Header>
         </LocalAlert>
       )}
-      <Panel className="mb-4 flex flex-col p-8">
+      <Box background="default" className="mb-4 flex flex-col p-8">
         <Heading level="2" size="large" className="mb-1">
           {texts.header}
         </Heading>
@@ -142,7 +143,7 @@ export function StartNyVurdering({ aktivitetskrav }: StartNyVurderingProps) {
         >
           {texts.button}
         </Button>
-      </Panel>
+      </Box>
     </>
   );
 }
