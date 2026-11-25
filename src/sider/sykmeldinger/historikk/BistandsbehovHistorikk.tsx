@@ -49,6 +49,7 @@ export default function BistandsbehovHistorikk({
         {isLoading && <BodyShort size="small">{texts.loading}</BodyShort>}
         {isError && <BodyShort size="small">{texts.error}</BodyShort>}
       </div>
+
       {!isLoading && !isError && (
         <Accordion>
           {bistandsbehovOppgaver.map((oppgave) => (
