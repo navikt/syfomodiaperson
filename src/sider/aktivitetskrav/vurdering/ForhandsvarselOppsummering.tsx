@@ -1,5 +1,5 @@
 import { AktivitetskravVarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { BodyShort, Box, Heading, Panel, Tag } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, Tag } from "@navikt/ds-react";
 import { formatNumericDate } from "@/utils/datoUtils";
 import { VisBrev } from "@/components/VisBrev";
 import { ExpandableBlockquote } from "@/components/ExpandableBlockquote";

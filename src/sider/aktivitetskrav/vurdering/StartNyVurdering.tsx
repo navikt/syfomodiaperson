@@ -4,7 +4,6 @@ import {
   BodyShort,
   Button,
   Heading,
-  Panel,
   Box,
 } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
