@@ -48,6 +48,7 @@ import { UtenlandsoppholdSoknad } from "@/sider/utenlandsopphold/Utenlandsopphol
 
 export const appRoutePath = "/sykefravaer";
 
+export const sykmeldingerRoutePath = `${appRoutePath}/sykmeldinger`;
 export const dialogmoteRoutePath = `${appRoutePath}/dialogmote`;
 export const dialogmoteUnntakRoutePath = `${appRoutePath}/dialogmoteunntak`;
 export const dialogmoteIkkeAktuellRoutePath = `${appRoutePath}/dialogmoteikkeaktuell`;
@@ -80,7 +81,7 @@ function AktivBrukerRouter(): ReactElement {
             element={<Nokkelinformasjon />}
           />
 
-          <Route path={`${appRoutePath}/sykmeldinger`}>
+          <Route path={sykmeldingerRoutePath}>
             <Route index element={<SykmeldingerSide />} />
             <Route path=":sykmeldingId" element={<SykmeldingSide />} />
           </Route>
