@@ -1,5 +1,5 @@
 import { AktivitetskravVarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { BodyShort, Heading, Panel, Tag } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, Panel, Tag } from "@navikt/ds-react";
 import { formatNumericDate } from "@/utils/datoUtils";
 import { VisBrev } from "@/components/VisBrev";
 import { ExpandableBlockquote } from "@/components/ExpandableBlockquote";
@@ -21,7 +21,11 @@ export default function ForhandsvarselOppsummering({
   const fristDato = formatNumericDate(varsel.svarfrist);
 
   return (
-    <Panel className="flex flex-col mb-4 gap-4 px-8">
+    <Box
+      className="flex flex-col mb-4 gap-4 px-8"
+      background="default"
+      padding="space-16"
+    >
       <div className="flex flex-row justify-between items-center">
         <Heading size="small" level="3">
           {texts.title}
@@ -38,6 +42,6 @@ export default function ForhandsvarselOppsummering({
       )}
       <VisBrev document={varsel.document} />
       <BodyShort>{texts.merInfo}</BodyShort>
-    </Panel>
+    </Box>
   );
 }
