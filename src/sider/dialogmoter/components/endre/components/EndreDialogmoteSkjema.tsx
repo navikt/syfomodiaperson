@@ -12,7 +12,7 @@ import { useEndreDialogmote } from "@/sider/dialogmoter/hooks/useEndreDialogmote
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { Box, Button, Label, VStack } from "@navikt/ds-react";
+import { Box, Button } from "@navikt/ds-react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
@@ -32,6 +32,7 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 import dayjs from "dayjs";
 import { ApiErrorException } from "@/api/errors";
 import { harEndringer } from "@/utils/dialogmoteUtils";
+import { useAvlysningDocument } from "@/hooks/dialogmote/document/useAvlysningDocument";
 
 export const texts = {
   send: "Send",
@@ -40,6 +41,8 @@ export const texts = {
   begrunnelseArbeidstaker: "Begrunnelse til arbeidstakeren",
   begrunnelseBehandler: "Begrunnelse til behandler",
   fritekstBehandler: "Fritekst til behandler (valgfri)",
+  begrunnelseAvlysningBehandler:
+    "Begrunnelse til behandleren som ikke lenger skal delta",
   forhandsvisningSubtitle: "Endret dialogmøte",
   forhandsvisningArbeidstakerTitle: "Brev til arbeidstakeren",
   forhandsvisningArbeidstakerContentLabel:
@@ -50,12 +53,17 @@ export const texts = {
   forhandsvisningBehandlerTitle: "Brev til behandler",
   forhandsvisningBehandlerContentLabel:
     "Forhåndsvis endring av dialogmøte behandler",
+  forhandsvisningAvlysningBehandlerTitle: "Avlysning til tidligere behandler",
+  forhandsvisningAvlysningBehandlerContentLabel:
+    "Forhåndsvis avlysning til tidligere behandler",
   stedMissing: "Vennligst angi møtested",
   begrunnelseArbeidstakerMissing:
     "Vennligst angi begrunnelse til arbeidstakeren",
   begrunnelseArbeidsgiverMissing:
     "Vennligst angi begrunnelse til nærmeste leder",
   begrunnelseBehandlerMissing: "Vennligst angi begrunnelse til behandler",
+  begrunnelseAvlysningBehandlerMissing:
+    "Vennligst angi begrunnelse til behandleren som ikke lenger skal delta",
   ingenEndring: "Det er ikke gjort noen endringer på dialogmøtet.",
 };
 
@@ -64,6 +72,7 @@ function isBadRequest(error: unknown): boolean {
 }
 
 export const MAX_LENGTH_ENDRE_BEGRUNNELSE = 2000;
+export const MAX_LENGTH_AVLYSNING_BEHANDLER = 500;
 
 interface Props {
   dialogmote: DialogmoteDTO;
@@ -87,6 +96,8 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     getEndreDocumentArbeidsgiver,
     getEndreDocumentBehandler,
   } = useEndreDocument(dialogmote);
+  const { getAvlysningInnkallingDocumentBehandler } =
+    useAvlysningDocument(dialogmote);
   const { toDialogmoteEndringDto } = useSkjemaValuesToDto();
 
   const methods = useForm<EndreSkjemaValues>({
@@ -140,6 +151,12 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
           behandlerKontor: nyBehandler.kontor ?? "",
         },
       };
+      if (behandler && nyBehandler.behandlerRef !== behandler.behandlerRef) {
+        endreDialogmoteDto.avlysningTilGammelBehandler = {
+          begrunnelse: values.begrunnelseAvlysningBehandler ?? "",
+          avlysning: getAvlysningInnkallingDocumentBehandler(values),
+        };
+      }
     }
 
     return endreDialogmoteDto;
@@ -191,14 +208,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
             value={watch("videoLink")}
             error={errors.videoLink?.message}
           />
-          {behandler ? (
-            <VStack>
-              <Label size="small">Behandler</Label>
-              {behandler.behandlerNavn}
-            </VStack>
-          ) : (
-            <DialogmoteEndringBehandler />
-          )}
+          <DialogmoteEndringBehandler currentBehandler={behandler} />
           <div>
             <TextareaField
               {...register("begrunnelseArbeidstaker", {
@@ -243,15 +253,18 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               <TextareaField
                 {...register("fritekstBehandler", {
                   maxLength: MAX_LENGTH_ENDRE_BEGRUNNELSE,
-                  required: behandler
-                    ? texts.begrunnelseBehandlerMissing
-                    : false,
+                  required:
+                    behandler && !watch("nyBehandler")
+                      ? texts.begrunnelseBehandlerMissing
+                      : false,
                 })}
                 value={watch("fritekstBehandler")}
                 error={errors.fritekstBehandler?.message}
                 label={
                   behandler
-                    ? texts.begrunnelseBehandler
+                    ? watch("nyBehandler")
+                      ? texts.fritekstBehandler
+                      : texts.begrunnelseBehandler
                     : texts.fritekstBehandler
                 }
                 maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
@@ -259,14 +272,37 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               <Forhandsvisning
                 contentLabel={texts.forhandsvisningBehandlerContentLabel}
                 getDocumentComponents={() =>
-                  behandler
-                    ? getEndreDocumentBehandler(getValues())
-                    : innkallingDocument.getInnkallingDocumentBehandler({
+                  watch("nyBehandler") || !behandler
+                    ? innkallingDocument.getInnkallingDocumentBehandler({
                         ...getValues(),
                         arbeidsgiver: arbeidsgiver.virksomhetsnummer,
                       })
+                    : getEndreDocumentBehandler(getValues())
                 }
                 title={texts.forhandsvisningBehandlerTitle}
+              />
+            </div>
+          )}
+          {behandler && watch("nyBehandler") && (
+            <div>
+              <TextareaField
+                {...register("begrunnelseAvlysningBehandler", {
+                  maxLength: MAX_LENGTH_AVLYSNING_BEHANDLER,
+                  required: texts.begrunnelseAvlysningBehandlerMissing,
+                })}
+                value={watch("begrunnelseAvlysningBehandler")}
+                error={errors.begrunnelseAvlysningBehandler?.message}
+                label={texts.begrunnelseAvlysningBehandler}
+                maxLength={MAX_LENGTH_AVLYSNING_BEHANDLER}
+              />
+              <Forhandsvisning
+                contentLabel={
+                  texts.forhandsvisningAvlysningBehandlerContentLabel
+                }
+                getDocumentComponents={() =>
+                  getAvlysningInnkallingDocumentBehandler(getValues())
+                }
+                title={texts.forhandsvisningAvlysningBehandlerTitle}
               />
             </div>
           )}

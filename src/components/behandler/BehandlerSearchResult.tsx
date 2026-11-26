@@ -4,12 +4,13 @@ import { useSokBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { capitalizeWord } from "@/utils/stringUtils.ts";
 
-interface BehandlerSearchResultProps {
+interface Props {
   searchRef: MutableRefObject<any>;
   searchText: string;
   setPopoverIsOpen: (value: boolean) => void;
   setSelectedBehandler: (behandler?: BehandlerDTO) => void;
   setSelectedSearchResult: (selectedResult: string) => void;
+  excludedBehandlerRef?: string;
 }
 
 const BehandlerSearchResult = ({
@@ -18,8 +19,12 @@ const BehandlerSearchResult = ({
   setPopoverIsOpen,
   setSelectedBehandler,
   setSelectedSearchResult,
-}: BehandlerSearchResultProps): ReactElement => {
+  excludedBehandlerRef,
+}: Props): ReactElement => {
   const { data: behandlere } = useSokBehandlereQuery(searchText);
+  const availableBehandlere = behandlere.filter(
+    (behandler) => behandler.behandlerRef !== excludedBehandlerRef,
+  );
 
   const updateSearch = (behandler: BehandlerDTO, selectedResult: string) => {
     setSelectedSearchResult(selectedResult);
@@ -31,13 +36,13 @@ const BehandlerSearchResult = ({
     <Popover
       anchorEl={searchRef.current}
       placement="bottom-start"
-      open={behandlere.length > 0 && searchText !== ""}
+      open={availableBehandlere.length > 0 && searchText !== ""}
       onClose={() => null}
       className="w-[50rem] overflow-auto max-h-60"
       offset={8}
       tabIndex={0}
     >
-      {behandlere.map((behandler, index) => {
+      {availableBehandlere.map((behandler, index) => {
         const kontor = !!behandler.kontor ? behandler.kontor : "";
         const address = !!behandler.adresse
           ? capitalizeWord(behandler.adresse)
@@ -64,6 +69,7 @@ const BehandlerSearchResult = ({
         return (
           <Popover.Content key={index} className="p-0">
             <Button
+              type="button"
               variant="tertiary"
               onClick={() => updateSearch(behandler, behandlerInfo)}
               className="w-full flex justify-start text-start text-neutral-800"

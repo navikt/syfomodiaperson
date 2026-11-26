@@ -126,6 +126,7 @@ export interface EndreDialogmoteDTO extends TidStedDto {
     moteDokument: DocumentComponentDto[];
     deltaker?: BehandlerDto;
   };
+  avlysningTilGammelBehandler?: AvlysningDto;
 }
 
 interface BehandlerDto {
@@ -147,7 +148,7 @@ export interface AvlysDialogmoteDTO {
   behandler?: AvlysningDto;
 }
 
-interface AvlysningDto {
+export interface AvlysningDto {
   begrunnelse: string;
   avlysning: DocumentComponentDto[];
 }
