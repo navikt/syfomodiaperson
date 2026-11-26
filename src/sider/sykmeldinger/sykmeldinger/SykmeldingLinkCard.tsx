@@ -17,8 +17,8 @@ import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
 import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const texts = {
-  teaserTekst: "Sykmelding\n",
-  egenmeldtTeaserTekst: "Egenmeldt sykmelding\n",
+  teaserTekst: "Sykmelding",
+  egenmeldtTeaserTekst: "Egenmeldt sykmelding",
   sendt: "Sendt til arbeidsgiver\n",
   utgaatt: "Ikke brukt på nett\n",
   tilSending: "Sender...",
@@ -85,6 +85,11 @@ export default function SykmeldingLinkCard({
   const showPapirLabel = !!sykmelding.papirsykmelding;
   const showUtenlandskLabel = sykmelding.utenlandskSykmelding != null;
   const erViktigInformasjon = erEkstraInformasjonISykmeldingen(sykmelding);
+  const periodeTekst = formatDateRangeWithYear(
+    tidligsteFom(sykmelding.mulighetForArbeid.perioder),
+    senesteTom(sykmelding.mulighetForArbeid.perioder),
+  );
+  const arbeidsgiver = sykmelding.innsendtArbeidsgivernavn;
 
   return (
     <LinkCard size="small">
@@ -94,15 +99,16 @@ export default function SykmeldingLinkCard({
             {sykmelding.egenmeldt
               ? texts.egenmeldtTeaserTekst
               : texts.teaserTekst}
+            <span className="sr-only">
+              {`, ${periodeTekst}`}
+              {arbeidsgiver && `, ${arbeidsgiver}`}
+            </span>
           </Link>
         </LinkCard.Anchor>
       </LinkCard.Title>
       <LinkCard.Description>
         <div className="flex justify-between">
-          {formatDateRangeWithYear(
-            tidligsteFom(sykmelding.mulighetForArbeid.perioder),
-            senesteTom(sykmelding.mulighetForArbeid.perioder),
-          )}
+          {periodeTekst}
           <div className="flex gap-2 items-center">
             {visStatus && (
               <div className="flex gap-1 items-center">
