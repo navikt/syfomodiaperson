@@ -27,6 +27,25 @@ import { DocumentComponentType } from "@/data/documentcomponent/documentComponen
 import { Malform } from "@/context/malform/MalformContext";
 import { addDays } from "@/utils/datoUtils";
 import { DialogmoteStatusEndringDTO } from "@/sider/dialogmoter/types/dialogmoteStatusEndringTypes";
+import { behandlerDoktorLegesen } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
+import { BehandlerType } from "@/data/behandler/BehandlerDTO";
+import { behandlerNavn } from "@/utils/behandlerUtils";
+
+const behandlerDeltakerMock: DialogmotedeltakerBehandlerDTO = {
+  uuid: "a8d1f4c2-3b6e-4f9a-8c12-5e7b9d0a6f34",
+  personIdent: behandlerDoktorLegesen.fnr,
+  behandlerRef: behandlerDoktorLegesen.behandlerRef,
+  behandlerNavn: behandlerNavn({
+    ...behandlerDoktorLegesen,
+    type: BehandlerType.FASTLEGE,
+  }),
+  behandlerKontor: behandlerDoktorLegesen.kontor,
+  behandlerType: BehandlerType.FASTLEGE,
+  type: "BEHANDLER",
+  varselList: [],
+  deltatt: true,
+  mottarReferat: true,
+};
 
 type VarselOpts = {
   varselType:
@@ -298,19 +317,24 @@ export const createDialogmote = (
   if (moteStatus === DialogmoteStatus.FERDIGSTILT) {
     return {
       ...dialogMote,
-      referatList: [createReferat(true, dialogMote.tid)],
+      referatList: [createReferat(true, dialogMote.tid, dialogMote.behandler)],
     };
   }
 
   return dialogMote;
 };
 
-export const createReferat = (
+export function createReferat(
   ferdigstilt: boolean,
   tid: string,
-): ReferatDTO => {
-  const standardTekst = getReferatTexts(Malform.BOKMAL).standardTekster
-    .OPPFOLGINGSTILTAK;
+  behandler?: DialogmotedeltakerBehandlerDTO,
+): ReferatDTO {
+  const referatTexts = getReferatTexts(Malform.BOKMAL);
+  const standardTekst = referatTexts.standardTekster.OPPFOLGINGSTILTAK;
+  const behandlerOppgave = behandler
+    ? "Behandleren følger opp det som ble avtalt i møtet."
+    : undefined;
+
   return {
     uuid: "520239a6-a973-42f6-a4e7-9fe7d27d2f93",
     createdAt: tid,
@@ -322,6 +346,7 @@ export const createReferat = (
     arbeidstakerOppgave: "Dette er en beskrivelse av arbeidstakerOppgave",
     arbeidsgiverOppgave: "Dette er en beskrivelse av arbeidsgiverOppgave",
     veilederOppgave: "Dette er en beskrivelse av veilederOppgave",
+    ...(behandlerOppgave ? { behandlerOppgave } : {}),
     document: [
       {
         type: DocumentComponentType.HEADER_H1,
@@ -332,6 +357,22 @@ export const createReferat = (
         type: DocumentComponentType.PARAGRAPH,
         texts: ["Brødtekst"],
       },
+      ...(behandler
+        ? [
+            {
+              type: DocumentComponentType.PARAGRAPH,
+              title: referatTexts.deltakereTitle,
+              texts: [
+                `${referatTexts.deltakere.behandler}: ${behandler.behandlerNavn}`,
+              ],
+            },
+            {
+              type: DocumentComponentType.PARAGRAPH,
+              title: referatTexts.behandlersOppgave,
+              texts: [behandlerOppgave ?? ""],
+            },
+          ]
+        : []),
       {
         type: DocumentComponentType.PARAGRAPH,
         key: StandardtekstKey.OPPFOLGINGSTILTAK,
@@ -346,7 +387,7 @@ export const createReferat = (
       },
     ],
   };
-};
+}
 
 export const avlystDialogmote = createDialogmote(
   "2",
@@ -357,11 +398,13 @@ export const ferdigstiltDialogmote = createDialogmote(
   "3",
   DialogmoteStatus.FERDIGSTILT,
   dayjs().subtract(2, "years").toDate(),
+  behandlerDeltakerMock,
 );
 export const innkaltDialogmote = createDialogmote(
   "5f1e2629-062b-442d-ae1f-3b08e9574cd3",
   DialogmoteStatus.INNKALT,
   dayjs().add(2, "days").toDate(),
+  behandlerDeltakerMock,
 );
 
 export const dialogmoterMock = [
