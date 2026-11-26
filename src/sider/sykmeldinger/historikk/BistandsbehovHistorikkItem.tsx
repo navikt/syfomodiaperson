@@ -1,8 +1,10 @@
-import { Accordion } from "@navikt/ds-react";
+import { Accordion, Button } from "@navikt/ds-react";
 import { formatDateWithMonthName } from "@/utils/datoUtils";
 import { Paragraph } from "@/components/Paragraph";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave.ts";
+import { ChevronRightIcon } from "@navikt/aksel-icons";
+import { Link } from "react-router-dom";
 
 const texts = {
   received: "Mottatt",
@@ -10,6 +12,7 @@ const texts = {
   processed: "Behandlet",
   processedBy: "Behandlet av",
   processedStatus: "Behandlet",
+  tilSykmeldingen: "Gå til sykmeldingen",
 };
 
 interface Props {
@@ -43,6 +46,17 @@ export function BistandsbehovHistorikkItem({ oppgave }: Props) {
           label={texts.processedBy}
           body={veilederinfo?.fulltNavn() || oppgave.behandletVeilederIdent}
         />
+
+        <Button
+          as={Link}
+          to={`/sykefravaer/sykmeldinger/${oppgave.referanseUuid}`}
+          variant="secondary"
+          size="small"
+          icon={<ChevronRightIcon aria-hidden />}
+          iconPosition={"right"}
+        >
+          {texts.tilSykmeldingen}
+        </Button>
       </Accordion.Content>
     </Accordion.Item>
   );

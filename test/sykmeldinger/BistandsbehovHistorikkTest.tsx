@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
@@ -13,6 +13,8 @@ import {
   VEILEDER_IDENT_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import { queryClientWithMockData } from "../testQueryClient";
+import { renderWithRouter } from "../testRouterUtils.tsx";
+import { sykmeldingerRoutePath } from "@/AppRouter.tsx";
 
 let queryClient: QueryClient;
 
@@ -47,7 +49,7 @@ function renderHistorikk(
   isLoading = false,
   isError = false,
 ) {
-  return render(
+  return renderWithRouter(
     <QueryClientProvider client={queryClient}>
       <BistandsbehovHistorikk
         oppgaver={oppgaver}
@@ -55,6 +57,8 @@ function renderHistorikk(
         isError={isError}
       />
     </QueryClientProvider>,
+    sykmeldingerRoutePath,
+    [sykmeldingerRoutePath],
   );
 }
 
@@ -124,18 +128,18 @@ describe("BistandsbehovHistorikk", () => {
     ]);
 
     const buttons = screen.getAllByRole("button");
-    expect(buttons).toHaveLength(2);
+    expect(buttons).toHaveLength(4);
     expect(buttons[0].textContent).to.equal(
       `Bistandsbehov - ${formatDateWithMonthName(sistBehandletDato)}`,
     );
-    expect(buttons[1].textContent).to.equal(
+    expect(buttons[2].textContent).to.equal(
       `Bistandsbehov - ${formatDateWithMonthName(behandletDato)}`,
     );
     expect(screen.queryByText("Ubehandlet")).to.not.exist;
     expect(screen.queryByText(formatDateWithMonthName(opprettetNyest))).to.not
       .exist;
 
-    await userEvent.click(buttons[1]);
+    await userEvent.click(buttons[2]);
     expect(screen.getByText(formatDateWithMonthName(opprettetEldst))).to.exist;
     expect(screen.getByText(formatDateWithMonthName(behandletDato))).to.exist;
     expect(screen.getAllByText(VEILEDER_DEFAULT.fulltNavn())).to.have.length(2);

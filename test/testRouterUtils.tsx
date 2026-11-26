@@ -17,7 +17,7 @@ export const renderWithRouter = (
   path: string,
   initialEntries?: MemoryRouterProps["initialEntries"],
 ) => {
-  render(
+  return render(
     <MemoryRouter
       initialEntries={initialEntries}
       future={memoryRouterFutureConfig}

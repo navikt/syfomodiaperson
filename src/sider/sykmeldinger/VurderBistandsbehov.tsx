@@ -1,9 +1,9 @@
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import {
   BodyShort,
-  Heading,
   Box,
   Button,
+  Heading,
   HelpText,
   Link,
   Tag,
@@ -22,6 +22,12 @@ const texts = {
   link: "Gå til sykmeldingen",
   linkDuplicate: "Gå til tidligere sykmelding med duplikate felter",
   behandleOppgaveText: "Jeg har vurdert behovet, fjern oppgaven.",
+  tiltakNavTekst: (tiltakNav: string) =>
+    `Felt 7.2 (Forslag til tiltak i regi fra Nav): ${tiltakNav}`,
+  tiltakAndreTekst: (tiltakAndre: string) =>
+    `Felt 7.3 (Andre innspill til Nav): ${tiltakAndre}`,
+  bistandsbehovTekst: (bistandsbehov: string) =>
+    `Felt 8.2 (Melding til Nav): ${bistandsbehov}`,
   annetArbeidPaSikt:
     "Pasienten kan være aktuell for friskmelding til arbeidsformidling.",
 };
@@ -40,11 +46,13 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
   const sykmeldingDuplikat = sykmeldinger.find(
     (sykmelding) => sykmelding.id === oppgave.duplikatReferanseUuid,
   );
+
   const tiltakNav = sykmelding?.arbeidsevne.tiltakNAV;
   const tiltakAndre = sykmelding?.arbeidsevne.tiltakAndre;
   const bistandsbehov = sykmelding?.meldingTilNav.navBoerTaTakISakenBegrunnelse;
   const isAnnetArbeidPaSikt =
     sykmelding?.friskmelding.antarReturAnnenArbeidsgiver === true;
+
   return (
     !!sykmelding && (
       <Box background="default" className="mb-4 p-4">
@@ -68,6 +76,7 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
             </HelpText>
           </div>
         </div>
+
         <blockquote>
           {isAnnetArbeidPaSikt && (
             <BodyShort className="whitespace-pre-line">
@@ -76,20 +85,21 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
           )}
           {tiltakNav && (
             <BodyShort className="whitespace-pre-line">
-              Felt 7.2 (Forslag til tiltak i regi fra Nav): {tiltakNav}
+              {texts.tiltakNavTekst(tiltakNav)}
             </BodyShort>
           )}
           {tiltakAndre && (
             <BodyShort className="whitespace-pre-line">
-              Felt 7.3 (Andre innspill til Nav): {tiltakAndre}
+              {texts.tiltakAndreTekst(tiltakAndre)}
             </BodyShort>
           )}
           {bistandsbehov && (
             <BodyShort className="whitespace-pre-line">
-              Felt 8.2 (Melding til Nav): {bistandsbehov}
+              {texts.bistandsbehovTekst(bistandsbehov)}
             </BodyShort>
           )}
         </blockquote>
+
         <div className={"flex flex-row justify-between"}>
           <Link
             as={RouterLink}
@@ -127,6 +137,7 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
             </div>
           )}
         </div>
+
         {behandleOppgave.isError && (
           <SkjemaInnsendingFeil error={behandleOppgave.error} />
         )}
