@@ -151,6 +151,7 @@ describe("BeOmOppfolgingsplan", () => {
       () => [existingForesporsel],
     );
     const virksomhetResponse: EregOrganisasjonResponseDTO = {
+      type: "Virksomhet",
       navn: {
         navnelinje1: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       },
