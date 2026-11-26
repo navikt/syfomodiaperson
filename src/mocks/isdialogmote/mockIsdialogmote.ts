@@ -112,7 +112,13 @@ export const mockIsdialogmote = [
           {
             ...dialogmoteToUpdate,
             status: DialogmoteStatus.FERDIGSTILT,
-            referatList: [createReferat(true, Date.now().toString())],
+            referatList: [
+              createReferat(
+                true,
+                new Date().toISOString(),
+                dialogmoteToUpdate.behandler,
+              ),
+            ],
           },
         ];
         return new HttpResponse(null, { status: 200 });
