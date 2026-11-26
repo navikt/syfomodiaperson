@@ -86,6 +86,31 @@ export const useAvlysningDocument = (
     return documentComponents;
   };
 
+  const getAvlysningInnkallingDocumentBehandler = (
+    values: Partial<EndreSkjemaValues>,
+  ): DocumentComponentDto[] => {
+    const documentComponents = [
+      createHeaderH1(avlysningTexts.behandlerInnkallingHeader),
+      gjelderParagraph,
+      createParagraph(
+        `${avlysningTexts.behandlerInnkallingIntro} ${formatDateTimeWithComma(
+          dialogmote.tid,
+        )}.`,
+      ),
+    ];
+    if (values.begrunnelseAvlysningBehandler) {
+      documentComponents.push(
+        createParagraph(values.begrunnelseAvlysningBehandler),
+      );
+    }
+    documentComponents.push(
+      createParagraph(avlysningTexts.behandlerInnkallingOutro),
+      getHilsenMedSendtDato(veilederinfo),
+    );
+
+    return documentComponents;
+  };
+
   return {
     getAvlysningDocumentArbeidstaker: (
       values: Partial<AvlysDialogmoteSkjemaValues>,
@@ -99,21 +124,6 @@ export const useAvlysningDocument = (
       values: Partial<AvlysDialogmoteSkjemaValues>,
     ): DocumentComponentDto[] =>
       getAvlysningDocument(gjelderParagraph, values.begrunnelseBehandler),
-    getAvlysningInnkallingDocumentBehandler: (
-      values: Partial<EndreSkjemaValues>,
-    ): DocumentComponentDto[] => [
-      createHeaderH1(avlysningTexts.behandlerInnkallingHeader),
-      gjelderParagraph,
-      createParagraph(
-        `${avlysningTexts.behandlerInnkallingIntro} ${formatDateTimeWithComma(
-          dialogmote.tid,
-        )}.`,
-      ),
-      ...(values.begrunnelseAvlysningBehandler
-        ? [createParagraph(values.begrunnelseAvlysningBehandler)]
-        : []),
-      createParagraph(avlysningTexts.behandlerInnkallingOutro),
-      getHilsenMedSendtDato(veilederinfo),
-    ],
+    getAvlysningInnkallingDocumentBehandler,
   };
 };
