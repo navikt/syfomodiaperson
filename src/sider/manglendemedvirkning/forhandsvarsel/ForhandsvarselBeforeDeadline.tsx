@@ -39,7 +39,11 @@ export default function ForhandsvarselBeforeDeadline({
   return (
     <Box>
       {notification && (
-        <LocalAlert status="success" size="small" className="mb-2">
+        <LocalAlert
+          status={notification.alertStatus}
+          size="small"
+          className="mb-2"
+        >
           <LocalAlert.Header>
             <LocalAlert.Title>{notification.message}</LocalAlert.Title>
             <LocalAlert.CloseButton

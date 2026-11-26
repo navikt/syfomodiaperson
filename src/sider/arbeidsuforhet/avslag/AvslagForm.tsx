@@ -126,6 +126,7 @@ export function AvslagForm({ sisteVurdering, begrunnelseUtkast }: Props) {
         deleteDraft.mutate(undefined);
         setNotification({
           message: texts.success,
+          alertStatus: "success",
         });
       },
     });

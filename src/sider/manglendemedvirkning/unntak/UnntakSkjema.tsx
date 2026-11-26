@@ -72,6 +72,7 @@ export default function UnntakSkjema({ forhandsvarselSendtDato }: Props) {
       onSuccess: () => {
         setNotification({
           message: texts.success,
+          alertStatus: "success",
         });
       },
     });

@@ -86,6 +86,7 @@ export default function StansSkjema({ varselSvarfrist }: Props) {
       onSuccess: () => {
         setNotification({
           message: texts.success,
+          alertStatus: "success",
         });
       },
     });

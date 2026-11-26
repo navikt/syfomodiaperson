@@ -135,7 +135,7 @@ export default function ForhandsvarselSkjema({ begrunnelseUtkast }: Props) {
     };
     sendForhandsvarsel.mutate(forhandsvarselRequestDTO, {
       onSuccess: () => {
-        setNotification({ message: texts.success });
+        setNotification({ message: texts.success, alertStatus: "success" });
         setUtkastSavedTime(undefined);
         debouncedAutoSaveDraft.cancel();
         deleteDraft.mutate(undefined);

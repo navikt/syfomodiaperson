@@ -315,6 +315,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
     const onSuccess = () => {
       setNotification({
         message: texts.vedtakFattetNotification,
+        alertStatus: "success",
       });
       setUtkastSavedTime(undefined);
       debouncedAutoSaveDraft.cancel();

@@ -133,7 +133,10 @@ describe("StartNyVurdering", () => {
   it("clears notification when starting ny vurdering", async () => {
     const setNotification = vi.fn();
     renderStartNyVurdering(undefined, {
-      notification: { message: "Det er vurdert unntak" },
+      notification: {
+        message: "Det er vurdert unntak",
+        alertStatus: "success",
+      },
       setNotification,
     });
 

@@ -146,6 +146,7 @@ export default function FattVedtakSkjema({ arbeidssokerFom }: Props) {
       onSuccess: () =>
         setNotification({
           message: texts.submittedAlert,
+          alertStatus: "success",
         }),
     });
   }

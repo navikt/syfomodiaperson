@@ -43,7 +43,7 @@ interface NotificationAlertProps {
 
 function NotificationAlert({ notification, onClose }: NotificationAlertProps) {
   return (
-    <LocalAlert status={notification.alertStatus ?? "success"} className="mb-2">
+    <LocalAlert status={notification.alertStatus} className="mb-2">
       <LocalAlert.Header>
         <LocalAlert.Title>{notification.message}</LocalAlert.Title>
         <LocalAlert.CloseButton onClick={onClose} />

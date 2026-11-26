@@ -43,7 +43,10 @@ describe("UtenlandsoppholdSoknader", () => {
 
   it("dismisses the success notification without hiding the information alert", async () => {
     stubSoknaderQuery({ soknader: [] });
-    renderUtenlandsopphold({ message: "Søknaden er behandlet" });
+    renderUtenlandsopphold({
+      message: "Søknaden er behandlet",
+      alertStatus: "success",
+    });
 
     await userEvent.click(screen.getByRole("button", { name: /lukk/i }));
 

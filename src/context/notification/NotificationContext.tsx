@@ -4,7 +4,7 @@ import type { LocalAlertProps } from "@navikt/ds-react";
 export interface Notification {
   message: ReactNode;
   content?: ReactNode;
-  alertStatus?: LocalAlertProps["status"];
+  alertStatus: LocalAlertProps["status"];
 }
 
 type NotificationProviderProps = {

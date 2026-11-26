@@ -140,6 +140,7 @@ export default function OppfyltForm({ begrunnelseUtkast }: Props) {
         deleteDraft.mutate(undefined);
         setNotification({
           message: texts.success,
+          alertStatus: "success",
         });
         navigate(arbeidsuforhetPath);
       },

@@ -46,7 +46,10 @@ describe("NyVurdering", () => {
 
   describe("med success-notification", () => {
     beforeEach(() => {
-      renderNyVurdering({ message: "Vurderingen er lagret" });
+      renderNyVurdering({
+        message: "Vurderingen er lagret",
+        alertStatus: "success",
+      });
     });
 
     it("viser varsel med tittel", () => {

@@ -46,7 +46,7 @@ export default function ManglendeMedvirkningNyVurdering({
   return (
     <>
       {notification && (
-        <LocalAlert status="success" className="mb-2">
+        <LocalAlert status={notification.alertStatus} className="mb-2">
           <LocalAlert.Header>
             <LocalAlert.Title>{notification.message}</LocalAlert.Title>
           </LocalAlert.Header>
