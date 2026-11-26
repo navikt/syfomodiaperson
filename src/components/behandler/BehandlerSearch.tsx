@@ -6,13 +6,11 @@ import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 interface Props {
   setSelectedBehandler: (behandler?: BehandlerDTO) => void;
   label?: string;
-  excludedBehandlerRef?: string;
 }
 
 const BehandlerSearch = ({
   setSelectedBehandler,
   label,
-  excludedBehandlerRef,
 }: Props): ReactElement => {
   const searchRef = useRef(null);
   const [searchValue, setSearchValue] = useState("");
@@ -49,7 +47,6 @@ const BehandlerSearch = ({
           setPopoverIsOpen={setPopoverIsOpen}
           setSelectedBehandler={setSelectedBehandler}
           setSelectedSearchResult={setselectedSearchResult}
-          excludedBehandlerRef={excludedBehandlerRef}
         />
       )}
     </div>

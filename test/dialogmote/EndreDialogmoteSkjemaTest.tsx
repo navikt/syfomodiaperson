@@ -462,6 +462,31 @@ describe("EndreDialogmoteSkjemaTest", () => {
       expect(queryClient.getMutationCache().getAll()).to.be.empty;
     });
 
+    it("viser feil når valgt behandler fra søk er den eksisterende", async () => {
+      mockServer.use(
+        http.get(`*${ISDIALOGMELDING_ROOT}/behandler/search`, () =>
+          HttpResponse.json([behandlerLegoLasLegesen]),
+        ),
+      );
+      renderEndreDialogmoteSkjema({
+        ...dialogmoteMedBehandler,
+        tid: endretMote.datoTid,
+      });
+      await fillBegrunnelser();
+      await userEvent.click(
+        screen.getByRole("radio", { name: "Søk etter ny behandler" }),
+      );
+      await changeTextInput(screen.getByRole("searchbox"), "Lego");
+      await userEvent.click(
+        await screen.findByRole("button", { name: /Lego/ }),
+      );
+
+      await clickButton("Send");
+
+      expect(await screen.findByText(/allerede innkalt til møtet/)).to.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
     it("sender innkalling til ny og avlysning til gammel behandler", async () => {
       stubEndreApi(dialogmote.uuid);
       const uendretMote = {

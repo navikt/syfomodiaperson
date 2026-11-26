@@ -15,6 +15,8 @@ const texts = {
   behandlersokTekst: "Legg til en behandler",
   replaceBehandlerSearchText: "Søk etter ny behandler",
   behandlerMissing: "Vennligst velg behandler",
+  behandlerAlreadySelected:
+    "Valgt behandler er allerede innkalt til møtet. Velg en annen behandler.",
 };
 
 const INGEN_BEHANDLER = "INGEN_BEHANDLER";
@@ -33,10 +35,15 @@ export function DialogmoteEndringBehandler({ currentBehandler }: Props) {
     {
       name: "nyBehandler",
       rules: {
-        validate: (value) =>
-          valgtRadio === SOK_BEHANDLER && !value
-            ? texts.behandlerMissing
-            : true,
+        validate: (value) => {
+          if (valgtRadio === SOK_BEHANDLER && !value) {
+            return texts.behandlerMissing;
+          }
+          if (value && value.behandlerRef === currentBehandler?.behandlerRef) {
+            return texts.behandlerAlreadySelected;
+          }
+          return true;
+        },
       },
     },
   );
@@ -45,9 +52,7 @@ export function DialogmoteEndringBehandler({ currentBehandler }: Props) {
   function handleRadioChange(verdi: string) {
     setValgtRadio(verdi);
     const selectedBehandler = behandlere.find(
-      (behandler) =>
-        behandler.behandlerRef === verdi &&
-        behandler.behandlerRef !== currentBehandler?.behandlerRef,
+      (behandler) => behandler.behandlerRef === verdi,
     );
     field.onChange(selectedBehandler);
   }
@@ -97,7 +102,6 @@ export function DialogmoteEndringBehandler({ currentBehandler }: Props) {
               ? texts.replaceBehandlerSearchText
               : texts.behandlersokTekst
           }
-          excludedBehandlerRef={currentBehandler?.behandlerRef}
         />
       )}
     </div>

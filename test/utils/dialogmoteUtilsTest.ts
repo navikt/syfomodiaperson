@@ -11,7 +11,7 @@ import {
 import dayjs from "dayjs";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
+import { behandler } from "../dialogmote/testData";
 
 describe("dialogmoteutils", () => {
   describe("isAktivtDialogmote", () => {
@@ -218,7 +218,7 @@ describe("dialogmoteutils", () => {
     });
 
     it("returns true when ny behandler is added", () => {
-      const values = { ...uendretValues, nyBehandler: {} as BehandlerDTO };
+      const values = { ...uendretValues, nyBehandler: behandler };
 
       expect(harEndringer(dialogmote, values)).to.be.true;
     });

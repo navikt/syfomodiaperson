@@ -10,7 +10,6 @@ interface Props {
   setPopoverIsOpen: (value: boolean) => void;
   setSelectedBehandler: (behandler?: BehandlerDTO) => void;
   setSelectedSearchResult: (selectedResult: string) => void;
-  excludedBehandlerRef?: string;
 }
 
 const BehandlerSearchResult = ({
@@ -19,12 +18,8 @@ const BehandlerSearchResult = ({
   setPopoverIsOpen,
   setSelectedBehandler,
   setSelectedSearchResult,
-  excludedBehandlerRef,
 }: Props): ReactElement => {
   const { data: behandlere } = useSokBehandlereQuery(searchText);
-  const availableBehandlere = behandlere.filter(
-    (behandler) => behandler.behandlerRef !== excludedBehandlerRef,
-  );
 
   const updateSearch = (behandler: BehandlerDTO, selectedResult: string) => {
     setSelectedSearchResult(selectedResult);
@@ -36,13 +31,13 @@ const BehandlerSearchResult = ({
     <Popover
       anchorEl={searchRef.current}
       placement="bottom-start"
-      open={availableBehandlere.length > 0 && searchText !== ""}
+      open={behandlere.length > 0 && searchText !== ""}
       onClose={() => null}
       className="w-[50rem] overflow-auto max-h-60"
       offset={8}
       tabIndex={0}
     >
-      {availableBehandlere.map((behandler, index) => {
+      {behandlere.map((behandler, index) => {
         const kontor = !!behandler.kontor ? behandler.kontor : "";
         const address = !!behandler.adresse
           ? capitalizeWord(behandler.adresse)
