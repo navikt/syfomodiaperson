@@ -11,6 +11,7 @@ export const eregOrganisasjonResponse = (
   virksomhetsnavn: string,
 ): EregOrganisasjonResponseDTO => {
   return {
+    type: "Virksomhet",
     navn: {
       navnelinje1: virksomhetsnavn,
       redigertnavn: `${virksomhetsnavn}`,
