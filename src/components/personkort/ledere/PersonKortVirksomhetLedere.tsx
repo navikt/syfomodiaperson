@@ -1,14 +1,11 @@
 import { formatShortDate } from "@/utils/datoUtils";
-import { PersonKortVirksomhetHeader } from "./PersonKortVirksomhetHeader";
 import EpostButton from "../EpostButton";
 import {
   NarmesteLederRelasjonDTO,
   NarmesteLederRelasjonStatus,
 } from "@/data/leder/ledereTypes";
-import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { capitalizeAllWords, formatPhonenumber } from "@/utils/stringUtils";
-import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
-import { Table, BodyShort } from "@navikt/ds-react";
+import { BodyShort, Table } from "@navikt/ds-react";
 
 const texts = {
   name: "Navn",
@@ -25,9 +22,9 @@ const texts = {
   deactivatedNyLeder: "Ny leder er meldt inn",
 };
 
-const getNarmesteLederRelasjonStatusText = (
+function getNarmesteLederRelasjonStatusText(
   status: NarmesteLederRelasjonStatus,
-) => {
+) {
   switch (status) {
     case NarmesteLederRelasjonStatus.INNMELDT_AKTIV:
       return texts.active;
@@ -46,122 +43,97 @@ const getNarmesteLederRelasjonStatusText = (
     default:
       return "";
   }
-};
-
-interface PersonKortVirksomhetLederColumnProps {
-  colSize: number;
-  text?: string;
-  isActive: boolean;
 }
 
 function PersonKortVirksomhetLederColumn({
   text,
   isActive,
-}: PersonKortVirksomhetLederColumnProps) {
-  return <BodyShort>{isActive ? <b>{text}</b> : text}</BodyShort>;
+}: {
+  text?: string;
+  isActive: boolean;
+}) {
+  return <BodyShort size="small">{isActive ? <b>{text}</b> : text}</BodyShort>;
 }
 
-interface PersonKortVirksomhetLedereProps {
-  sykmeldinger: SykmeldingOldFormat[];
-  virksomhetLederMap: Map<string, NarmesteLederRelasjonDTO>;
-  virksomhetsnummer: string;
+interface Props {
+  ledere: NarmesteLederRelasjonDTO[];
 }
 
-export function PersonKortVirksomhetLedere({
-  sykmeldinger,
-  virksomhetLederMap,
-  virksomhetsnummer,
-}: PersonKortVirksomhetLedereProps) {
-  const currentLeder: NarmesteLederRelasjonDTO =
-    virksomhetLederMap[virksomhetsnummer][0];
-
-  const { virksomhetsnavn } = useVirksomhetQuery(virksomhetsnummer);
-
+export function PersonKortVirksomhetLedere({ ledere }: Props) {
   return (
-    <PersonKortVirksomhetHeader
-      arbeidsgiverForskutterer={currentLeder.arbeidsgiverForskutterer}
-      virksomhetsnavn={virksomhetsnavn || ""}
-      virksomhetsnummer={currentLeder.virksomhetsnummer}
-      sykmeldinger={sykmeldinger}
-    >
-      <Table size={"small"}>
-        <colgroup>
-          <col style={{ width: "20%" }} />
-          <col style={{ width: "20%" }} />
-          <col style={{ width: "20%" }} />
-          <col style={{ width: "20%" }} />
-          <col style={{ width: "20%" }} />
-        </colgroup>
+    <Table size={"small"}>
+      <colgroup>
+        <col style={{ width: "20%" }} />
+        <col style={{ width: "20%" }} />
+        <col style={{ width: "20%" }} />
+        <col style={{ width: "20%" }} />
+        <col style={{ width: "20%" }} />
+      </colgroup>
 
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader align={"left"} scope="col">
-              {texts.name}
-            </Table.ColumnHeader>
-            <Table.ColumnHeader align={"left"} scope="col">
-              {texts.email}
-            </Table.ColumnHeader>
-            <Table.ColumnHeader align={"left"} scope="col">
-              {texts.phone}
-            </Table.ColumnHeader>
-            <Table.ColumnHeader align={"left"} scope="col">
-              {texts.startDate}
-            </Table.ColumnHeader>
-            <Table.ColumnHeader align={"left"} scope="col">
-              {texts.status}
-            </Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
+      <Table.Header>
+        <Table.Row>
+          <Table.ColumnHeader align={"left"} scope="col" textSize="small">
+            {texts.name}
+          </Table.ColumnHeader>
+          <Table.ColumnHeader align={"left"} scope="col" textSize="small">
+            {texts.email}
+          </Table.ColumnHeader>
+          <Table.ColumnHeader align={"left"} scope="col" textSize="small">
+            {texts.phone}
+          </Table.ColumnHeader>
+          <Table.ColumnHeader align={"left"} scope="col" textSize="small">
+            {texts.startDate}
+          </Table.ColumnHeader>
+          <Table.ColumnHeader align={"left"} scope="col" textSize="small">
+            {texts.status}
+          </Table.ColumnHeader>
+        </Table.Row>
+      </Table.Header>
 
-        {virksomhetLederMap[virksomhetsnummer].map(
-          (leder: NarmesteLederRelasjonDTO, idx: number) => {
-            const isActive =
-              leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV;
-            return (
-              <Table.Row className="mb-2" key={idx}>
+      <Table.Body>
+        {ledere.map((leder: NarmesteLederRelasjonDTO, idx: number) => {
+          const isActive =
+            leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV;
+          return (
+            <Table.Row className="mb-2" key={idx}>
+              <Table.DataCell align={"left"} textSize={"small"}>
+                <PersonKortVirksomhetLederColumn
+                  text={capitalizeAllWords(leder.narmesteLederNavn)}
+                  isActive={isActive}
+                />
+              </Table.DataCell>
+              <Table.DataCell align={"left"} textSize={"small"}>
+                <EpostButton
+                  epost={leder.narmesteLederEpost}
+                  isActive={isActive}
+                />
+              </Table.DataCell>
+              <Table.DataCell align={"left"} textSize={"small"}>
+                <PersonKortVirksomhetLederColumn
+                  text={formatPhonenumber(leder.narmesteLederTelefonnummer)}
+                  isActive={isActive}
+                />
+              </Table.DataCell>
+              {leder.aktivFom && (
                 <Table.DataCell align={"left"} textSize={"small"}>
                   <PersonKortVirksomhetLederColumn
-                    colSize={3}
-                    text={capitalizeAllWords(leder.narmesteLederNavn)}
+                    text={formatShortDate(leder.aktivFom)}
                     isActive={isActive}
                   />
                 </Table.DataCell>
-                <Table.DataCell align={"left"} textSize={"small"}>
-                  <EpostButton
-                    epost={leder.narmesteLederEpost}
-                    isActive={isActive}
-                  />
-                </Table.DataCell>
+              )}
+              {leder.status && (
                 <Table.DataCell align={"left"} textSize={"small"}>
                   <PersonKortVirksomhetLederColumn
-                    colSize={2}
-                    text={formatPhonenumber(leder.narmesteLederTelefonnummer)}
+                    text={getNarmesteLederRelasjonStatusText(leder.status)}
                     isActive={isActive}
                   />
                 </Table.DataCell>
-                {leder.aktivFom && (
-                  <Table.DataCell align={"left"} textSize={"small"}>
-                    <PersonKortVirksomhetLederColumn
-                      colSize={2}
-                      text={formatShortDate(leder.aktivFom)}
-                      isActive={isActive}
-                    />
-                  </Table.DataCell>
-                )}
-                {leder.status && (
-                  <Table.DataCell align={"left"} textSize={"small"}>
-                    <PersonKortVirksomhetLederColumn
-                      colSize={2}
-                      text={getNarmesteLederRelasjonStatusText(leder.status)}
-                      isActive={isActive}
-                    />
-                  </Table.DataCell>
-                )}
-              </Table.Row>
-            );
-          },
-        )}
-      </Table>
-    </PersonKortVirksomhetHeader>
+              )}
+            </Table.Row>
+          );
+        })}
+      </Table.Body>
+    </Table>
   );
 }

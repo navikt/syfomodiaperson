@@ -1,68 +1,50 @@
-import { ReactNode } from "react";
 import { formaterOrgnr } from "@/utils";
-import { lederHasActiveSykmelding } from "@/utils/ledereUtils";
-import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { BodyShort, Tag } from "@navikt/ds-react";
-import { Buildings2Icon } from "@navikt/aksel-icons";
+import {
+  BodyShort,
+  CopyButton,
+  Heading,
+  Tooltip,
+  VStack,
+} from "@navikt/ds-react";
 
 const texts = {
-  activeSykmelding: "Sykmeldt nå",
+  copyOrganisasjonsnummer: "Kopier organisasjonsnummer",
+  copiedOrganisasjonsnummer: "Organisasjonsnummeret er kopiert",
 };
 
-function arbeidsgiverForskuttererToText(
-  arbeidsgiverForskutterer?: boolean,
-): string {
-  if (arbeidsgiverForskutterer === undefined) {
-    return "Forskuttering ikke oppgitt";
-  }
-  return arbeidsgiverForskutterer
-    ? "Arbeidsgiver forskutterer"
-    : "Arbeidsgiver forskutterer ikke";
-}
-
 interface Props {
-  children?: ReactNode;
-  arbeidsgiverForskutterer?: boolean;
+  headingId: string;
   virksomhetsnavn: string;
   virksomhetsnummer: string;
-  sykmeldinger: SykmeldingOldFormat[];
 }
 
+/** Displays the organisation name and number with a copy button. */
 export function PersonKortVirksomhetHeader({
-  children,
-  arbeidsgiverForskutterer,
+  headingId,
   virksomhetsnavn,
   virksomhetsnummer,
-  sykmeldinger,
 }: Props) {
-  const virksomhetsnummerText = `Org.nr.: ${formaterOrgnr(virksomhetsnummer)}`;
   return (
-    <div className="mb-8">
-      <div className="mb-4 flex items-center bg-ax-bg-neutral-soft p-2">
-        <Buildings2Icon title="a11y-title" fontSize="1.5rem" className="mr-2" />
-        <div className="w-full grid grid-cols-[2fr_1fr_1fr_1fr] grid-rows-1  gap-x-2 items-center">
-          <BodyShort weight="semibold" size="small">
-            {virksomhetsnavn}
-          </BodyShort>
-          <BodyShort weight="semibold" size="small">
-            {virksomhetsnummerText}
-          </BodyShort>
-          <BodyShort weight="semibold" size="small">
-            {arbeidsgiverForskuttererToText(arbeidsgiverForskutterer)}
-          </BodyShort>
-          {lederHasActiveSykmelding(virksomhetsnummer, sykmeldinger) && (
-            <Tag
-              size="small"
-              data-color="info"
-              variant="outline"
-              className="max-w-fit"
-            >
-              {texts.activeSykmelding}
-            </Tag>
-          )}
-        </div>
+    <VStack gap="space-4">
+      <Heading
+        level="3"
+        size="small"
+        id={headingId}
+        className="min-w-0 break-words"
+      >
+        {virksomhetsnavn}
+      </Heading>
+      <div className="flex items-center gap-0.5">
+        <BodyShort size="small">{formaterOrgnr(virksomhetsnummer)}</BodyShort>
+        <Tooltip content={texts.copyOrganisasjonsnummer}>
+          <CopyButton
+            copyText={virksomhetsnummer}
+            title={texts.copyOrganisasjonsnummer}
+            activeText={texts.copiedOrganisasjonsnummer}
+            size="xsmall"
+          />
+        </Tooltip>
       </div>
-      {children}
-    </div>
+    </VStack>
   );
 }

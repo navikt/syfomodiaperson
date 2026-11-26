@@ -26,6 +26,7 @@ import { mockLpsOppfolgingsplanerMottak } from "@/mocks/lpsoppfolgingsplanmottak
 import { mockMerOppfolging } from "@/mocks/meroppfolging-backend/merOppfolgingMock";
 import { mockModiacontextholder } from "@/mocks/modiacontextholder/mockModiacontextholder";
 import { mockSyfoperson } from "@/mocks/syfoperson/mockSyfoperson";
+import { mockNaringskode } from "@/mocks/syfoperson/mockNaringskode";
 import { mockSyfooversiktsrv } from "@/mocks/syfooversiktsrv/mockSyfooversiktsrv";
 import { mockSyfomotebehov } from "@/mocks/syfomotebehov/mockSyfomotebehov";
 import {
@@ -80,6 +81,7 @@ const handlers = [
   ...mockMerOppfolging,
   ...mockModiacontextholder,
   ...mockSyfoperson,
+  mockNaringskode,
   ...mockSyfooversiktsrv,
   ...mockSyfomotebehov,
   mockGetMuligeTildelinger(),
