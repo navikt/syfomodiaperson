@@ -37,7 +37,7 @@ export const behandlerSokDialogmeldingMock = [
   {
     type: null,
     fnr: "01010012347",
-    behandlerRef: "behandler-ref-uuid",
+    behandlerRef: "behandler-ref-enda-uuid",
     fornavn: "Enda",
     mellomnavn: "Enny",
     etternavn: "Legesen",
@@ -51,7 +51,7 @@ export const behandlerSokDialogmeldingMock = [
   {
     type: null,
     fnr: "01010012348",
-    behandlerRef: "behandler-ref-uuid",
+    behandlerRef: "behandler-ref-kake-uuid",
     fornavn: "Kake",
     mellomnavn: "Bake",
     etternavn: "Baker",
