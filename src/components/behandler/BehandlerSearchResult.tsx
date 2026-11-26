@@ -4,7 +4,7 @@ import { useSokBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { capitalizeWord } from "@/utils/stringUtils.ts";
 
-interface Props {
+interface BehandlerSearchResultProps {
   searchRef: MutableRefObject<any>;
   searchText: string;
   setPopoverIsOpen: (value: boolean) => void;
@@ -18,7 +18,7 @@ const BehandlerSearchResult = ({
   setPopoverIsOpen,
   setSelectedBehandler,
   setSelectedSearchResult,
-}: Props): ReactElement => {
+}: BehandlerSearchResultProps): ReactElement => {
   const { data: behandlere } = useSokBehandlereQuery(searchText);
 
   const updateSearch = (behandler: BehandlerDTO, selectedResult: string) => {
@@ -64,7 +64,6 @@ const BehandlerSearchResult = ({
         return (
           <Popover.Content key={index} className="p-0">
             <Button
-              type="button"
               variant="tertiary"
               onClick={() => updateSearch(behandler, behandlerInfo)}
               className="w-full flex justify-start text-start text-neutral-800"

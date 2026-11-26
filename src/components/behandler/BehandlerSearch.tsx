@@ -3,7 +3,7 @@ import { Search } from "@navikt/ds-react";
 import BehandlerSearchResult from "@/components/behandler/BehandlerSearchResult";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 
-interface Props {
+interface BehandlerSearchProps {
   setSelectedBehandler: (behandler?: BehandlerDTO) => void;
   label?: string;
 }
@@ -11,7 +11,7 @@ interface Props {
 const BehandlerSearch = ({
   setSelectedBehandler,
   label,
-}: Props): ReactElement => {
+}: BehandlerSearchProps): ReactElement => {
   const searchRef = useRef(null);
   const [searchValue, setSearchValue] = useState("");
   const [selectedSearchResult, setselectedSearchResult] = useState("");
