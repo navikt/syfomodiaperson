@@ -1,8 +1,10 @@
 import { createContext, ReactNode, useContext, useState } from "react";
+import type { LocalAlertProps } from "@navikt/ds-react";
 
 export interface Notification {
   message: ReactNode;
-  alertVariant?: "info" | "success";
+  content?: ReactNode;
+  alertStatus?: LocalAlertProps["status"];
 }
 
 type NotificationProviderProps = {

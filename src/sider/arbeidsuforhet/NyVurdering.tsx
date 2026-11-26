@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Button, Heading, LocalAlert } from "@navikt/ds-react";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import {
   typeTexts,
@@ -36,24 +36,22 @@ const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
   }
 };
 
-function NotificationAlert({
-  notification,
-  setIsNotificationVisible,
-}: {
+interface NotificationAlertProps {
   notification: Notification;
-  setIsNotificationVisible: (visible: boolean) => void;
-}) {
+  onClose: () => void;
+}
+
+function NotificationAlert({ notification, onClose }: NotificationAlertProps) {
   return (
-    <Alert
-      variant={
-        notification.alertVariant ? notification.alertVariant : "success"
-      }
-      closeButton
-      onClose={() => setIsNotificationVisible(false)}
-      className="mb-2"
-    >
-      {notification.message}
-    </Alert>
+    <LocalAlert status={notification.alertStatus ?? "success"} className="mb-2">
+      <LocalAlert.Header>
+        <LocalAlert.Title>{notification.message}</LocalAlert.Title>
+        <LocalAlert.CloseButton onClick={onClose} />
+      </LocalAlert.Header>
+      {notification.content && (
+        <LocalAlert.Content>{notification.content}</LocalAlert.Content>
+      )}
+    </LocalAlert>
   );
 }
 
@@ -71,7 +69,7 @@ export default function NyVurdering({ handleClick }: Props) {
       {notification && isNotificationVisible && (
         <NotificationAlert
           notification={notification}
-          setIsNotificationVisible={setIsNotificationVisible}
+          onClose={() => setIsNotificationVisible(false)}
         />
       )}
       <Box background="default" padding="space-24">
