@@ -64,6 +64,7 @@ const BehandlerSearchResult = ({
         return (
           <Popover.Content key={index} className="p-0">
             <Button
+              type="button"
               variant="tertiary"
               onClick={() => updateSearch(behandler, behandlerInfo)}
               className="w-full flex justify-start text-start text-neutral-800"
