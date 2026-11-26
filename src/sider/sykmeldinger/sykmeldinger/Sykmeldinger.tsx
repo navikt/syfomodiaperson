@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import SykmeldingLinkPanel from "./SykmeldingLinkPanel";
+import SykmeldingLinkCard from "./SykmeldingLinkCard";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 
 interface SykmeldingTeasereProps {
@@ -22,24 +22,31 @@ export default function Sykmeldinger({
       <Box
         background="default"
         padding="space-16"
-        className="flex justify-between gap-4 items-center mb-px"
+        className="flex flex-col gap-4"
       >
-        <div>
-          <Heading size="small" level="5">
-            {tittel}
-          </Heading>
-          {!hasSykmeldinger && (
-            <BodyShort size="small" className="flex-1 mt-3">
-              {ingenSykmeldingerMelding}
-            </BodyShort>
-          )}
+        <div className="flex justify-between gap-4 items-center mb-px w-full">
+          <div>
+            <Heading size="small" level="5">
+              {tittel}
+            </Heading>
+            {!hasSykmeldinger && (
+              <BodyShort size="small" className="flex-1 mt-3">
+                {ingenSykmeldingerMelding}
+              </BodyShort>
+            )}
+          </div>
+          {children}
         </div>
-        {children}
+        {hasSykmeldinger && (
+          <ul className="flex flex-col gap-1 list-none m-0 p-0">
+            {sykmeldinger.map((sykmelding, idx) => (
+              <li key={idx}>
+                <SykmeldingLinkCard sykmelding={sykmelding} />
+              </li>
+            ))}
+          </ul>
+        )}
       </Box>
-      {hasSykmeldinger &&
-        sykmeldinger.map((sykmelding, idx) => (
-          <SykmeldingLinkPanel key={idx} sykmelding={sykmelding} />
-        ))}
     </div>
   );
 }
