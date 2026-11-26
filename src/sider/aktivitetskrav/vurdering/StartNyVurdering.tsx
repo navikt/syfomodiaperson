@@ -111,7 +111,7 @@ export function StartNyVurdering({ aktivitetskrav }: StartNyVurderingProps) {
   return (
     <>
       {notification && (
-        <LocalAlert className="mb-4" status="success">
+        <LocalAlert className="mb-4" status={notification.alertStatus}>
           <LocalAlert.Header>
             <LocalAlert.Title>{notification.message}</LocalAlert.Title>
           </LocalAlert.Header>

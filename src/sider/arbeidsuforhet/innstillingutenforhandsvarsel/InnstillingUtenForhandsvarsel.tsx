@@ -77,15 +77,9 @@ const texts = {
 const begrunnelseMaxLength = 5000;
 
 const huskSendTilGosysNotification: Notification = {
-  message: (
-    <>
-      <Heading spacing size="xsmall" level="3">
-        {texts.huskGosysMeldingHeading}
-      </Heading>
-      {texts.huskGosysMeldingContent}
-    </>
-  ),
-  alertVariant: "info",
+  message: texts.huskGosysMeldingHeading,
+  content: texts.huskGosysMeldingContent,
+  alertStatus: "announcement",
 };
 
 interface FormValues {
@@ -167,7 +161,7 @@ export default function InnstillingUtenForhandsvarsel({
         const notification: Notification =
           values.vurderingInitiertAv === VurderingInitiertAv.NAY
             ? huskSendTilGosysNotification
-            : { message: texts.innstillingenErLagret, alertVariant: "success" };
+            : { message: texts.innstillingenErLagret, alertStatus: "success" };
         setNotification(notification);
         navigate(arbeidsuforhetPath);
       },

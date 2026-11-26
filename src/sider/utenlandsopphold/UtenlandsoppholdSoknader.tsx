@@ -97,7 +97,7 @@ export function UtenlandsoppholdSoknader() {
   return (
     <div className="flex flex-col gap-4">
       {notification && isNotificationVisible && (
-        <LocalAlert status="success">
+        <LocalAlert status={notification.alertStatus}>
           <LocalAlert.Header>
             <LocalAlert.Title>{notification.message}</LocalAlert.Title>
             <LocalAlert.CloseButton

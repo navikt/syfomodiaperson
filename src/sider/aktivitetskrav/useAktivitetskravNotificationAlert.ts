@@ -47,6 +47,7 @@ export const useAktivitetskravNotificationAlert = () => {
     displayNotification: (status: AktivitetskravStatusSuccess) => {
       setNotification({
         message: getText(status),
+        alertStatus: "success",
       });
     },
     clearNotification: () => setNotification(undefined),

@@ -53,7 +53,7 @@ export default function NyttVedtak({
   return (
     <>
       {notification && isNotificationVisible && (
-        <LocalAlert status="success" className="mb-4">
+        <LocalAlert status={notification.alertStatus} className="mb-4">
           <LocalAlert.Header>
             <LocalAlert.Title>{notification.message}</LocalAlert.Title>
             <LocalAlert.CloseButton

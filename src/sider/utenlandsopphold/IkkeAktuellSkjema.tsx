@@ -47,7 +47,10 @@ export function IkkeAktuellSkjema({ soknadId, setModalOpen }: Props) {
       {
         onSuccess: () => {
           setModalOpen(false);
-          setNotification({ message: texts.notification });
+          setNotification({
+            message: texts.notification,
+            alertStatus: "success",
+          });
           navigate(`${utenlandsoppholdPath}`);
         },
       },

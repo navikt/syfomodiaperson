@@ -139,6 +139,7 @@ export default function SendForhandsvarselSkjema({ begrunnelseUtkast }: Props) {
         deleteDraft.mutate(undefined);
         setNotification({
           message: texts.forhandsvarselSendt,
+          alertStatus: "success",
         });
         navigate(arbeidsuforhetPath);
       },
