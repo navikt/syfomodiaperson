@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { toDateOrInvalid } from "@/utils/datoUtils";
 import { render, screen } from "@testing-library/react";
-import { PeriodeListe } from "@/sider/sykmeldinger/sykmeldinger/SykmeldingLinkPanel";
+import { PeriodeListe } from "@/sider/sykmeldinger/sykmeldinger/SykmeldingLinkCard";
 
 const arbeidsgiver = "Arne Arbeidsgiver";
 const periodeFlereDager: SykmeldingPeriodeDTO = {

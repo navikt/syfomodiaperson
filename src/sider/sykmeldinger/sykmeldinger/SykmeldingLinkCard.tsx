@@ -8,7 +8,7 @@ import {
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
-import { Box, Heading, LinkPanel, List } from "@navikt/ds-react";
+import { Box, LinkCard, List } from "@navikt/ds-react";
 import { PapirsykmeldingTag } from "@/components/PapirsykmeldingTag";
 import { erEkstraInformasjonISykmeldingen } from "@/utils/sykmeldinger/sykmeldingUtils";
 import ImportantInformationIcon from "@/components/ImportantInformationIcon";
@@ -17,8 +17,8 @@ import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
 import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const texts = {
-  teaserTekst: "Sykmelding\n",
-  egenmeldtTeaserTekst: "Egenmeldt sykmelding\n",
+  teaserTekst: "Sykmelding",
+  egenmeldtTeaserTekst: "Egenmeldt sykmelding",
   sendt: "Sendt til arbeidsgiver\n",
   utgaatt: "Ikke brukt på nett\n",
   tilSending: "Sender...",
@@ -74,7 +74,7 @@ interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-export default function SykmeldingLinkPanel({
+export default function SykmeldingLinkCard({
   sykmelding,
 }: Props): ReactElement {
   const behandlingsutfallStatus = sykmelding.behandlingsutfall.status;
@@ -85,55 +85,60 @@ export default function SykmeldingLinkPanel({
   const showPapirLabel = !!sykmelding.papirsykmelding;
   const showUtenlandskLabel = sykmelding.utenlandskSykmelding != null;
   const erViktigInformasjon = erEkstraInformasjonISykmeldingen(sykmelding);
+  const periodeTekst = formatDateRangeWithYear(
+    tidligsteFom(sykmelding.mulighetForArbeid.perioder),
+    senesteTom(sykmelding.mulighetForArbeid.perioder),
+  );
+  const arbeidsgiver = sykmelding.innsendtArbeidsgivernavn;
 
   return (
-    <LinkPanel
-      className="mb-[0.1em] [&_.aksel-link-panel__content]:w-full"
-      as={Link}
-      to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
-      border={false}
-    >
-      <div className="flex gap-5">
-        <div className="w-full">
-          <div className="flex justify-between">
-            {formatDateRangeWithYear(
-              tidligsteFom(sykmelding.mulighetForArbeid.perioder),
-              senesteTom(sykmelding.mulighetForArbeid.perioder),
+    <LinkCard size="small">
+      <LinkCard.Title>
+        <LinkCard.Anchor asChild>
+          <Link to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}>
+            {sykmelding.egenmeldt
+              ? texts.egenmeldtTeaserTekst
+              : texts.teaserTekst}
+            <span className="sr-only">
+              {`, ${periodeTekst}`}
+              {arbeidsgiver && `, ${arbeidsgiver}`}
+            </span>
+          </Link>
+        </LinkCard.Anchor>
+      </LinkCard.Title>
+      <LinkCard.Description>
+        <div className="flex justify-between">
+          {periodeTekst}
+          <div className="flex gap-2 items-center">
+            {visStatus && (
+              <div className="flex gap-1 items-center">
+                {sykmelding.behandlingsutfall.status ===
+                  BehandlingsutfallStatusDTO.INVALID && (
+                  <ExclamationmarkTriangleIcon
+                    title="advarsel-ikon"
+                    fontSize="1.5rem"
+                    color="var(--ax-text-danger-decoration)"
+                  />
+                )}
+                <span>
+                  {textStatus(sykmelding.status, behandlingsutfallStatus)}
+                </span>
+              </div>
             )}
-            <div className="flex gap-2 items-center">
-              {visStatus && (
-                <div className="flex gap-1 items-center">
-                  {sykmelding.behandlingsutfall.status ===
-                    BehandlingsutfallStatusDTO.INVALID && (
-                    <ExclamationmarkTriangleIcon
-                      title="advarsel-ikon"
-                      fontSize="1.5rem"
-                      color="var(--ax-text-danger-decoration)"
-                    />
-                  )}
-                  <span>
-                    {textStatus(sykmelding.status, behandlingsutfallStatus)}
-                  </span>
-                </div>
-              )}
-              {erViktigInformasjon && <ImportantInformationIcon />}
-            </div>
+            {erViktigInformasjon && <ImportantInformationIcon />}
           </div>
-          <div className="flex mt-2">
-            <Heading size="xsmall" className="flex mr-2">
-              {sykmelding.egenmeldt
-                ? texts.egenmeldtTeaserTekst
-                : texts.teaserTekst}
-            </Heading>
-            {showPapirLabel && <PapirsykmeldingTag />}
-            {showUtenlandskLabel && <UtenlandskSykmeldingTag />}
-          </div>
-          <PeriodeListe
-            perioder={sykmelding.mulighetForArbeid.perioder}
-            arbeidsgiver={sykmelding.innsendtArbeidsgivernavn}
-          />
         </div>
-      </div>
-    </LinkPanel>
+        <PeriodeListe
+          perioder={sykmelding.mulighetForArbeid.perioder}
+          arbeidsgiver={sykmelding.innsendtArbeidsgivernavn}
+        />
+      </LinkCard.Description>
+      {(showPapirLabel || showUtenlandskLabel) && (
+        <LinkCard.Footer>
+          {showPapirLabel && <PapirsykmeldingTag />}
+          {showUtenlandskLabel && <UtenlandskSykmeldingTag />}
+        </LinkCard.Footer>
+      )}
+    </LinkCard>
   );
 }
