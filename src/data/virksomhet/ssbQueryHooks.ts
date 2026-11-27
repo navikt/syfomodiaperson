@@ -6,7 +6,19 @@ import { get } from "@/api/axios";
 import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { minutesToMillis } from "@/utils/utils";
 import { useQueries, useQuery } from "@tanstack/react-query";
+import {
+  SektorkodeHierarki,
+  SektorkodeStandard,
+} from "@/data/virksomhet/Sektorkode";
 
+/** Stable sector query keys, including the classification standard. */
+export const sektorkodeQueryKeys = {
+  sektorkode: (kode: string, standard: SektorkodeStandard) => [
+    "sektorkode",
+    kode,
+    standard,
+  ],
+};
 export const bransjeQueryKeys = {
   bransje: (naringskode: string, standard: NaringskodeStandard) => [
     "bransje",
@@ -30,6 +42,26 @@ export function useNaringskodeQuery(
     queryFn: () => fetchNaringskode(naringskode, standard),
     staleTime: minutesToMillis(60 * 12),
     enabled: !!naringskode,
+  });
+}
+
+function fetchSektorkode(kode: string, standard: SektorkodeStandard) {
+  return get<SektorkodeHierarki>(
+    `${SYFOPERSON_ROOT}/sektorkode/${kode}?standard=${standard}`,
+  );
+}
+
+/** Fetches the sector code hierarchy for the selected standard. */
+export function useSektorkodeQuery(
+  kode: string,
+  standard: SektorkodeStandard,
+  enabled = true,
+) {
+  return useQuery({
+    queryKey: sektorkodeQueryKeys.sektorkode(kode, standard),
+    queryFn: () => fetchSektorkode(kode, standard),
+    staleTime: minutesToMillis(60 * 12),
+    enabled: enabled && !!kode,
   });
 }
 

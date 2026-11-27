@@ -13,7 +13,14 @@ import { Buildings2Icon } from "@navikt/aksel-icons";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { getVirksomhetsnavn } from "@/data/virksomhet/types/EregOrganisasjonResponseDTO";
 import { useVirksomheterQueries } from "@/data/virksomhet/virksomhetQueryHooks";
-import { useNaringskodeQueries } from "@/data/virksomhet/ssbQueryHooks";
+import {
+  useNaringskodeQueries,
+  useSektorkodeQuery,
+} from "@/data/virksomhet/ssbQueryHooks";
+import {
+  enrichWithOverordnedeEnheter,
+  getOverordnetEnhetOrganisasjonsnummer,
+} from "@/utils/virksomhetUtil";
 import { toNaringskodeRequest } from "@/utils/naringskodeUtil";
 import { PersonKortVirksomhetHeader } from "./PersonKortVirksomhetHeader";
 import { PersonKortVirksomhetLedere } from "./PersonKortVirksomhetLedere";
@@ -25,6 +32,9 @@ const texts = {
   loadingBransje: "Laster bransje",
   bransjeError: "Klarte ikke hente bransje",
   lesMerOmBransjer: "Les mer om bransjer",
+  sektor: "Sektor",
+  sectorLoading: "Laster sektornavn",
+  sectorError: "Klarte ikke hente sektornavn",
   activeSykmelding: "Sykmeldt nå",
   sykmeldingsstatus: "Sykmeldingsstatus",
   naermesteLeder: "Nærmeste leder",
@@ -60,14 +70,36 @@ export function PersonKortVirksomhet({
 }: Props) {
   const virksomhetHeadingId = useId();
   const ledereHeadingId = useId();
-  const virksomheter = useVirksomheterQueries([virksomhetsnummer]);
-  const virksomhet = virksomheter.data[0];
+
+  const virksomheter = useVirksomheterQueries([virksomhetsnummer], true);
+  const overordnedeEnhetsnumre = virksomheter.data
+    .map(getOverordnetEnhetOrganisasjonsnummer)
+    .filter((nummer) => nummer !== null);
+  const overordnedeEnheter = useVirksomheterQueries(overordnedeEnhetsnumre);
+  const virksomhet = enrichWithOverordnedeEnheter(
+    virksomheter.data,
+    overordnedeEnheter.data,
+  )[0];
+  const overordnetEnhet =
+    virksomhet?.overordnetEnhet ??
+    (virksomhet?.type === "JuridiskEnhet" ? virksomhet : undefined);
+
+  const sektorkode =
+    overordnetEnhet?.type === "Organisasjonsledd"
+      ? overordnetEnhet.organisasjonsleddDetaljer?.sektorkode
+      : overordnetEnhet?.juridiskEnhetDetaljer?.sektorkode;
+  const sektorkodeQuery = useSektorkodeQuery(sektorkode ?? "", 2012);
+  const sektorkodeNavn = (sektorkodeQuery.data?.hierarki ?? []).find(
+    (kode) => kode.code === sektorkode,
+  )?.name;
+
   const naringskoder = virksomhet ? toNaringskodeRequest(virksomhet) : [];
   const naringskodeHierarkier = useNaringskodeQueries(naringskoder);
   const bransjer = naringskodeHierarkier.data.flatMap((hierarki) =>
     hierarki.hierarki.filter((kode) => kode.parentCode === null),
   );
   const firstBransje = bransjer[0];
+
   const isLoading = virksomheter.isPending || naringskodeHierarkier.isPending;
   const hasError = virksomheter.isError || naringskodeHierarkier.isError;
 
@@ -126,6 +158,27 @@ export function PersonKortVirksomhet({
                 >
                   {texts.lesMerOmBransjer}
                 </Link>
+              )}
+            </VStack>
+          )}
+
+          {(sektorkode ||
+            overordnedeEnheter.isPending ||
+            overordnedeEnheter.isError) && (
+            <VStack gap="space-4">
+              <Heading level="4" size="xsmall">
+                {texts.sektor}
+              </Heading>
+              {sektorkode && (
+                <BodyShort size="small">
+                  {sektorkodeNavn ?? sektorkode}
+                </BodyShort>
+              )}
+              {(overordnedeEnheter.isPending || sektorkodeQuery.isFetching) && (
+                <BodyShort size="small">{texts.sectorLoading}</BodyShort>
+              )}
+              {(overordnedeEnheter.isError || sektorkodeQuery.isError) && (
+                <BodyShort size="small">{texts.sectorError}</BodyShort>
               )}
             </VStack>
           )}

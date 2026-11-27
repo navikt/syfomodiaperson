@@ -5,13 +5,73 @@ import React, { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { NaringskodeStandard } from "@/data/virksomhet/Naringskode";
-import { useNaringskodeQuery } from "@/data/virksomhet/ssbQueryHooks";
+import {
+  useNaringskodeQuery,
+  useSektorkodeQuery,
+} from "@/data/virksomhet/ssbQueryHooks";
 import { mockNaringskode } from "@/mocks/syfoperson/mockNaringskode";
 import { mockServer } from "../setup";
+import { testQueryClient } from "../testQueryClient";
 
 interface Props {
   children: ReactNode;
 }
+
+describe("useSektorkodeQuery", () => {
+  let queryClient: QueryClient;
+
+  beforeEach(() => {
+    queryClient = testQueryClient();
+  });
+
+  function Wrapper({ children }: Props) {
+    return (
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    );
+  }
+
+  it("requests sector hierarchies using the selected standard", async () => {
+    const requestedStandards: string[] = [];
+    mockServer.use(
+      http.get(`*${SYFOPERSON_ROOT}/sektorkode/2100`, ({ request }) => {
+        requestedStandards.push(
+          new URL(request.url).searchParams.get("standard") ?? "",
+        );
+        return HttpResponse.json({
+          standard: 2012,
+          hierarki: [
+            { code: "2100", name: "Sektor", parentCode: null, level: 1 },
+          ],
+        });
+      }),
+    );
+
+    const { result } = renderHook(
+      () => useSektorkodeQuery("2100", 2012, true),
+      { wrapper: Wrapper },
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data?.hierarki[0]?.name).toBe("Sektor");
+    expect(requestedStandards).toEqual(["2012"]);
+  });
+
+  it("does not fetch when disabled or without a code", () => {
+    const handler = vi.fn(() => HttpResponse.json({}));
+    mockServer.use(http.get(`*${SYFOPERSON_ROOT}/sektorkode/*`, handler));
+
+    const disabled = renderHook(() => useSektorkodeQuery("2100", 2012, false), {
+      wrapper: Wrapper,
+    });
+    const missingCode = renderHook(() => useSektorkodeQuery("", 2012), {
+      wrapper: Wrapper,
+    });
+
+    expect(disabled.result.current.fetchStatus).toBe("idle");
+    expect(missingCode.result.current.fetchStatus).toBe("idle");
+    expect(handler).not.toHaveBeenCalled();
+  });
+});
 
 describe("useNaringskodeQuery", () => {
   let queryClient: QueryClient;
