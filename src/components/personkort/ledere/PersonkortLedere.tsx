@@ -3,13 +3,12 @@ import {
   SykmeldingLeder,
   virksomheterWithoutLeder,
 } from "@/utils/ledereUtils";
-import { PersonKortVirksomhetHeader } from "./PersonKortVirksomhetHeader";
+import { PersonKortVirksomhet } from "./PersonKortVirksomhet";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { InfoCard } from "@navikt/ds-react";
 import { InformationSquareIcon } from "@navikt/aksel-icons";
-import { PersonKortVirksomhetLedere } from "@/components/personkort/ledere/PersonKortVirksomhetLedere";
 import AppSpinner from "@/components/AppSpinner";
 
 const texts = {
@@ -51,22 +50,32 @@ export function PersonkortLedere() {
   );
   const hasNoLeaders = Object.keys(virksomhetLederMap).length === 0;
 
-  return getLedereQuery.isLoading || getSykmeldingerQuery.isLoading ? (
-    <AppSpinner />
-  ) : hasNoLeaders ? (
-    <InfoCard data-color="info" size="small">
-      <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-        {texts.noLeader}
-      </InfoCard.Message>
-    </InfoCard>
-  ) : (
+  if (getLedereQuery.isLoading || getSykmeldingerQuery.isLoading) {
+    return <AppSpinner />;
+  }
+
+  return (
     <div>
+      {hasNoLeaders && (
+        <InfoCard data-color="info" size="small" className="mb-4">
+          <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+            {texts.noLeader}
+          </InfoCard.Message>
+        </InfoCard>
+      )}
       {Object.keys(virksomhetLederMap).map((virksomhetsnummer, idx) => {
+        const ledere: NarmesteLederRelasjonDTO[] =
+          virksomhetLederMap[virksomhetsnummer];
+        const currentLeder = ledere[0];
+        if (!currentLeder) return null;
+
         return (
-          <PersonKortVirksomhetLedere
+          <PersonKortVirksomhet
             key={`virksomhetLederMap-${idx}-${virksomhetsnummer}`}
             sykmeldinger={getSykmeldingerQuery.sykmeldinger}
-            virksomhetLederMap={virksomhetLederMap}
+            ledere={ledere}
+            arbeidsgiverForskutterer={currentLeder.arbeidsgiverForskutterer}
+            virksomhetsnavn={currentLeder.virksomhetsnavn}
             virksomhetsnummer={virksomhetsnummer}
           />
         );
@@ -74,7 +83,7 @@ export function PersonkortLedere() {
       {virksomheterFromSykmeldinger.map(
         (virksomhet: SykmeldingLeder, idx: number) => {
           return (
-            <PersonKortVirksomhetHeader
+            <PersonKortVirksomhet
               key={`virksomheterFromSykmeldinger-${idx}-${virksomhet.virksomhetsnummer}`}
               arbeidsgiverForskutterer={virksomhet.arbeidsgiverForskutterer}
               virksomhetsnavn={virksomhet.virksomhetsnavn}
