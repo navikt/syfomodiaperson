@@ -101,6 +101,7 @@ const endreTextsBokmal = {
     "Møtet skulle vært avholdt {tidspunkt}. Møtet må flyttes. Du finner det nye tidspunktet for møtet nedenfor.",
   endretSted: "Møtestedet er endret. Du finner det nye møtestedet nedenfor.",
   lagtTilBehandler: "En behandler er innkalt til møtet.",
+  byttetBehandler: "En ny behandler er innkalt til møtet.",
   arbeidsgiver: {
     outro1:
       "I møtet vil vi høre både hva du og arbeidstakeren sier om arbeidssituasjonen og mulighetene for å jobbe. Vi blir enige om en plan som kan hjelpe arbeidstakeren videre.",
@@ -150,6 +151,7 @@ const endreTextsNynorsk = {
     "Møtet skulle etter planen ha vore {tidspunkt}. Møtet må flyttast. Du finn det nye tidspunktet for møtet nedanfor.",
   endretSted: "Møtestaden er endra. Du finn den nye møtestaden nedanfor.",
   lagtTilBehandler: "Ein behandlar er lagd til møtet.",
+  byttetBehandler: "Ein ny behandlar er kalla inn til møtet.",
   arbeidsgiver: {
     outro1:
       "I møtet ønskjer vi å høyre kva du og den tilsette seier om arbeidssituasjonen og moglegheitene for jobb. Vi blir einige om ein plan som kan hjelpe den tilsette vidare.",
@@ -200,6 +202,11 @@ const avlysningTextsBokmal = {
   header: "Avlysning av dialogmøte",
   intro1: "Nav har tidligere innkalt til dialogmøtet som skulle vært avholdt",
   intro2: "Dette møtet er avlyst.",
+  behandlerInnkallingHeader: "Avlysning av innkalling til dialogmøte",
+  behandlerInnkallingIntro:
+    "Nav har avlyst din invitasjon til dialogmøtet som skulle vært avholdt",
+  behandlerInnkallingOutro:
+    "En annen behandler har blitt innkalt til å delta i møtet.",
 };
 
 const avlysningTextsNynorsk = {
@@ -207,6 +214,11 @@ const avlysningTextsNynorsk = {
   intro1:
     "Nav har tidlegare kalla inn til eit dialogmøte som etter planen skulle vere",
   intro2: "Dette møtet er avlyst.",
+  behandlerInnkallingHeader: "Avlysing av innkalling til dialogmøte",
+  behandlerInnkallingIntro:
+    "Nav har avlyst invitasjonen din til dialogmøtet som etter planen skulle vere",
+  behandlerInnkallingOutro:
+    "Ein annan behandlar er kalla inn til å delta i møtet.",
 };
 
 export const getAvlysningTexts = (malform: Malform) => {

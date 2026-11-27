@@ -82,7 +82,9 @@ export function harEndringer(
   const isStedEndret = values.sted !== dialogmote.sted;
   const isVideoLinkEndret =
     (values.videoLink?.trim() ?? "") !== (dialogmote.videoLink ?? "");
-  const hasNyBehandler = !!values.nyBehandler;
+  const hasNyBehandler =
+    !!values.nyBehandler &&
+    values.nyBehandler.behandlerRef !== dialogmote.behandler?.behandlerRef;
 
   return isTidEndret || isStedEndret || isVideoLinkEndret || hasNyBehandler;
 }

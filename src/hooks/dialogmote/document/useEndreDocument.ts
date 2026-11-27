@@ -59,6 +59,10 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
     );
     const hasEndretSted = Boolean(values.sted && values.sted !== sted);
     const hasLagtTilBehandler = !behandler && Boolean(values.nyBehandler);
+    const hasByttetBehandler =
+      !!behandler &&
+      !!values.nyBehandler &&
+      values.nyBehandler.behandlerRef !== behandler.behandlerRef;
     const components = [createParagraph(dialogmoteEndringTexts.intro)];
 
     if (hasEndretTidspunkt) {
@@ -77,16 +81,19 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
     if (hasLagtTilBehandler) {
       components.push(createParagraph(dialogmoteEndringTexts.lagtTilBehandler));
     }
+    if (hasByttetBehandler) {
+      components.push(createParagraph(dialogmoteEndringTexts.byttetBehandler));
+    }
     return components;
   };
 
   function getDeltakerBehandlerNavn(
     values: Partial<EndreSkjemaValues>,
   ): string | undefined {
-    if (behandler) {
-      return behandler.behandlerNavn;
+    if (values.nyBehandler) {
+      return behandlerNavn(values.nyBehandler);
     }
-    return values.nyBehandler && behandlerNavn(values.nyBehandler);
+    return behandler?.behandlerNavn;
   }
 
   const getEndreDocumentArbeidsgiver = (values: Partial<EndreSkjemaValues>) => {

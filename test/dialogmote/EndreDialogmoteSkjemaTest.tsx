@@ -36,6 +36,7 @@ import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 import { getEndreTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { StoreKey } from "@/hooks/useLocalStorageState";
 import {
+  behandlerDoktorLegesen,
   behandlerLegoLasLegesen,
   behandlerSokDialogmeldingMock,
 } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
@@ -423,6 +424,164 @@ describe("EndreDialogmoteSkjemaTest", () => {
       );
 
       expect(screen.getByLabelText(texts.fritekstBehandler)).to.exist;
+    });
+  });
+
+  describe("bytte av behandler", () => {
+    beforeEach(() => {
+      mockServer.use(
+        http.get(`*${ISDIALOGMELDING_ROOT}/behandler/search`, () =>
+          HttpResponse.json([behandlerDoktorLegesen]),
+        ),
+      );
+    });
+
+    async function velgNyBehandler() {
+      await userEvent.click(
+        screen.getByRole("radio", { name: "Søk etter ny behandler" }),
+      );
+      await changeTextInput(screen.getByRole("searchbox"), "Doktor");
+      await userEvent.click(
+        await screen.findByRole("button", { name: /Doktor/ }),
+      );
+    }
+
+    it("viser validering for avlysning til gammel behandler", async () => {
+      renderEndreDialogmoteSkjema({
+        ...dialogmoteMedBehandler,
+        tid: endretMote.datoTid,
+      });
+      await fillBegrunnelser();
+      await velgNyBehandler();
+
+      await clickButton("Send");
+
+      expect(
+        await screen.findByText(texts.begrunnelseAvlysningBehandlerMissing),
+      ).to.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
+    it("viser feil når valgt behandler fra søk er den eksisterende", async () => {
+      mockServer.use(
+        http.get(`*${ISDIALOGMELDING_ROOT}/behandler/search`, () =>
+          HttpResponse.json([behandlerLegoLasLegesen]),
+        ),
+      );
+      renderEndreDialogmoteSkjema({
+        ...dialogmoteMedBehandler,
+        tid: endretMote.datoTid,
+      });
+      await fillBegrunnelser();
+      await userEvent.click(
+        screen.getByRole("radio", { name: "Søk etter ny behandler" }),
+      );
+      await changeTextInput(screen.getByRole("searchbox"), "Lego");
+      await userEvent.click(
+        await screen.findByRole("button", { name: /Lego/ }),
+      );
+
+      await clickButton("Send");
+
+      expect(await screen.findByText(/allerede innkalt til møtet/)).to.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
+    it("sender innkalling til ny og avlysning til gammel behandler", async () => {
+      stubEndreApi(dialogmote.uuid);
+      const uendretMote = {
+        ...dialogmoteMedBehandler,
+        tid: endretMote.datoTid,
+      };
+      renderEndreDialogmoteSkjema(uendretMote);
+      await fillBegrunnelser();
+      await velgNyBehandler();
+      await changeTextInput(
+        getTextInput(texts.begrunnelseAvlysningBehandler),
+        "En annen behandler skal delta",
+      );
+
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const mutation = queryClient.getMutationCache().getAll()[0];
+        const variables = mutation.state.variables as EndreDialogmoteDTO;
+
+        expect(variables.behandler?.deltaker).to.deep.equal({
+          personIdent: behandlerDoktorLegesen.fnr,
+          behandlerRef: behandlerDoktorLegesen.behandlerRef,
+          behandlerNavn: "Doktor Legesen",
+          behandlerKontor: behandlerDoktorLegesen.kontor,
+        });
+        expect(variables.avlysningTilGammelBehandler?.begrunnelse).to.equal(
+          "En annen behandler skal delta",
+        );
+        expect(
+          JSON.stringify(variables.avlysningTilGammelBehandler?.avlysning),
+        ).to.contain("Avlysning av innkalling til dialogmøte");
+        expect(JSON.stringify(variables.behandler?.moteDokument)).to.contain(
+          "Innkalling til dialogmøte, svar ønskes",
+        );
+        expect(
+          JSON.stringify(variables.arbeidstaker.endringsdokument),
+        ).to.contain("Doktor Legesen");
+        expect(
+          JSON.stringify(variables.arbeidsgiver.endringsdokument),
+        ).to.contain("Doktor Legesen");
+        expect(mutation.state.status).to.equal("success");
+      });
+    });
+
+    it("sender behandlerbytte sammen med endret tid og sted", async () => {
+      stubEndreApi(dialogmote.uuid);
+      renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
+      await passSkjemaInput();
+      await velgNyBehandler();
+      await changeTextInput(
+        getTextInput(texts.begrunnelseAvlysningBehandler),
+        "En annen behandler skal delta",
+      );
+
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const variables = queryClient.getMutationCache().getAll()[0].state
+          .variables as EndreDialogmoteDTO;
+        expect(variables.sted).to.equal(endretMote.sted);
+        expect(variables.tid).to.equal(endretMote.datoTid);
+        expect(variables.behandler?.deltaker?.behandlerRef).to.equal(
+          behandlerDoktorLegesen.behandlerRef,
+        );
+        expect(variables.avlysningTilGammelBehandler).to.exist;
+      });
+    });
+
+    it("forhåndsviser avlysning til gammel behandler", async () => {
+      renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
+      await velgNyBehandler();
+      await changeTextInput(
+        getTextInput(texts.begrunnelseAvlysningBehandler),
+        "En annen behandler skal delta",
+      );
+
+      const previewButtons = screen.getAllByRole("button", {
+        name: "Forhåndsvisning",
+      });
+      expect(previewButtons).to.have.length(4);
+      await userEvent.click(previewButtons[3]);
+
+      const preview = screen.getByRole("dialog", {
+        name: texts.forhandsvisningAvlysningBehandlerContentLabel,
+        hidden: true,
+      });
+      expect(
+        within(preview).getByText("Avlysning av innkalling til dialogmøte"),
+      ).to.exist;
+      expect(
+        within(preview).getByText(
+          "En annen behandler har blitt innkalt til å delta i møtet.",
+        ),
+      ).to.exist;
     });
   });
 

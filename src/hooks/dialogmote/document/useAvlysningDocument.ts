@@ -15,6 +15,7 @@ import { useMalform } from "@/context/malform/MalformContext";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 
 export interface IAvlysningDocument {
   getAvlysningDocumentArbeidstaker(
@@ -27,6 +28,10 @@ export interface IAvlysningDocument {
 
   getAvlysningDocumentBehandler(
     values: Partial<AvlysDialogmoteSkjemaValues>,
+  ): DocumentComponentDto[];
+
+  getAvlysningInnkallingDocumentBehandler(
+    values: Partial<EndreSkjemaValues>,
   ): DocumentComponentDto[];
 }
 
@@ -81,6 +86,31 @@ export const useAvlysningDocument = (
     return documentComponents;
   };
 
+  const getAvlysningInnkallingDocumentBehandler = (
+    values: Partial<EndreSkjemaValues>,
+  ): DocumentComponentDto[] => {
+    const documentComponents = [
+      createHeaderH1(avlysningTexts.behandlerInnkallingHeader),
+      gjelderParagraph,
+      createParagraph(
+        `${avlysningTexts.behandlerInnkallingIntro} ${formatDateTimeWithComma(
+          dialogmote.tid,
+        )}.`,
+      ),
+    ];
+    if (values.begrunnelseAvlysningBehandler) {
+      documentComponents.push(
+        createParagraph(values.begrunnelseAvlysningBehandler),
+      );
+    }
+    documentComponents.push(
+      createParagraph(avlysningTexts.behandlerInnkallingOutro),
+      getHilsenMedSendtDato(veilederinfo),
+    );
+
+    return documentComponents;
+  };
+
   return {
     getAvlysningDocumentArbeidstaker: (
       values: Partial<AvlysDialogmoteSkjemaValues>,
@@ -94,5 +124,6 @@ export const useAvlysningDocument = (
       values: Partial<AvlysDialogmoteSkjemaValues>,
     ): DocumentComponentDto[] =>
       getAvlysningDocument(gjelderParagraph, values.begrunnelseBehandler),
+    getAvlysningInnkallingDocumentBehandler,
   };
 };
